@@ -33,11 +33,10 @@ void reachUsActionSheet(
 
           actions: [
             //whatsapp
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
+              
                 CupertinoActionSheetAction(
-                  onPressed: () async {
+                  onPressed: ()
+                  async {
                     //  whasapp();
                     final phoneNumber = "919940362579";
                     final Uri _url = Uri.parse(
@@ -50,8 +49,11 @@ void reachUsActionSheet(
                     } else {
                       await launchUrl(_url);
                     }
+                    Navigator.pop(context);
                   },
-                  child: Column(
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
                         'assets/whatsapp.svg',
@@ -62,10 +64,13 @@ void reachUsActionSheet(
                       //   color: const Color.fromARGB(255, 32, 219, 35),
                       //   size: 30,
                       // ),
-                      SizedBox(height: 20),
-                      Text(
-                        heading1,
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      SizedBox(width: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          heading1,
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
                       ),
                     ],
                   ),
@@ -74,7 +79,8 @@ void reachUsActionSheet(
 
                 CupertinoActionSheetAction(
                   onPressed: () {
-                    contact(
+                    Navigator.pop(context);
+                      contact(
                       context,
                       "Contact US",
                       "1888762666",
@@ -82,41 +88,49 @@ void reachUsActionSheet(
                       Icons.phone,
                     );
                   },
-                  child: Column(
+                  child: Row(
                     children: [
                       Icon(
                         icon2,
                         color: const Color.fromARGB(255, 231, 9, 9),
                         size: 35,
                       ),
-                      SizedBox(height: 20),
-                      Text(
-                        heading2,
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      SizedBox(width: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          heading2,
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
                       ),
                     ],
                   ),
                 ),
                 //location
                 CupertinoActionSheetAction(
-                  onPressed: () {},
-                  child: Column(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Row(
                     children: [
                       Icon(
                         icon3,
                         color: const Color.fromARGB(255, 3, 9, 110),
                         size: 35,
                       ),
-                      SizedBox(height: 20),
-                      Text(
-                        heading3,
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+                      SizedBox(width: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          heading3,
+                          style: TextStyle(color: Colors.black, fontSize: 20),
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
+              
+            
           ],
         ),
   );
