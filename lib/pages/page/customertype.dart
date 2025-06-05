@@ -19,7 +19,6 @@ class CustomerTypeState extends State<CustomerType> {
 
   @override
   Widget build(BuildContext context) {
-    
     print("KeyboardDetectionController is keyboardVisible $keyboardVisible");
     return KeyboardDetection(
       controller: KeyboardDetectionController(
@@ -27,48 +26,46 @@ class CustomerTypeState extends State<CustomerType> {
           print("KeyboardDetectionController is keyboardVisibleState $value");
           if (value == KeyboardState.visible) {
             setState(() {
-               keyboardVisible = true;
+              keyboardVisible = true;
             });
           } else {
             setState(() {
-               keyboardVisible = false;
+              keyboardVisible = false;
             });
           }
-        }
-      ), 
+        },
+      ),
       child: Scaffold(
         appBar: keyboardVisible ? null : AppBar(title: Text("Dedupe Search")),
         body: ReactiveForm(
           formGroup: customerTypeForm,
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Dropdown(
-                  controlName: 'customertype',
-                  label: 'Customer Type',
-                  items: ['Existing Customer', 'New Customer'],
-                  // onchange: (value) {
-                  //   print("onChange function called, $value");
-                  //   setState(() {
-                  //     print("customerTypeForm.control('customertype').value => ${customerTypeForm.control('customertype').value}");
-                  //     customerType = customerTypeForm.control('customertype').value;
-                  //   });
-                  // }
-                  
-                ),
-                _buildCustomerWidget()
-              ],
-            ),
-          )
-        )
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Dropdown(
+                controlName: 'customertype',
+                label: 'Customer Type',
+                items: ['Existing Customer', 'New Customer'],
+
+                // onchange: (value) {
+                //   print("onChange function called, $value");
+                //   setState(() {
+                //     print("customerTypeForm.control('customertype').value => ${customerTypeForm.control('customertype').value}");
+                //     customerType = customerTypeForm.control('customertype').value;
+                //   });
+                // }
+              ),
+              _buildCustomerWidget(),
+            ],
+          ),
+        ),
+      ),
     );
-    
   }
 
   Widget _buildCustomerWidget() {
-  if (customerType == null) return SizedBox(height: 10);
-  if (customerType == "New Customer") return DedupeSearch();
-  return CIFSearch();
-}
-
+    if (customerType == null) return SizedBox(height: 10);
+    if (customerType == "New Customer") return DedupeSearch();
+    return CifSearchPage();
+  }
 }

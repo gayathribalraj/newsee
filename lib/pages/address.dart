@@ -25,7 +25,10 @@ class Address extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Address Details"),automaticallyImplyLeading: false,),
+      appBar: AppBar(
+        title: Text("Address Details"),
+        automaticallyImplyLeading: false,
+      ),
       body: ReactiveForm(
         formGroup: form,
         child: SafeArea(
@@ -35,25 +38,25 @@ class Address extends StatelessWidget {
                 Dropdown(
                   controlName: 'addresstype',
                   label: 'Address Type',
-                  items: ['Present','Permanent'],
+                  items: ['Present', 'Permanent'],
                 ),
-                CustomTextField('address1','Address 1'),
-                CustomTextField('address2','Address 2'),
-                CustomTextField('address3','Address 3'),
+                CustomTextField('address1', 'Address 1'),
+                CustomTextField('address2', 'Address 2'),
+                CustomTextField('address3', 'Address 3'),
                 SearchableDropdown(
                   controlName: 'state',
                   label: 'State',
-                  items: ['Tamil Nadu','Kerala'],
+                  items: ['Tamil Nadu', 'Kerala'],
                 ),
                 SearchableDropdown(
                   controlName: 'citydistrict',
                   label: 'City/District',
-                  items: ['Chennai','Madurai'],
+                  items: ['Chennai', 'Madurai'],
                 ),
                 SearchableDropdown(
                   controlName: 'area',
                   label: 'Area',
-                  items: ['Sholinganallur','Navalur'],
+                  items: ['Sholinganallur', 'Navalur'],
                 ),
                 IntegerTextField('pincode', 'Pin Code'),
                 SizedBox(height: 20),
@@ -64,11 +67,14 @@ class Address extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 3, 9, 110),
                       foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
-                        ),
-                        ),
+                      ),
+                    ),
                     onPressed: () {
                       if (form.valid) {
                         final tabController = DefaultTabController.of(context);

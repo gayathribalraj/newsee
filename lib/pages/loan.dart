@@ -17,7 +17,10 @@ class Loan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Loan Details"),automaticallyImplyLeading: false,),
+      appBar: AppBar(
+        title: Text("Loan Details"),
+        automaticallyImplyLeading: false,
+      ),
       body: ReactiveForm(
         formGroup: form,
         child: SafeArea(
@@ -44,11 +47,14 @@ class Loan extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 3, 9, 110),
                       foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
-                        ),
-                        ),
+                      ),
+                    ),
                     onPressed: () {
                       if (form.valid) {
                         final tabController = DefaultTabController.of(context);

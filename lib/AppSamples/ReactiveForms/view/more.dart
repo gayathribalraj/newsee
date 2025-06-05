@@ -46,26 +46,23 @@ void moreActionSheet(BuildContext context, String action) {
                     children: [
                       //Retail Loan
                       GestureDetector(
-                        onTap: (){
-                        },
+                        onTap: () {},
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: const Color.fromARGB(130, 158, 158, 158),
                               width: 2.0,
-                              
                             ),
-                            
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(15),
                             child: Column(
                               children: [
-                                  SvgPicture.asset(
-                                      'assets/Retail.svg',
-                                      height: 40,
-                                      width: 40,
-                                    ),       
+                                SvgPicture.asset(
+                                  'assets/Retail.svg',
+                                  height: 40,
+                                  width: 40,
+                                ),
                                 Text(
                                   'MLAP Loan',
                                   style: TextStyle(
@@ -81,9 +78,7 @@ void moreActionSheet(BuildContext context, String action) {
                       ),
                       //Agree Loan
                       GestureDetector(
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -96,10 +91,10 @@ void moreActionSheet(BuildContext context, String action) {
                             child: Column(
                               children: [
                                 SvgPicture.asset(
-                                      'assets/Agri_Loan.svg',
-                                      height: 40,
-                                      width: 40,
-                                    ),
+                                  'assets/Agri_Loan.svg',
+                                  height: 40,
+                                  width: 40,
+                                ),
                                 Text(
                                   'Agree Loan',
                                   style: TextStyle(
@@ -115,9 +110,7 @@ void moreActionSheet(BuildContext context, String action) {
                       ),
                       //MSME Loan
                       GestureDetector(
-                          onTap: () {
-
-                        },
+                        onTap: () {},
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border.all(
@@ -129,11 +122,11 @@ void moreActionSheet(BuildContext context, String action) {
                             padding: const EdgeInsets.all(15),
                             child: Column(
                               children: [
-                               SvgPicture.asset(
-                                      'assets/MSME.svg',
-                                      height: 40,
-                                      width: 40,
-                                    ),
+                                SvgPicture.asset(
+                                  'assets/MSME.svg',
+                                  height: 40,
+                                  width: 40,
+                                ),
                                 Text(
                                   'MSME Loan',
                                   style: TextStyle(
@@ -156,9 +149,7 @@ void moreActionSheet(BuildContext context, String action) {
               // Second row of loan options
               SingleChildScrollView(
                 child: GestureDetector(
-                    onTap: () {
-
-                        },
+                  onTap: () {},
                   child: Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -176,10 +167,10 @@ void moreActionSheet(BuildContext context, String action) {
                             child: Column(
                               children: [
                                 SvgPicture.asset(
-                                      'assets/Home_Loan.svg',
-                                      height:50,
-                                      width: 50,
-                                    ),
+                                  'assets/Home_Loan.svg',
+                                  height: 50,
+                                  width: 50,
+                                ),
                                 Text(
                                   'Home Loan',
                                   style: TextStyle(
@@ -204,11 +195,11 @@ void moreActionSheet(BuildContext context, String action) {
                             padding: const EdgeInsets.all(15),
                             child: Column(
                               children: [
-                               SvgPicture.asset(
-                                      'assets/Vehicle_Loan.svg',
-                                      height: 50,
-                                      width: 50,
-                                    ),
+                                SvgPicture.asset(
+                                  'assets/Vehicle_Loan.svg',
+                                  height: 50,
+                                  width: 50,
+                                ),
                                 Text(
                                   'Vehicle Loan',
                                   style: TextStyle(
@@ -223,9 +214,7 @@ void moreActionSheet(BuildContext context, String action) {
                         ),
                         //Gold Loan
                         GestureDetector(
-                            onTap: () {
-
-                        },
+                          onTap: () {},
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(
@@ -237,11 +226,11 @@ void moreActionSheet(BuildContext context, String action) {
                               padding: const EdgeInsets.all(15),
                               child: Column(
                                 children: [
-                                 SvgPicture.asset(
-                                      'assets/Gold_Loan.svg',
-                                      height: 50,
-                                      width: 50,
-                                    ),
+                                  SvgPicture.asset(
+                                    'assets/Gold_Loan.svg',
+                                    height: 50,
+                                    width: 50,
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10),
                                     child: Text(
@@ -268,9 +257,7 @@ void moreActionSheet(BuildContext context, String action) {
 
               //Section for other Services
               GestureDetector(
-                  onTap: () {
-
-                        },
+                onTap: () {},
                 child: Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -292,7 +279,7 @@ void moreActionSheet(BuildContext context, String action) {
                           textAlign: TextAlign.left,
                         ),
                       ),
-                
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -313,12 +300,12 @@ void moreActionSheet(BuildContext context, String action) {
                               ),
                             ],
                           ),
-                
+
                           Padding(
                             padding: const EdgeInsets.only(right: 20),
                             child: Icon(
                               Icons.arrow_forward_ios_outlined,
-                
+
                               color: const Color.fromARGB(198, 7, 61, 105),
                               size: 20,
                               weight: 80,
@@ -347,12 +334,12 @@ void moreActionSheet(BuildContext context, String action) {
                               ),
                             ],
                           ),
-                
+
                           Padding(
                             padding: const EdgeInsets.only(right: 20),
                             child: Icon(
                               Icons.arrow_forward_ios_outlined,
-                
+
                               color: const Color.fromARGB(198, 7, 61, 105),
                               size: 20,
                               weight: 80,

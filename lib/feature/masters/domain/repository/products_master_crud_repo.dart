@@ -21,12 +21,15 @@ class ProductMasterCrudRepo extends SimpleCrudRepo<ProductMaster> {
       TableKeysProductMaster.tableName,
       orderBy: "id DESC",
     );
-    return List.generate(data.length, (index) => ProductMaster.fromJson(data[index]));
+    return List.generate(
+      data.length,
+      (index) => ProductMaster.fromJson(data[index]),
+    );
   }
 
   @override
   Future<int> save(ProductMaster o) async {
-      return _db.transaction((txn) async {
+    return _db.transaction((txn) async {
       return await txn.insert(
         TableKeysProductMaster.tableName,
         o.toMap(),

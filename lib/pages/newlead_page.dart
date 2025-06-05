@@ -39,7 +39,7 @@ class NewLeadPage extends StatelessWidget {
                   //   color: Colors.white,
                   // ),
                   // actionsPadding: EdgeInsets.fromLTRB(0, 0, (screenwidth * 0.1), 0),
-                  // actions: 
+                  // actions:
                   // <Widget>[
                   //   ProfileIcon()
                   // ],
@@ -62,7 +62,7 @@ class NewLeadPage extends StatelessWidget {
                       // Tab(icon: Icon(Icons.description, color: Colors.white)),
                       // Tab(icon: Icon(Icons.done_all, color: Colors.white)),
                       Tab(icon: Icon(Icons.badge, color: Colors.white)),
-                      Tab(icon: Icon(Icons.file_copy, color: Colors.white),),
+                      Tab(icon: Icon(Icons.file_copy, color: Colors.white)),
                       Tab(icon: Icon(Icons.face, color: Colors.white)),
                       Tab(icon: Icon(Icons.location_city, color: Colors.white)),
                       Tab(icon: Icon(Icons.done_all, color: Colors.white)),
@@ -83,11 +83,10 @@ class NewLeadPage extends StatelessWidget {
             DedupeView('Dedupe', title: 'dedupe'),
             Personal('Personal', title: 'personal'),
             Address('Address', title: 'address'),
-            CheckPage('Check', title: 'Lead Details')
+            CheckPage('Check', title: 'Lead Details'),
           ],
         ),
       ),
     );
   }
 }
-

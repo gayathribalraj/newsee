@@ -16,6 +16,6 @@ class AppConfig {
         Validators.required,
         // Validators.pattern(AppConstants.PATTERN_SPECIALCHAR),
       ],
-    )
+    ),
   });
 }

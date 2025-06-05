@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 /*
@@ -22,8 +21,11 @@ void showSuccessBottomSheet(
     isDismissible: false,
     backgroundColor: Colors.transparent,
     builder:
-        (context) =>
-            _AnimatedSuccessContent(headerTxt: headerTxt, lead: lead, message: message),
+        (context) => _AnimatedSuccessContent(
+          headerTxt: headerTxt,
+          lead: lead,
+          message: message,
+        ),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -114,7 +116,7 @@ class _AnimatedSuccessContentState extends State<_AnimatedSuccessContent>
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:  Color.fromARGB(255, 3, 9, 110),
+                  backgroundColor: Color.fromARGB(255, 3, 9, 110),
                   foregroundColor: Colors.white,
                 ),
                 child: Text("OK"),

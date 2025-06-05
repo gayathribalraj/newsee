@@ -16,7 +16,6 @@ import 'package:newsee/pages/master-download.dart';
 mpin(BuildContext context) {
   // show the custom modal bottom sheet
   showModalBottomSheet<void>(
-    
     context: context,
     builder: (BuildContext context) {
       return Container(
@@ -25,12 +24,18 @@ mpin(BuildContext context) {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            
             Align(
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                     
-                child: Title(color: Colors.black, child: Text('MPIN With Account', style: TextStyle(fontSize: 20,),textAlign: TextAlign.start,)),
+
+                child: Title(
+                  color: Colors.black,
+                  child: Text(
+                    'MPIN With Account',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
               ),
             ),
             Row(
@@ -79,10 +84,7 @@ mpin(BuildContext context) {
               }),
             ),
 
-             SizedBox(height: 50),
-
-            
-          
+            SizedBox(height: 50),
           ],
         ),
       );

@@ -78,12 +78,7 @@ class LeadTileCard extends StatelessWidget {
               Row(
                 children: [
                   Expanded(child: iconWithLabel(Icons.person_2_outlined, type)),
-                  Expanded(
-                    child: iconWithLabel(
-                      Icons.badge_outlined,
-                      product,
-                    ),
-                  ),
+                  Expanded(child: iconWithLabel(Icons.badge_outlined, product)),
                 ],
               ),
               const SizedBox(height: 12),
