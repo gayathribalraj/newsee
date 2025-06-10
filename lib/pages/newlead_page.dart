@@ -79,7 +79,7 @@ class NewLeadPage extends StatelessWidget {
             // LoanDetailsPage('Loan', title: 'loan'),
             // DocumentsPage('Document', title: 'documents'),
             // CheckPage('Check', title: 'check'),
-            Loan('Loan', title: 'loan'),
+            // Loan('Loan', title: 'loan'),
             DedupeView('Dedupe', title: 'dedupe'),
             Personal('Personal', title: 'personal'),
             Address('Address', title: 'address'),

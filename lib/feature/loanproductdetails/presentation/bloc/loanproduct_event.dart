@@ -39,3 +39,4 @@ class LoanProductDropdownChange<T> extends LoanproductEvent {
   final T field;
   LoanProductDropdownChange({required this.field});
 }
+

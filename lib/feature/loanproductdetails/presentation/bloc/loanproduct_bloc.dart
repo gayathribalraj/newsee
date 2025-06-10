@@ -55,6 +55,7 @@ class LoanproductBloc extends Bloc<LoanproductEvent, LoanproductState> {
   ) async {
     Database db = await DBConfig().database;
     String productSchemeId = "";
+    print("onLoanProductDropdownChange ${event.field}");
     if (event.field is ProductSchema) {
       await onChangeProductScheme(event, productSchemeId, db, emit);
     } else if (event.field is Product) {
