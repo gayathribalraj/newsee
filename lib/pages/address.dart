@@ -87,6 +87,7 @@ class Address extends StatelessWidget {
                           onChangeListener:
                               (Lov val) => form.controls['addresstype']
                                   ?.updateValue(val.optvalue),
+                          selItem: () => {},
                         ),
                         CustomTextField(
                           controlName: 'address1',
@@ -116,6 +117,7 @@ class Address extends StatelessWidget {
                               OnStateCityChangeEvent(stateCode: val.code),
                             );
                           },
+                          selItem: () => {},
                         ),
                         SearchableDropdown(
                           controlName: 'city',
@@ -134,6 +136,7 @@ class Address extends StatelessWidget {
                               ),
                             );
                           },
+                          selItem: () => {},
                         ),
                         SearchableDropdown(
                           controlName: 'district',
@@ -142,6 +145,7 @@ class Address extends StatelessWidget {
                           onChangeListener: (GeographyMaster val) {
                             form.controls['district']?.updateValue(val.code);
                           },
+                          selItem: () => {},
                         ),
                         IntegerTextField(
                           controlName: 'pincode',

@@ -31,6 +31,7 @@ class NewLeadPage extends StatelessWidget {
               (context) =>
                   PersonalDetailsBloc()
                     ..add(PersonalDetailsInitEvent(cifResponseModel: null)),
+          lazy: false,
         ),
         BlocProvider(
           create:

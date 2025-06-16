@@ -138,6 +138,7 @@ class Loan extends StatelessWidget {
                           LoanProductDropdownChange(field: val),
                         );
                       },
+                      selItem: () {},
                     ),
                     SearchableDropdown(
                       controlName: 'maincategory',
@@ -152,6 +153,7 @@ class Loan extends StatelessWidget {
                           LoanProductDropdownChange(field: val),
                         );
                       },
+                      selItem: () {},
                     ),
                     SearchableDropdown(
                       controlName: 'subcategory',
@@ -166,6 +168,7 @@ class Loan extends StatelessWidget {
                           LoanProductDropdownChange(field: val),
                         );
                       },
+                      selItem: () {},
                     ),
 
                     Column(

@@ -18,7 +18,7 @@ class DedupeState extends Equatable {
   final CifResponse? cifResponse;
   final bool? isNewCustomer;
   final String? constitution;
-
+  final bool? dismissModal;
   DedupeState({
     this.status,
     this.errorMsg,
@@ -27,6 +27,7 @@ class DedupeState extends Equatable {
     this.cifResponse,
     this.isNewCustomer,
     this.constitution,
+    this.dismissModal,
   });
 
   DedupeState copyWith({
@@ -36,16 +37,19 @@ class DedupeState extends Equatable {
     AadharvalidateResponse? aadharvalidateResponse,
     CifResponse? cifResponse,
     bool? isNewCustomer,
-    String? constitution
+    String? constitution,
+    bool? dismissModal,
   }) {
     return DedupeState(
       status: status ?? this.status,
       errorMsg: errorMsg ?? this.errorMsg,
       dedupeResponse: dedupeResponse ?? this.dedupeResponse,
-      aadharvalidateResponse: aadharvalidateResponse ?? this.aadharvalidateResponse,
+      aadharvalidateResponse:
+          aadharvalidateResponse ?? this.aadharvalidateResponse,
       cifResponse: cifResponse ?? this.cifResponse,
       isNewCustomer: isNewCustomer ?? this.isNewCustomer,
-      constitution: constitution ?? this.constitution
+      constitution: constitution ?? this.constitution,
+      dismissModal: dismissModal ?? this.dismissModal,
     );
   }
 
@@ -60,6 +64,7 @@ class DedupeState extends Equatable {
     aadharvalidateResponse,
     cifResponse,
     isNewCustomer,
-    constitution
+    constitution,
+    dismissModal,
   ];
 }
