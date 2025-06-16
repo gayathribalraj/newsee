@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class SysmoTitle extends StatelessWidget {
   final IconData icon;
@@ -16,16 +14,56 @@ class SysmoTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.teal),
-          const SizedBox(width: 12),
-          Text("$label: ", style: const TextStyle(fontWeight: FontWeight.bold)),
-          Expanded(child: Text(value, style: const TextStyle(fontSize: 16))),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(bottom: 8),
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Color.fromARGB(135, 0, 15, 14), width: 2),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              
+                Icon(icon,color:Colors.red, size: 30,),
+                SizedBox(height:8),
+                 Center(
+                   child: Flexible(
+                     child: Padding(
+                       padding: const EdgeInsets.all(8),
+                       child: Text(
+                        label,
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          
+                        ),
+                                       
+                                     ),
+                     ),
+                   ),
+                 ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: Align(
+                child: Text(
+                  value,
+                  style: const TextStyle(fontSize: 19,),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

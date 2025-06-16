@@ -146,7 +146,7 @@ incase of incomplete dataentry show no data card
               SysmoTitle(
                 icon: Icons.close,
                 label: "No Data",
-                value: 'Please complete Lead DataEntry...!!',
+                value: 'Please complete Personal and Address Details...!!',
               ),
             ],
           ),
