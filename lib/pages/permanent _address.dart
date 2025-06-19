@@ -15,7 +15,7 @@ class PermanentAddress extends StatelessWidget {
   final String title;
 
   PermanentAddress({required this.title, super.key});
-  
+
   final form = FormGroup({
     'addressType': FormControl<String>(validators: [Validators.required]),
     'address1': FormControl<String>(validators: [Validators.required]),
@@ -73,7 +73,7 @@ class PermanentAddress extends StatelessWidget {
             children: [
               ReactiveForm(
                 formGroup: form,
-                child: SafeArea(   
+                child: SafeArea(
                   child: SingleChildScrollView(
                     child: Column(
                       children: [

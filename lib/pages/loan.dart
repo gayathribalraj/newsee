@@ -286,15 +286,18 @@ class Loan extends StatelessWidget {
                               showDialog(
                                 context: context,
                                 builder:
-                                   (ctx) => AlertDialog(
+                                    (ctx) => AlertDialog(
                                       title: Row(
                                         children: [
                                           Icon(Icons.info, color: Colors.teal),
                                           SizedBox(width: 8),
-                                          
+
                                           Text(
                                             'Alert',
-                                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -304,11 +307,12 @@ class Loan extends StatelessWidget {
                                       ),
                                       actions: [
                                         TextButton(
-                                          onPressed: () => Navigator.of(ctx).pop(),
+                                          onPressed:
+                                              () => Navigator.of(ctx).pop(),
                                           child: Text('OK'),
                                         ),
                                       ],
-                                    )
+                                    ),
                               );
                               return;
                             }
