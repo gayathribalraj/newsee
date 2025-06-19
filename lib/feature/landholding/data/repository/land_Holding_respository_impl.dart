@@ -6,30 +6,22 @@ import 'package:newsee/core/api/auth_failure.dart';
 import 'package:newsee/core/api/failure.dart';
 import 'package:newsee/core/api/http_connection_failure.dart';
 import 'package:newsee/core/api/http_exception_parser.dart';
-import 'package:newsee/feature/leadInbox/data/datasource/lead_remote_datasource.dart';
-import 'package:newsee/feature/leadInbox/domain/modal/group_lead_inbox.dart';
-import 'package:newsee/feature/leadInbox/domain/modal/lead_request.dart';
-import 'package:newsee/feature/leadInbox/domain/repository/lead_repository.dart';
+import 'package:newsee/feature/landholding/data/datasource/landHolding_remote_datasource.dart';
+import 'package:newsee/feature/landholding/domain/modal/group_land_Holding.dart';
+import 'package:newsee/feature/landholding/domain/modal/land_Holding_request.dart';
+import 'package:newsee/feature/landholding/domain/repository/landHolding_repository.dart';
 
-/*
-@author       :  gayathri.b 12/05/2025 by
-@description   : Implements the [LeadRepository] interface to perform lead search functionality.
-                  It uses [LeadRemoteDatasource] to make a network request through Dio.
-                  Handles API success and failure responses, including data parsing and error types.
- @returns       : [Future] of [AsyncResponseHandler] containing either a [Failure] or a list of [LeadResponseModel].
-*/
-
-class LeadRepositoryImpl implements LeadRepository {
+class LandHoldingRepositoryImpl implements LandHoldingRepository {
   @override
-  Future<AsyncResponseHandler<Failure, List<GroupLeadInbox>>> searchLead(
-    LeadRequest req,
+  Future<AsyncResponseHandler<Failure, List<GroupLandHolding>>> landHolding(
+    LandHoldingRequest req,
   ) async {
     try {
       final payload = {'userid': req.userid, 'token': ApiConfig.AUTH_TOKEN};
 
-      final response = await LeadRemoteDatasource(
+      final response = await LandHoldingRemoteDatasource(
         dio: ApiClient().getDio(),
-      ).searchLead(payload);
+      ).landHolding(payload);
 
       final responseData = response.data;
       final isSuccess =
@@ -41,11 +33,11 @@ class LeadRepositoryImpl implements LeadRepository {
         if (data is List) {
           final leadResponse =
               data
-                  .map((e) => GroupLeadInbox.fromMap(e as Map<String, dynamic>))
+                  .map((e) => GroupLandHolding.fromMap(e as Map<String, dynamic>))
                   .toList();
           return AsyncResponseHandler.right(leadResponse);
         } else if (data is Map<String, dynamic>) {
-          final leadResponse = GroupLeadInbox.fromMap(data);
+          final leadResponse = GroupLandHolding.fromMap(data);
           return AsyncResponseHandler.right([leadResponse]);
         } else {
           return AsyncResponseHandler.left(

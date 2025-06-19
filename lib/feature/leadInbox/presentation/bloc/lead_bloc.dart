@@ -13,7 +13,7 @@ import 'package:newsee/feature/leadInbox/domain/modal/lead_request.dart';
 import 'package:newsee/feature/leadInbox/domain/modal/lead_responce_model.dart';
 import 'package:newsee/feature/leadInbox/domain/repository/lead_repository.dart';
 
-part 'lead_event.dart';
+part 'lead_event.dart'; 
 part 'lead_state.dart';
 
 class LeadBloc extends Bloc<LeadEvent, LeadState> {

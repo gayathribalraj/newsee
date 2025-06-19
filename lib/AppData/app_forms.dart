@@ -48,3 +48,28 @@ class AppForms {
     'isNewCustomer': FormControl<bool>(validators: [Validators.required]),
   });
 }
+
+//Land holding Form Group
+
+final FormGroup form = FormGroup({
+  'applicantName': FormControl<String>(validators: [Validators.required]),
+  'locationOfFarm': FormControl<String>(validators: [Validators.required]),
+  'state': FormControl<String>(validators: [Validators.required]),
+  'taluk': FormControl<String>(validators: [Validators.required]),
+  'firka': FormControl<String>(validators: [Validators.required]),
+  'totalAcreage': FormControl<String>(validators: [Validators.required]),
+  'irrigatedLand': FormControl<String>(validators: [Validators.required]),
+  'compactBlocks': FormControl<String>(validators: [Validators.required]),
+  'holdingsTally': FormControl<String>(validators: [Validators.required]),
+  'landOwnedByApplicant': FormControl<bool>(validators: [Validators.required]),
+  'distanceFromBranch': FormControl<String>(validators: [Validators.required]),
+  'district': FormControl<String>(validators: [Validators.required]),
+  'village': FormControl<String>(validators: [Validators.required]),
+  'surveyNo': FormControl<String>(validators: [Validators.required]),
+  'natureOfRight': FormControl<String>(validators: [Validators.required]),
+  'irrigationFacilities': FormControl<String>(
+    validators: [Validators.required],
+  ),
+  'affectedByCeiling': FormControl<String>(validators: [Validators.required]),
+  'landAgriActive': FormControl<String>(validators: [Validators.required]),
+});
