@@ -4,8 +4,16 @@ import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/radio.dart';
 
-class LandInfoFormPage extends StatelessWidget {
+class LandInfoFormPage extends StatefulWidget {
   final String title;
+
+  const LandInfoFormPage({required this.title, super.key});
+
+  @override
+  State<LandInfoFormPage> createState() => _LandInfoFormPageState();
+}
+
+class _LandInfoFormPageState extends State<LandInfoFormPage> {
   final FormGroup form = FormGroup({
     'applicantName': FormControl<String>(validators: [Validators.required]),
     'locationOfFarm': FormControl<String>(validators: [Validators.required]),
@@ -32,15 +40,15 @@ class LandInfoFormPage extends StatelessWidget {
     'landAgriActive': FormControl<String>(validators: [Validators.required]),
   });
 
-  final ValueNotifier<int> stepNotifier = ValueNotifier<int>(0);
+  int step = 0;
 
-  LandInfoFormPage({super.key, required this.title});
-
-  void handleSubmit(BuildContext context) {
+  void handleSubmit() {
     if (form.valid) {
-      debugPrint("Form Submitted with: ${form.value}");
-      stepNotifier.value++;
-      form.reset();
+      print("Form Submitted with: ${form.value}");
+      setState(() {
+        step++;
+        form.reset();
+      });
     } else {
       form.markAllAsTouched();
     }
@@ -49,7 +57,7 @@ class LandInfoFormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: const Text("Land Holding Details")),
       body: ReactiveForm(
         formGroup: form,
         child: SafeArea(
@@ -165,33 +173,29 @@ class LandInfoFormPage extends StatelessWidget {
                 bottom: 16,
                 left: 0,
                 right: 0,
-                child: ValueListenableBuilder<int>(
-                  valueListenable: stepNotifier,
-                  builder:
-                      (, step, _) => Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => handleSubmit(context),
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 32,
-                                vertical: 12,
-                              ),
-                            ),
-                            child: const Text('Next'),
-                          ),
-                          const SizedBox(width: 12),
-                          CircleAvatar(
-                            radius: 18,
-                            backgroundColor: Colors.blueAccent,
-                            child: Text(
-                              '$step',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: handleSubmit,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 12,
+                        ),
                       ),
+                      child: const Text('Next'),
+                    ),
+                    const SizedBox(width: 12),
+                    CircleAvatar(
+                      radius: 18,
+                      backgroundColor: Colors.blueAccent,
+                      child: Text(
+                        '$step',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

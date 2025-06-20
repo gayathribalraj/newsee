@@ -118,7 +118,7 @@ final routes = GoRouter(
             child: Scaffold(
               body: BlocProvider(
                 create: (_) => AuthBloc(authRepository: AuthRepository),
-                child: LandHoldingProviderPage(title: 'hush'),
+                child: LandInfoFormPage(title: 'hush'),
               ),
             ),
           ),
