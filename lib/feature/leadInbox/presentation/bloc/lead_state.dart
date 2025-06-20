@@ -12,7 +12,7 @@ enum LeadStatus { initial, loading, success, failure }
 // success and failure
 
 class LeadState extends Equatable {
-  final LeadStatus status; 
+  final LeadStatus status;
   final List<GroupLeadInbox>? leadResponseModel;
   final String? errorMessage;
 

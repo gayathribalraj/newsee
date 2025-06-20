@@ -15,7 +15,7 @@ class CIFRequest {
   String cifId;
   String? type;
   String? token;
-  CIFRequest({
+  CIFRequest({      
     this.custId,
     this.uniqueId,
     required this.cifId,

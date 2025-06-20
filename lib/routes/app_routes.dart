@@ -79,7 +79,7 @@ final routes = GoRouter(
             child: Scaffold(
               body: BlocProvider(
                 create: (_) => AuthBloc(authRepository: AuthRepository),
-                child: LandInfoFormPage(title: 'title'),
+                child: LoginpageView(),
               ),
             ),
           ),
@@ -118,7 +118,7 @@ final routes = GoRouter(
             child: Scaffold(
               body: BlocProvider(
                 create: (_) => AuthBloc(authRepository: AuthRepository),
-                child: HomePage(),
+                child: LandHoldingProviderPage(title: 'hush'),
               ),
             ),
           ),

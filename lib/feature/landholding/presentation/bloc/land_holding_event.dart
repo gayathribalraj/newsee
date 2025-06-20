@@ -1,14 +1,18 @@
 part of 'land_holding_bloc.dart';
 
-abstract class LandHoldingEvent {
+abstract class LandHoldingEvent extends Equatable {
   const LandHoldingEvent();
-}
-// bloc event type that will be called when Login button clicked
 
-class FetchlandholdingEvent extends LandHoldingEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class LoadInitialLandHolding extends LandHoldingEvent {}
+
+class SubmitLandHoldingForm extends LandHoldingEvent {
   final LandHoldingRequest request;
 
-  const FetchlandholdingEvent({required this.request});
+  const SubmitLandHoldingForm(this.request);
 
   @override
   List<Object?> get props => [request];
