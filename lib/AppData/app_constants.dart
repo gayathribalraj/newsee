@@ -25,3 +25,5 @@ class FilePickingOptionList {
   final String title;
   FilePickingOptionList({required this.icon, required this.title});
 }
+
+enum SaveStatus { init, loading, success, failure, update }

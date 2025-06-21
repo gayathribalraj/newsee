@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/AppData/app_constants.dart';
+import 'package:newsee/AppData/app_forms.dart';
 import 'package:newsee/Model/personal_data.dart';
 import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/feature/aadharvalidation/domain/modal/aadharvalidate_request.dart';
@@ -17,44 +18,7 @@ class Personal extends StatelessWidget {
 
   Personal({required this.title, super.key});
 
-  final form = FormGroup({
-    'title': FormControl<String>(validators: [Validators.required]),
-    'firstName': FormControl<String>(validators: [Validators.required]),
-    'middleName': FormControl<String>(validators: [Validators.required]),
-    'lastName': FormControl<String>(validators: [Validators.required]),
-    'dob': FormControl<String>(validators: [Validators.required]),
-    'primaryMobileNumber': FormControl<String>(
-      validators: [Validators.required, Validators.minLength(10)],
-    ),
-    'secondaryMobileNumber': FormControl<String>(
-      validators: [Validators.required, Validators.minLength(10)],
-    ),
-    'email': FormControl<String>(validators: [Validators.email]),
-    'aadhaar': FormControl<String>(validators: []),
-    'panNumber': FormControl<String>(
-      validators: [
-        Validators.pattern(AppConstants.PAN_PATTERN),
-        Validators.minLength(10),
-      ],
-    ),
-    'aadharRefNo': FormControl<String>(
-      validators: [
-        Validators.pattern(AppConstants.AADHAAR_PATTERN),
-        Validators.minLength(10),
-      ],
-    ),
-    'loanAmountRequested': FormControl<String>(
-      validators: [Validators.required],
-    ),
-    'natureOfActivity': FormControl<String>(validators: [Validators.required]),
-    'occupationType': FormControl<String>(validators: [Validators.required]),
-    'agriculturistType': FormControl<String>(validators: [Validators.required]),
-    'farmerCategory': FormControl<String>(validators: [Validators.required]),
-    'farmerType': FormControl<String>(validators: [Validators.required]),
-    'religion': FormControl<String>(validators: [Validators.required]),
-    'caste': FormControl<String>(validators: [Validators.required]),
-  });
-
+  final FormGroup form = AppForms.PERSONAL_DETAILS_FORM;
   bool refAadhaar = false;
 
   /* 
@@ -329,11 +293,14 @@ class Personal extends StatelessWidget {
                     SearchableDropdown<Lov>(
                       controlName: 'natureOfActivity',
                       label: 'Nature of Activity',
-                      items: state.lovList!
-                          .where((v) => v.Header == 'NatureOfActivity')
-                          .toList(),
+                      items:
+                          state.lovList!
+                              .where((v) => v.Header == 'NatureOfActivity')
+                              .toList(),
                       onChangeListener: (Lov val) {
-                        form.controls['natureOfActivity']?.updateValue(val.optvalue);
+                        form.controls['natureOfActivity']?.updateValue(
+                          val.optvalue,
+                        );
                       },
                       selItem: () {
                         final value = form.control('natureOfActivity').value;
@@ -341,20 +308,27 @@ class Personal extends StatelessWidget {
                             .where((v) => v.Header == 'NatureOfActivity')
                             .firstWhere(
                               (lov) => lov.optvalue == value,
-                              orElse: () => Lov(
-                                Header: 'NatureOfActivity', optDesc: '', optvalue: '', optCode: '',
-                              ),
+                              orElse:
+                                  () => Lov(
+                                    Header: 'NatureOfActivity',
+                                    optDesc: '',
+                                    optvalue: '',
+                                    optCode: '',
+                                  ),
                             );
                       },
                     ),
                     SearchableDropdown<Lov>(
                       controlName: 'occupationType',
                       label: 'Occupation Type',
-                      items: state.lovList!
-                          .where((v) => v.Header == 'OccupationType')
-                          .toList(),
+                      items:
+                          state.lovList!
+                              .where((v) => v.Header == 'OccupationType')
+                              .toList(),
                       onChangeListener: (Lov val) {
-                        form.controls['occupationType']?.updateValue(val.optvalue);
+                        form.controls['occupationType']?.updateValue(
+                          val.optvalue,
+                        );
                       },
                       selItem: () {
                         final value = form.control('occupationType').value;
@@ -362,20 +336,27 @@ class Personal extends StatelessWidget {
                             .where((v) => v.Header == 'OccupationType')
                             .firstWhere(
                               (lov) => lov.optvalue == value,
-                              orElse: () => Lov(
-                                Header: 'OccupationType', optvalue: '', optDesc: '', optCode: '',
-                              ),
+                              orElse:
+                                  () => Lov(
+                                    Header: 'OccupationType',
+                                    optvalue: '',
+                                    optDesc: '',
+                                    optCode: '',
+                                  ),
                             );
                       },
                     ),
                     SearchableDropdown<Lov>(
                       controlName: 'agriculturistType',
                       label: 'Agriculturist Type',
-                      items: state.lovList!
-                          .where((v) => v.Header == 'AgricultType')
-                          .toList(),
+                      items:
+                          state.lovList!
+                              .where((v) => v.Header == 'AgricultType')
+                              .toList(),
                       onChangeListener: (Lov val) {
-                        form.controls['agriculturistType']?.updateValue(val.optvalue);
+                        form.controls['agriculturistType']?.updateValue(
+                          val.optvalue,
+                        );
                       },
                       selItem: () {
                         final value = form.control('agriculturistType').value;
@@ -383,20 +364,27 @@ class Personal extends StatelessWidget {
                             .where((v) => v.Header == 'AgricultType')
                             .firstWhere(
                               (lov) => lov.optvalue == value,
-                              orElse: () => Lov(
-                                Header: 'AgricultType', optvalue: '', optDesc: '', optCode: '',
-                              ),
+                              orElse:
+                                  () => Lov(
+                                    Header: 'AgricultType',
+                                    optvalue: '',
+                                    optDesc: '',
+                                    optCode: '',
+                                  ),
                             );
                       },
                     ),
                     SearchableDropdown<Lov>(
                       controlName: 'farmerCategory',
                       label: 'Farmer Category',
-                      items: state.lovList!
-                          .where((v) => v.Header == 'FarmerCategory')
-                          .toList(),
+                      items:
+                          state.lovList!
+                              .where((v) => v.Header == 'FarmerCategory')
+                              .toList(),
                       onChangeListener: (Lov val) {
-                        form.controls['farmerCategory']?.updateValue(val.optvalue);
+                        form.controls['farmerCategory']?.updateValue(
+                          val.optvalue,
+                        );
                       },
                       selItem: () {
                         final value = form.control('farmerCategory').value;
@@ -404,18 +392,23 @@ class Personal extends StatelessWidget {
                             .where((v) => v.Header == 'FarmerCategory')
                             .firstWhere(
                               (lov) => lov.optvalue == value,
-                              orElse: () => Lov(
-                                Header: 'FarmerCategory', optvalue: '', optDesc: '', optCode: '', 
-                              ),
+                              orElse:
+                                  () => Lov(
+                                    Header: 'FarmerCategory',
+                                    optvalue: '',
+                                    optDesc: '',
+                                    optCode: '',
+                                  ),
                             );
                       },
                     ),
                     SearchableDropdown<Lov>(
                       controlName: 'farmerType',
                       label: 'Farmer Type',
-                      items: state.lovList!
-                          .where((v) => v.Header == 'FarmerType')
-                          .toList(),
+                      items:
+                          state.lovList!
+                              .where((v) => v.Header == 'FarmerType')
+                              .toList(),
                       onChangeListener: (Lov val) {
                         form.controls['farmerType']?.updateValue(val.optvalue);
                       },
@@ -425,18 +418,23 @@ class Personal extends StatelessWidget {
                             .where((v) => v.Header == 'FarmerType')
                             .firstWhere(
                               (lov) => lov.optvalue == value,
-                              orElse: () => Lov(
-                                Header: 'FarmerType', optvalue: '', optDesc: '', optCode: '',
-                              ),
+                              orElse:
+                                  () => Lov(
+                                    Header: 'FarmerType',
+                                    optvalue: '',
+                                    optDesc: '',
+                                    optCode: '',
+                                  ),
                             );
                       },
                     ),
                     SearchableDropdown<Lov>(
                       controlName: 'religion',
                       label: 'Religion',
-                      items: state.lovList!
-                          .where((v) => v.Header == 'Religion')
-                          .toList(),
+                      items:
+                          state.lovList!
+                              .where((v) => v.Header == 'Religion')
+                              .toList(),
                       onChangeListener: (Lov val) {
                         form.controls['religion']?.updateValue(val.optvalue);
                       },
@@ -446,18 +444,23 @@ class Personal extends StatelessWidget {
                             .where((v) => v.Header == 'Religion')
                             .firstWhere(
                               (lov) => lov.optvalue == value,
-                              orElse: () => Lov(
-                                Header: 'Religion', optvalue: '', optDesc: '', optCode: '',
-                              ),
+                              orElse:
+                                  () => Lov(
+                                    Header: 'Religion',
+                                    optvalue: '',
+                                    optDesc: '',
+                                    optCode: '',
+                                  ),
                             );
                       },
                     ),
                     SearchableDropdown<Lov>(
                       controlName: 'caste',
                       label: 'Caste',
-                      items: state.lovList!
-                          .where((v) => v.Header == 'Caste')
-                          .toList(),
+                      items:
+                          state.lovList!
+                              .where((v) => v.Header == 'Caste')
+                              .toList(),
                       onChangeListener: (Lov val) {
                         form.controls['caste']?.updateValue(val.optvalue);
                       },
@@ -467,8 +470,33 @@ class Personal extends StatelessWidget {
                             .where((v) => v.Header == 'Caste')
                             .firstWhere(
                               (lov) => lov.optvalue == value,
+                              orElse:
+                                  () => Lov(
+                                    Header: 'Caste',
+                                    optvalue: '',
+                                    optDesc: '',
+                                    optCode: '',
+                                  ),
+                            );
+                      },
+                    ), 
+                    SearchableDropdown<Lov>(
+                      controlName: 'residentialStatus',
+                      label: 'Residential Status',
+                      items: state.lovList!
+                          .where((v) => v.Header == 'ResidentialStatus')
+                          .toList(),
+                      onChangeListener: (Lov val) {
+                        form.controls['residentialStatus']?.updateValue(val.optvalue);
+                      },
+                      selItem: () {
+                        final value = form.control('residentialStatus').value;
+                        return state.lovList!
+                            .where((v) => v.Header == 'ResidentialStatus')
+                            .firstWhere(
+                              (lov) => lov.optvalue == value,
                               orElse: () => Lov(
-                                Header: 'Caste', optvalue: '', optDesc: '', optCode: '',
+                                Header: 'ResidentialStatus', optvalue: '', optDesc: '', optCode: '',
                               ),
                             );
                       },

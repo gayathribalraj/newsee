@@ -19,6 +19,7 @@ class LeadTileCard extends StatelessWidget {
   final String createdon;
   final String location;
   final String loanamount;
+  final VoidCallback? onTap;
 
   const LeadTileCard({
     Key? key,
@@ -32,12 +33,13 @@ class LeadTileCard extends StatelessWidget {
     required this.createdon,
     required this.location,
     required this.loanamount,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Card(
         elevation: 2,
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -88,6 +90,7 @@ class LeadTileCard extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () async {
+                        FocusScope.of(context).unfocus();
                         final phoneNumber = "919940362579";
                         final Uri uri = Uri.parse('tel:$phoneNumber');
                         if (!await canLaunchUrl(uri)) {
