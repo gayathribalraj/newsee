@@ -7,12 +7,10 @@ abstract class LandHoldingEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoadInitialLandHolding extends LandHoldingEvent {
-  const LoadInitialLandHolding();
-}
+class LandHoldingInitEvent extends LandHoldingEvent {}
 
 class LandDetailsSaveEvent extends LandHoldingEvent {
-  final Landdata landData;
+  final LandData landData;
 
   const LandDetailsSaveEvent({required this.landData});
 
@@ -21,7 +19,7 @@ class LandDetailsSaveEvent extends LandHoldingEvent {
 }
 
 class LandDetailsLoadEvent extends LandHoldingEvent {
-  final Landdata landData;
+  final LandData landData;
 
   const LandDetailsLoadEvent({required this.landData});
 

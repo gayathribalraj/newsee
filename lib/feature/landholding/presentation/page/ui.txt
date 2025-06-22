@@ -17,25 +17,25 @@ class LandInfoFormPage extends StatelessWidget {
     'state': FormControl<String>(validators: [Validators.required]),
     'taluk': FormControl<String>(validators: [Validators.required]),
     'firka': FormControl<String>(
-      validators: [Validators.required, Validators.pattern(r'^\d+$')],
+      validators: [Validators.required, Validators.pattern(r'^\d+\$')],
     ),
     'totalAcreage': FormControl<String>(
-      validators: [Validators.required, Validators.pattern(r'^\d+$')],
+      validators: [Validators.required, Validators.pattern(r'^\d+\$')],
     ),
     'irrigatedLand': FormControl<String>(
-      validators: [Validators.required, Validators.pattern(r'^\d+$')],
+      validators: [Validators.required, Validators.pattern(r'^\d+\$')],
     ),
-    'compactBlocks': FormControl<bool>(validators: [Validators.required]),
+    'compactBlocks': FormControl<String>(validators: [Validators.required]),
     'landOwnedByApplicant': FormControl<bool>(
       validators: [Validators.required],
     ),
     'distanceFromBranch': FormControl<String>(
-      validators: [Validators.required, Validators.pattern(r'^\d+$')],
+      validators: [Validators.required, Validators.pattern(r'^\d+\$')],
     ),
     'district': FormControl<String>(validators: [Validators.required]),
     'village': FormControl<String>(validators: [Validators.required]),
     'surveyNo': FormControl<String>(
-      validators: [Validators.required, Validators.pattern(r'^\d+$')],
+      validators: [Validators.required, Validators.pattern(r'^\d+\$')],
     ),
     'natureOfRight': FormControl<String>(validators: [Validators.required]),
     'irrigationFacilities': FormControl<String>(
@@ -43,9 +43,6 @@ class LandInfoFormPage extends StatelessWidget {
     ),
     'affectedByCeiling': FormControl<bool>(validators: [Validators.required]),
     'landAgriActive': FormControl<bool>(validators: [Validators.required]),
-    'villageOfficerCertified': FormControl<bool>(
-      validators: [Validators.required],
-    ),
   });
 
   LandInfoFormPage({super.key, required this.title});
@@ -180,21 +177,13 @@ class LandInfoFormPage extends StatelessWidget {
                                   ),
                                   IntegerTextField(
                                     controlName: 'irrigatedLand',
-                                    label:
-                                        'Out of Total acreage, how much is the Irrigated Land (in Acres)',
+                                    label: 'Irrigated Land (in Acres)',
                                     mantatory: true,
                                   ),
-                                  RadioButton(
-                                    'Lands situated in compact blocks',
-                                    'compactBlocks',
-                                    'Yes',
-                                    'No',
-                                  ),
-                                  RadioButton(
-                                    'Do the particulars of the holdings given in the application tally with the particulars given in village officers certificate',
-                                    'villageOfficerCertified',
-                                    'Yes',
-                                    'No',
+                                  Dropdown(
+                                    controlName: 'compactBlocks',
+                                    label: 'Lands situated in compact blocks',
+                                    items: ['--Select--', 'Yes', 'No'],
                                   ),
                                   RadioButton(
                                     'Land owned by the Applicant',
@@ -248,7 +237,7 @@ class LandInfoFormPage extends StatelessWidget {
                                     ],
                                   ),
                                   RadioButton(
-                                    'Are the Holdings in any way affected by land ceiling enactments',
+                                    'Affected by land ceiling enactments',
                                     'affectedByCeiling',
                                     'Yes',
                                     'No',
@@ -273,7 +262,7 @@ class LandInfoFormPage extends StatelessWidget {
                       child: Center(
                         child: ElevatedButton.icon(
                           onPressed: () => handleSubmit(context, state),
-                          icon: const Icon(Icons.save, color: Colors.white),
+                          icon: const Icon(Icons.save),
                           label: const Text(
                             'Save',
                             style: TextStyle(
@@ -282,12 +271,7 @@ class LandInfoFormPage extends StatelessWidget {
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              212,
-                              5,
-                              8,
-                              205,
-                            ),
+                            backgroundColor: Colors.black,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 32,
                               vertical: 14,
@@ -301,7 +285,7 @@ class LandInfoFormPage extends StatelessWidget {
                     ),
                     Positioned(
                       bottom: 90,
-                      right: 80,
+                      right: 16,
                       child: FloatingActionButton(
                         heroTag: 'view_button',
                         backgroundColor: Colors.white,

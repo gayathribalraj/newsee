@@ -3,11 +3,11 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 Widget RadioButton(String label, String controlName, String yes, String no) {
   return Padding(
-    padding: const EdgeInsets.only(bottom: 16),
+    padding: const EdgeInsets.all(17),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label),
+        Text(label, style: TextStyle(fontSize: 16)),
         Row(
           children: [
             Expanded(

@@ -5,10 +5,9 @@ enum SaveState { initial, loading, success, failure }
 
 class LandHoldingState extends Equatable {
   final SaveState? status;
-  final List<Landdata>? landData;
+  final List<LandData>? landData;
   final String? errorMessage;
-  final Landdata? selectedLandData;
-  
+  final LandData? selectedLandData;
 
   const LandHoldingState({
     this.status,
@@ -19,9 +18,9 @@ class LandHoldingState extends Equatable {
 
   LandHoldingState copyWith({
     SaveState? status,
-    List<Landdata>? landData,
+    List<LandData>? landData,
     String? errorMessage,
-    Landdata? selectedLandData,
+    LandData? selectedLandData,
   }) {
     return LandHoldingState(
       status: status ?? this.status,
@@ -52,12 +51,12 @@ class LandHoldingState extends Equatable {
       status: SaveState.values.byName(map['status']),
       landData:
           (map['landData'] as List<dynamic>?)
-              ?.map((x) => Landdata.fromMap(x as Map<String, dynamic>))
+              ?.map((x) => LandData.fromMap(x as Map<String, dynamic>))
               .toList(),
       errorMessage: map['errorMessage'] as String?,
       selectedLandData:
           map['selectedLandData'] != null
-              ? Landdata.fromMap(map['selectedLandData'])
+              ? LandData.fromMap(map['selectedLandData'])
               : null,
     );
   }
