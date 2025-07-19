@@ -572,6 +572,35 @@ class Personal extends StatelessWidget {
                             );
                       },
                     ),
+                    SearchableDropdown<Lov>(
+                      controlName: 'gender',
+                      label: 'Gender',
+                      items:
+                          state.lovList!
+                              .where((v) => v.Header == 'Gender')
+                              .toList(),
+                      onChangeListener: (Lov val) {
+                        form.controls['gender']?.updateValue(val.optvalue);
+                      },
+                      selItem: () {
+                        final value = form.control('gender').value;
+                        if (value == null || value.toString().isEmpty) {
+                          return null;
+                        }
+                        return state.lovList!
+                            .where((v) => v.Header == 'Gender')
+                            .firstWhere(
+                              (lov) => lov.optvalue == value,
+                              orElse:
+                                  () => Lov(
+                                    Header: 'Gender',
+                                    optvalue: '',
+                                    optDesc: '',
+                                    optCode: '',
+                                  ),
+                            );
+                      },
+                    ),
                     SearchableMultiSelectDropdown<Lov>(
                       controlName: 'subActivity',
                       label: 'Sub Activity',

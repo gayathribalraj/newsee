@@ -101,13 +101,9 @@ class LeadTileCard extends StatelessWidget {
                         final phoneNumber = "919940362579";
                         final Uri uri = Uri.parse('tel:$phoneNumber');
                         if (await canLaunchUrl(uri)) {
-
-                          await launchUrl(uri);
+                            await launchUrl(uri);
                         } else {
-                          throw (
-                            AppConstants.GLOBAL_COULD_NOT_LAUNCH,
-                            uri.toString(),
-                          );
+                         throw 'Could not launch $uri';
                         }
                       },
                       child: iconWithLabel(
