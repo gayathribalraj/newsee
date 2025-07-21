@@ -564,143 +564,32 @@ class Personal extends StatelessWidget {
                           }
                           return state.lovList!
                               .where((v) => v.Header == 'Caste')
-                              .toList(),
-                      onChangeListener: (Lov val) {
-                        form.controls['caste']?.updateValue(val.optvalue);
-                      },
-                      selItem: () {
-                        final value = form.control('caste').value;
-                        if (value == null || value.toString().isEmpty) {
-                          return null;
-                        }
-                        return state.lovList!
-                            .where((v) => v.Header == 'Caste')
-                            .firstWhere(
-                              (lov) => lov.optvalue == value,
-                              orElse:
-                                  () => Lov(
-                                    Header: 'Caste',
-                                    optvalue: '',
-                                    optDesc: '',
-                                    optCode: '',
-                                  ),
-                            );
-                      },
-                    ),
-                    SearchableDropdown<Lov>(
-                      controlName: 'gender',
-                      label: 'Gender',
-                      items:
-                          state.lovList!
-                              .where((v) => v.Header == 'Gender')
-                              .toList(),
-                      onChangeListener: (Lov val) {
-                        form.controls['gender']?.updateValue(val.optvalue);
-                      },
-                      selItem: () {
-                        final value = form.control('gender').value;
-                        if (value == null || value.toString().isEmpty) {
-                          return null;
-                        }
-                        return state.lovList!
-                            .where((v) => v.Header == 'Gender')
-                            .firstWhere(
-                              (lov) => lov.optvalue == value,
-                              orElse:
-                                  () => Lov(
-                                    Header: 'Gender',
-                                    optvalue: '',
-                                    optDesc: '',
-                                    optCode: '',
-                                  ),
-                            );
-                      },
-                    ),
-                    SearchableMultiSelectDropdown<Lov>(
-                      controlName: 'subActivity',
-                      label: 'Sub Activity',
-                      items:
-                          state.lovList!
-                              .where((v) => v.Header == 'SubActivity')
-                              .toList(),
-                      selItems: () {
-                        final currentValues = form.control('subActivity').value;
-                        if (currentValues == null || currentValues.isEmpty) {
-                          return <Lov>[];
-                        }
-                        return state.lovList!
-                            .where(
-                              (v) =>
-                                  v.Header == 'SubActivity' &&
-                                  currentValues.contains(v.optvalue),
-                            )
-                            .toList();
-                      },
-                      onChangeListener: (List<Lov>? selectedItems) {
-                        final selectedValues =
-                            selectedItems?.map((e) => e.optvalue).toList() ??
-                            [];
-                        String subactivities = selectedValues.join(',');
-                        form.controls['subActivity']?.updateValue(
-                          subactivities,
-                        );
-                      },
-                    ),
-                    SizedBox(height: 20),
-                    Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 3, 9, 110),
-                          foregroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 12,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        onPressed: () {
-                          print("personal Details value ${form.value}");
-
-                          if (form.valid) {
-                            PersonalData personalData = PersonalData.fromMap(
-                              form.value,
-                            );
-                            PersonalData personalDataFormatted = personalData
-                                .copyWith(
-                                  dob: getDateFormatedByProvided(
-                                    personalData.dob,
-                                    from: AppConstants.Format_dd_MM_yyyy,
-                                    to: AppConstants.Format_yyyy_MM_dd,
-                                  ),
-                                );
-
-                            context.read<PersonalDetailsBloc>().add(
-                              PersonalDetailsSaveEvent(
-                                personalData: personalDataFormatted,
-                              ),
-                            );
-                          } else {
-                            form.markAllAsTouched();
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder:
-                                  (_) => SysmoAlert.warning(
-                                    message:
-                                        "Please check error message and Enter valid data",
-                                    onButtonPressed:
-                                        () => Navigator.pop(context),
-                                  ),
-                            );
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //   SnackBar(
-                            //     content: Text(
-                            //       'Please Check Error Message and Enter Valid Data ',
-                            //     ),
-                            //   ),
-                            // );
+                              .firstWhere(
+                                (lov) => lov.optvalue == value,
+                                orElse:
+                                    () => Lov(
+                                      Header: 'Caste',
+                                      optvalue: '',
+                                      optDesc: '',
+                                      optCode: '',
+                                    ),
+                              );
+                        },
+                      ),
+                      SearchableDropdown<Lov>(
+                        controlName: 'gender',
+                        label: 'Gender',
+                        items:
+                            state.lovList!
+                                .where((v) => v.Header == 'Gender')
+                                .toList(),
+                        onChangeListener: (Lov val) {
+                          form.controls['gender']?.updateValue(val.optvalue);
+                        },
+                        selItem: () {
+                          final value = form.control('gender').value;
+                          if (value == null || value.toString().isEmpty) {
+                            return null;
                           }
                           return state.lovList!
                               .where((v) => v.Header == 'Gender')
@@ -748,64 +637,64 @@ class Personal extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 3, 9, 110),
-                            foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 12,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 3, 9, 110),
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
                           ),
-                          onPressed: () {
-                            print("personal Details value ${form.value}");
-      
-                            if (form.valid) {
-                              PersonalData personalData = PersonalData.fromMap(
-                                form.value,
-                              );
-                              PersonalData personalDataFormatted = personalData
-                                  .copyWith(
-                                    dob: getDateFormatedByProvided(
-                                      personalData.dob,
-                                      from: AppConstants.Format_dd_MM_yyyy,
-                                      to: AppConstants.Format_yyyy_MM_dd,
-                                    ),
-                                  );
-      
-                              context.read<PersonalDetailsBloc>().add(
-                                PersonalDetailsSaveEvent(
-                                  personalData: personalDataFormatted,
-                                ),
-                              );
-                            } else {
-                              form.markAllAsTouched();
-                              showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder:
-                                    (_) => SysmoAlert.warning(
-                                      message:
-                                          "Please check error message and Enter valid data",
-                                      onButtonPressed:
-                                          () => Navigator.pop(context),
-                                    ),
-                              );
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   SnackBar(
-                              //     content: Text(
-                              //       'Please Check Error Message and Enter Valid Data ',
-                              //     ),
-                              //   ),
-                              // );
-                            }
-                          },
-                          child: Text('Next'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
+                        onPressed: () {
+                          print("personal Details value ${form.value}");
+    
+                          if (form.valid) {
+                            PersonalData personalData = PersonalData.fromMap(
+                              form.value,
+                            );
+                            PersonalData personalDataFormatted = personalData
+                                .copyWith(
+                                  dob: getDateFormatedByProvided(
+                                    personalData.dob,
+                                    from: AppConstants.Format_dd_MM_yyyy,
+                                    to: AppConstants.Format_yyyy_MM_dd,
+                                  ),
+                                );
+    
+                            context.read<PersonalDetailsBloc>().add(
+                              PersonalDetailsSaveEvent(
+                                personalData: personalDataFormatted,
+                              ),
+                            );
+                          } else {
+                            form.markAllAsTouched();
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder:
+                                  (_) => SysmoAlert.warning(
+                                    message:
+                                        "Please check error message and Enter valid data",
+                                    onButtonPressed:
+                                        () => Navigator.pop(context),
+                                  ),
+                            );
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   SnackBar(
+                            //     content: Text(
+                            //       'Please Check Error Message and Enter Valid Data ',
+                            //     ),
+                            //   ),
+                            // );
+                          }
+                        },
+                        child: Text('Next'),
                       ),
+                    ),
                     ],
                   ),
                 ),

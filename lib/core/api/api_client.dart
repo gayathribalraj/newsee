@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:newsee/core/api/api_config.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class ApiClient {
   Dio getDio() {
