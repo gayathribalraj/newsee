@@ -26,7 +26,7 @@ class ApiClient {
     );
 
     // Add this interceptor for internet connection check
-    dio.interceptors.add(ConnectivityInterceptor());
+    // dio.interceptors.add(ConnrectivityInterceptor());
 
     return dio;
   }
