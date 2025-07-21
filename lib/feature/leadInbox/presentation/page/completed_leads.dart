@@ -163,6 +163,7 @@ class CompletedLeads extends StatelessWidget {
                           : 'Existing Customer',
                   product: lead['lfProdId'] ?? 'N/A',
                   phone: lead['lleadmobno'] ?? 'N/A',
+                  ennablePhoneTap: true,
                   createdon: lead['lpdCreatedOn'] ?? 'N/A',
                   location: lead['lleadprefbrnch'] ?? 'N/A',
                   loanamount: lead['lldLoanamtRequested']?.toString() ?? '',
