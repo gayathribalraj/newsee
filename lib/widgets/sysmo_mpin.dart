@@ -26,6 +26,7 @@ class SysmoMpin extends StatefulWidget {
 
 class _SysmoMpinState extends State<SysmoMpin> {
   String pin = '';
+  bool isloading = false;
   @override
   void initState() {
     super.initState();
@@ -98,6 +99,7 @@ class _SysmoMpinState extends State<SysmoMpin> {
               minimumSize: WidgetStatePropertyAll(Size(230, 40)),
             ),
             onPressed: () async {
+              
               /**
                    * login with mpin , if pin validation is success 
                    * check masterversionchecker api 
@@ -116,6 +118,10 @@ class _SysmoMpinState extends State<SysmoMpin> {
 
                   return;
                 }
+                setState(() {
+                  isloading = true;
+                });
+                 await Future.delayed(Duration(seconds: 2));
                 final encPinValue = encryptMPIN(pin, ApiConfig.encKey);
                 print('enc pin => ${encPinValue.encryptedText}');
                 UserDetails? userDetails = await loadUser();
@@ -141,12 +147,15 @@ class _SysmoMpinState extends State<SysmoMpin> {
                           onButtonPressed: () async {
                             // context.pop();
                             // master version check
+                            
+
                             widget.masterVersionCheckResponseHandler ??=
                                 await compareVersions(
                                   Globalconfig.masterVersionMapper,
                                 );
                             if (widget.masterVersionCheckResponseHandler!
                                 .isLeft()) {
+                              
                               context.goNamed('masters');
                             } else if (widget.masterVersionCheckResponseHandler!
                                 .isRight()) {
@@ -161,8 +170,13 @@ class _SysmoMpinState extends State<SysmoMpin> {
                                 print(
                                   "Globalconfig.diffListOfMaster ${Globalconfig.diffListOfMaster}",
                                 );
+                                
                                 context.goNamed('masters');
                               } else {
+                                setState(() {
+                                  isloading = false;
+                                });
+
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (_) => HomePage()),
@@ -173,6 +187,9 @@ class _SysmoMpinState extends State<SysmoMpin> {
                         ),
                   );
                 } else {
+                  setState(() {
+                    isloading = false;
+                  });
                   showDialog(
                     context: context,
                     builder:
@@ -187,13 +204,22 @@ class _SysmoMpinState extends State<SysmoMpin> {
                   );
                 }
               } catch (e) {
+                setState(() {
+                  isloading = false;
+                });
                 print(
                   'Exception occured : mpin login failed : stacktrace : $e',
                 );
               }
             },
+            
 
-            child: Text("Login"),
+            child: isloading == false ? Text("Login") : 
+            CircularProgressIndicator(
+              color: Colors.white,
+              strokeWidth:2
+              
+            )
           ),
           SizedBox(height: 20),
           Center(
