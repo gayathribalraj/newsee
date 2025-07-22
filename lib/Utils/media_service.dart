@@ -137,23 +137,10 @@ class MediaService {
   Future<Uint8List?> cropper(context, filepath) async {
     try {
       Uint8List? croppedImage;
-      // double screenwidth = MediaQuery.of(context).size.width;
-
-      // final padding = MediaQuery.of(context).padding.top;
-      // final appBarHieght = kToolbarHeight;
-      // double screenheight =
-      //     MediaQuery.of(context).size.height - padding - appBarHieght;
-      // double cropperW = (screenwidth * 0.5);
-      // double cropperH = (screenheight * 0.5);
-      // if (screenwidth < 600) {
-      //   cropperW = screenwidth * 0.9;
-      //   cropperH = screenheight * 0.5;
-      // }
-      // final intwidth = cropperW.round();
-      // final intheight = cropperH.round();
 
       double screenWidth = MediaQuery.of(context).size.width;
       double screenHeight = MediaQuery.of(context).size.height;
+      print('screenHeight: $screenHeight');
 
       // base padding from system
       final topPadding = MediaQuery.of(context).padding.top;
@@ -161,8 +148,8 @@ class MediaService {
 
       // add extra padding if screen is large
       double extraTopPadding = 0;
-      if (screenHeight > 800 || screenWidth > 600) {
-        extraTopPadding = 28;
+      if (screenHeight > 700) {
+        extraTopPadding = 80; // 28
       }
 
       double usableHeight =
@@ -177,9 +164,14 @@ class MediaService {
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Cropper',
+            // toolbarColor: Colors.deepOrange,
+            // statusBarColor: Colors.yellow,
+            // toolbarWidgetColor: const Color.fromRGBO(255, 255, 255, 1),
+            // initAspectRatio: CropAspectRatioPreset.square,
             toolbarColor: Colors.deepOrange,
-            toolbarWidgetColor: const Color.fromRGBO(255, 255, 255, 1),
-            initAspectRatio: CropAspectRatioPreset.square,
+            toolbarWidgetColor: Colors.white,
+            statusBarColor: Colors.deepOrange,
+            activeControlsWidgetColor: Colors.deepOrange,
             lockAspectRatio: false,
             aspectRatioPresets: [
               CropAspectRatioPreset.original,
