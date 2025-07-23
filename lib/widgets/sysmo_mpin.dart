@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:newsee/AppData/app_api_constants.dart';
@@ -11,6 +12,7 @@ import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/core/api/api_client.dart';
 import 'package:newsee/core/api/api_config.dart';
+import 'package:newsee/core/api/http_exception_parser.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/pages/home_page.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
@@ -18,7 +20,11 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 class SysmoMpin extends StatefulWidget {
   AsyncResponseHandler? masterVersionCheckResponseHandler;
-  SysmoMpin({required this.masterVersionCheckResponseHandler});
+  final BuildContext pageContext;
+  SysmoMpin({
+    required this.masterVersionCheckResponseHandler,
+    required this.pageContext,
+  });
 
   @override
   State<StatefulWidget> createState() => _SysmoMpinState();
@@ -26,6 +32,7 @@ class SysmoMpin extends StatefulWidget {
 
 class _SysmoMpinState extends State<SysmoMpin> {
   String pin = '';
+  bool isloading = false;
   @override
   void initState() {
     super.initState();
@@ -39,7 +46,6 @@ class _SysmoMpinState extends State<SysmoMpin> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final screenWidth = size.width;
     final screenHeight = size.height;
 
     return SizedBox(
@@ -116,6 +122,10 @@ class _SysmoMpinState extends State<SysmoMpin> {
 
                   return;
                 }
+                setState(() {
+                  isloading = true;
+                });
+                await Future.delayed(Duration(seconds: 2));
                 final encPinValue = encryptMPIN(pin, ApiConfig.encKey);
                 print('enc pin => ${encPinValue.encryptedText}');
                 UserDetails? userDetails = await loadUser();
@@ -139,6 +149,8 @@ class _SysmoMpinState extends State<SysmoMpin> {
                         (_) => SysmoAlert.success(
                           message: AppConstants.mpinLoginSuccess,
                           onButtonPressed: () async {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
                             // context.pop();
                             // master version check
                             widget.masterVersionCheckResponseHandler ??=
@@ -181,6 +193,9 @@ class _SysmoMpinState extends State<SysmoMpin> {
                               response.data[ApiConstants
                                   .api_response_errorMessage],
                           onButtonPressed: () {
+                            setState(() {
+                              isloading = false;
+                            });
                             Navigator.pop(context);
                           },
                         ),
@@ -190,10 +205,32 @@ class _SysmoMpinState extends State<SysmoMpin> {
                 print(
                   'Exception occured : mpin login failed : stacktrace : $e',
                 );
+                showDialog(
+                  context: context,
+                  builder:
+                      (_) => SysmoAlert.failure(
+                        message:
+                            DioHttpExceptionParser(
+                              exception: e as DioException,
+                            ).parse().message,
+                        onButtonPressed: () {
+                          setState(() {
+                            isloading = false;
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                );
               }
             },
 
-            child: Text("Login"),
+            child:
+                isloading == false
+                    ? Text("Login")
+                    : CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
           ),
           SizedBox(height: 20),
           Center(

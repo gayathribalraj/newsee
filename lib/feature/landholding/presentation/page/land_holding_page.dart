@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/app_forms.dart';
 import 'package:newsee/Utils/media_service.dart';
@@ -17,6 +18,7 @@ import 'package:newsee/widgets/google_maps_card.dart';
 import 'package:newsee/widgets/k_willpopscope.dart';
 import 'package:newsee/widgets/options_sheet.dart';
 import 'package:newsee/widgets/searchable_drop_down.dart';
+import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/drop_down.dart';
@@ -44,13 +46,25 @@ class LandHoldingPage extends StatelessWidget {
       // globalLoadingBloc.add(ShowLoading(message: "Land Holding Details Submitting..."));
       context.read<LandHoldingBloc>().add(
         LandDetailsSaveEvent(
-          landData: form.value,
+          landData: form.rawValue,
           proposalNumber: proposalNumber,
         ),
       );
     } else {
       form.markAllAsTouched();
     }
+  }
+
+  void showGoogleMapsDailog(
+    BuildContext context,
+    double latitude,
+    double longitude,
+  ) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => GoogleMapsCard(location: LatLng(latitude, longitude)),
+    );
   }
 
   void showBottomSheet(BuildContext context, LandHoldingState state) {
@@ -349,57 +363,112 @@ class LandHoldingPage extends StatelessWidget {
                                         const SizedBox(width: 8),
                                         OutlinedButton.icon(
                                           onPressed: () async {
-                                            globalLoadingBloc.add(
-                                              ShowLoading(
-                                                message: 'Fetching location',
-                                              ),
-                                            );
-                                            final curposition =
-                                                await MediaService()
-                                                    .getLocation(context);
-                                            globalLoadingBloc.add(
-                                              HideLoading(),
-                                            );
-                                            if (curposition.latitude != 0.0 &&
-                                                curposition.longitude != 0.0) {
-                                              showDialog(
-                                                context: context,
-                                                barrierDismissible: false,
-                                                builder:
-                                                    (_) => GoogleMapsCard(
-                                                      location: LatLng(
-                                                        curposition.latitude,
-                                                        curposition.longitude,
-                                                      ),
-                                                    ),
-                                              );
-                                              double calculateDistance =
-                                                  Geolocator.distanceBetween(
-                                                    12.9483,
-                                                    80.2546,
-                                                    curposition.latitude,
-                                                    curposition.longitude,
+                                            if (form
+                                                    .control('locationOfFarm')
+                                                    .value !=
+                                                null) {
+                                              final position =
+                                                  form
+                                                          .control(
+                                                            'locationOfFarm',
+                                                          )
+                                                          .value
+                                                      as String;
+                                              if (position.contains(',')) {
+                                                final parts = position.split(
+                                                  ",",
+                                                );
+                                                final latitude =
+                                                    double.tryParse(
+                                                      parts[0].trim(),
+                                                    );
+                                                final longitude =
+                                                    double.tryParse(
+                                                      parts[1].trim(),
+                                                    );
+                                                if (latitude != null &&
+                                                    longitude != null) {
+                                                  showGoogleMapsDailog(
+                                                    context,
+                                                    latitude,
+                                                    longitude,
                                                   );
-                                              print(calculateDistance);
-                                              String value =
-                                                  (calculateDistance / 1000)
-                                                      .toStringAsFixed(2);
-                                              print(
-                                                'calculateDistance----->$value',
-                                              );
-                                              form
-                                                  .control('distanceFromBranch')
-                                                  .updateValue(value);
+                                                }
+                                              }
                                             } else {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
-                                                    'Failed to get location. Please try again.',
-                                                  ),
+                                              globalLoadingBloc.add(
+                                                ShowLoading(
+                                                  message: 'Fetching location',
                                                 ),
                                               );
+                                              try {
+                                                final curposition =
+                                                    await MediaService()
+                                                        .getLocation(context);
+                                                globalLoadingBloc.add(
+                                                  HideLoading(),
+                                                );
+                                                if (curposition.position !=
+                                                    null) {
+                                                  form
+                                                      .control('locationOfFarm')
+                                                      .updateValue(
+                                                        '${curposition.position!.latitude},${curposition.position!.longitude}',
+                                                      );
+                                                  showGoogleMapsDailog(
+                                                    context,
+                                                    curposition
+                                                        .position!
+                                                        .latitude,
+                                                    curposition
+                                                        .position!
+                                                        .longitude,
+                                                  );
+                                                  double calculateDistance =
+                                                      Geolocator.distanceBetween(
+                                                        12.9483,
+                                                        80.2546,
+                                                        curposition
+                                                            .position!
+                                                            .latitude,
+                                                        curposition
+                                                            .position!
+                                                            .longitude,
+                                                      );
+                                                  print(calculateDistance);
+                                                  String value =
+                                                      (calculateDistance / 1000)
+                                                          .round()
+                                                          .toString();
+                                                  print(
+                                                    'calculateDistance----->$value',
+                                                  );
+                                                  form
+                                                      .control(
+                                                        'distanceFromBranch',
+                                                      )
+                                                      .updateValue(value);
+                                                } else {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (
+                                                          _,
+                                                        ) => SysmoAlert.warning(
+                                                          message:
+                                                              curposition.error
+                                                                  .toString(),
+                                                          onButtonPressed: () {
+                                                            context.pop();
+                                                          },
+                                                        ),
+                                                  );
+                                                }
+                                              } catch (error) {
+                                                SysmoAlert.warning(
+                                                  message: error.toString(),
+                                                );
+                                              }
                                             }
                                           },
                                           icon: Icon(

@@ -22,6 +22,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:newsee/Model/loader.dart';
 import 'package:path_provider/path_provider.dart';
 
+class LocationResponse {
+  final Position? position;
+  final String? error;
+
+  LocationResponse({this.position, this.error});
+}
+
 class MediaService {
   /* 
 @author         :   ganeshkumar.b    14/05/2025
@@ -30,47 +37,43 @@ class MediaService {
 @return data     :   Current Cooridnate like latitude and longitude value returned
  */
 
-  Future<Position> getLocation(BuildContext context) async {
+  Future<LocationResponse> getLocation(BuildContext context) async {
     try {
-      LocationPermission permissionstatus;
-      Position gelocationdata;
-
-      // showDialog(
-      //   context: context,
-      //   barrierDismissible: false,
-      //   builder: (_) => const LoaderView(),
+      final bool locationEnabled = await checkIsLocationServiceEnabled();
+      // if (!locationEnabled) {
+      // return LocationResponse(
+      //   error: 'Location services are disabled. Please enable GPS.',
       // );
-
-      final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        throw Exception('Location services are disabled.');
-      }
-
-      permissionstatus = await Geolocator.checkPermission();
-      print("Geolocator.checkPermission(): $permissionstatus");
-      if (permissionstatus == LocationPermission.denied) {
-        permissionstatus = await Geolocator.requestPermission();
-        if (permissionstatus == LocationPermission.denied) {
-          throw Exception('Location services are disabled.');
-        }
-      }
-
-      if (permissionstatus == LocationPermission.deniedForever) {
-        throw Exception(
-          'Location permissions are permanently denied, we cannot request permissions.',
-        );
-      }
-
-      gelocationdata = await Geolocator.getCurrentPosition();
-      print("gelocationdata: $gelocationdata");
-
-      return gelocationdata;
-    } catch (error) {
-      rethrow;
-    } finally {
-      // if (context.mounted) {
-      //   Navigator.of(context, rootNavigator: true).pop(); // Dismiss the loader
       // }
+      await handlePermissions();
+      Position position = await Geolocator.getCurrentPosition();
+      print("gelocationdata: $position");
+      return LocationResponse(position: position);
+    } catch (error) {
+      return LocationResponse(error: error.toString());
+    }
+  }
+
+  Future<bool> checkIsLocationServiceEnabled() async {
+    return await Geolocator.isLocationServiceEnabled();
+  }
+
+  Future<void> handlePermissions() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.denied) {
+      throw Exception('Location permission is denied.');
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception(
+        'Location permission is permanently denied. Please enable it from app settings.',
+      );
     }
   }
 

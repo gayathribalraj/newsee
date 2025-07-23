@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -163,7 +164,10 @@ class AppForms {
     return FormGroup({
       'lslLandRowid': FormControl<String>(validators: []),
       'applicantName': FormControl<String>(validators: [Validators.required]),
-      'locationOfFarm': FormControl<String>(validators: [Validators.required]),
+      'locationOfFarm': FormControl<String>(
+        validators: [Validators.required],
+        disabled: true,
+      ),
       'state': FormControl<String>(validators: [Validators.required]),
       'taluk': FormControl<String>(validators: [Validators.required]),
       'firka': FormControl<String>(
@@ -181,6 +185,7 @@ class AppForms {
       ),
       'distanceFromBranch': FormControl<String>(
         validators: [Validators.required, Validators.pattern(r'^\d+$')],
+        disabled: true,
       ),
       'district': FormControl<String>(validators: [Validators.required]),
       'village': FormControl<String>(validators: [Validators.required]),
@@ -196,6 +201,8 @@ class AppForms {
       'villageOfficerCertified': FormControl<bool>(
         validators: [Validators.required],
       ),
+      // 'latitude': FormControl<String>(validators: []),
+      // 'longitude': FormControl<String>(validators: []),
     });
   }
 

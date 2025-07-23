@@ -24,7 +24,7 @@ class LocationState extends State<Location> {
         final curposition = await MediaService().getLocation(context);
         setState(() {
           isloading = false;
-          position = curposition;
+          position = curposition.position;
         });
       },
     );
