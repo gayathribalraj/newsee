@@ -749,6 +749,7 @@ class _CoApplicantFormBottomSheetState
                                   context.read<CoappDetailsBloc>().add(
                                     CoAppDetailsSaveEvent(
                                       coapplicantData: coapplicantDataFormatted,
+                                      coappadded: true,
                                       index: widget.index,
                                     ),
                                   );

@@ -1,7 +1,8 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newsee/AppData/app_constants.dart';
+import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/feature/coapplicant/domain/modal/coapplicant_data.dart';
 import 'package:newsee/feature/coapplicant/presentation/bloc/coapp_details_bloc.dart';
 import 'package:newsee/feature/coapplicant/presentation/widgets/co_applicant_form_sheet.dart';
@@ -35,6 +36,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
           child: Builder(
             builder: (tabContext) {
               final tabController = DefaultTabController.of(tabContext);
+              final coappState =  context.watch<CoappDetailsBloc>().state;
               return MultiBlocProvider(
                 providers: [
                   BlocProvider.value(value: context.read<CoappDetailsBloc>()),
@@ -70,6 +72,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
 
   @override
   Widget build(BuildContext context) {
+     final TabController tabController =  DefaultTabController.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Co-Applicants/Gurantors"),
@@ -77,7 +80,12 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: BlocBuilder<CoappDetailsBloc, CoappDetailsState>(
+        child: BlocConsumer<CoappDetailsBloc, CoappDetailsState>(
+          listener:(context, state) {
+            if(state.status == SaveStatus.success && state.isApplicantsAdded == "N") {
+              goToNextTab(context: context);
+            } 
+          },
           builder: (context, state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,6 +100,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                       value: 'Y',
                       groupValue: state.isApplicantsAdded,
                       onChanged: (value) {
+                        
                         context.read<CoappDetailsBloc>().add(
                           IsCoAppOrGurantorAdd(addapplicants: value),
                         );
@@ -104,12 +113,44 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                       onChanged: (value) {
                         context.read<CoappDetailsBloc>().add(
                           IsCoAppOrGurantorAdd(addapplicants: value),
+                          
                         );
                       },
                     ),
                     const Text("No"),
                   ],
                 ),
+                if (state.isApplicantsAdded == 'N')
+
+                Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 3, 9, 110),
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (state.isApplicantsAdded == 'N') {
+                              context.read<CoappDetailsBloc>().add(
+                                CoAppDetailsSaveEvent(
+                                  coappadded: false,
+                                ),
+                              );
+                            }
+                          },
+                               
+                                                  
+                          child: Text('Next'),
+                        ),
+                        
+                ),
+
                 if (state.isApplicantsAdded == 'Y' &&
                     state.coAppList.isNotEmpty) ...[
                   const SizedBox(height: 16),
@@ -180,7 +221,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
         ),
       ),
       floatingActionButton: BlocBuilder<CoappDetailsBloc, CoappDetailsState>(
-        builder: (context, state) {
+        builder: (context, state) {          
           return state.isApplicantsAdded == 'Y'
               ? Material(
                 elevation: 6,
@@ -219,5 +260,8 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
         },
       ),
     );
+    
   }
-}
+ 
+  }
+

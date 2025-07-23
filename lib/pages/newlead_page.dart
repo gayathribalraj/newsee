@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
-import 'package:newsee/Utils/utils.dart';
-import 'package:newsee/feature/CropDetails/presentation/page/cropdetailspage.dart';
 import 'package:newsee/feature/addressdetails/presentation/bloc/address_details_bloc.dart';
-import 'package:newsee/feature/cif/presentation/bloc/cif_bloc.dart';
 import 'package:newsee/feature/coapplicant/presentation/bloc/coapp_details_bloc.dart';
 import 'package:newsee/feature/coapplicant/presentation/page/coapp_page.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
@@ -16,10 +13,7 @@ import 'package:newsee/feature/personaldetails/presentation/bloc/personal_detail
 import 'package:newsee/pages/address.dart';
 import 'package:newsee/pages/lead_submit_page.dart';
 import 'package:newsee/pages/loan.dart';
-import 'package:newsee/pages/location.dart';
 import 'package:newsee/pages/personal.dart';
-import 'package:newsee/widgets/address_tab_bar.dart';
-import 'package:newsee/widgets/latlongbutton.dart';
 import 'package:newsee/widgets/side_navigation.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 
@@ -99,7 +93,7 @@ class NewLeadPage extends StatelessWidget {
                                 dedupeState.status,
                                 personalState.status,
                                 addressState.status,
-                                // coappState.status,
+                                coappState.status,
                               ];
 
                               bool canNavigate = true;

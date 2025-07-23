@@ -104,22 +104,34 @@ final class CoappDetailsBloc
     Emitter emit,
   ) async {
     try {
-      final updatedList = List<CoapplicantData>.from(state.coAppList);
+      if (event.coappadded!) {
+        final updatedList = List<CoapplicantData>.from(state.coAppList);
 
-      if (event.index != null && event.index! < updatedList.length) {
-        updatedList[event.index!] = event.coapplicantData;
+        if (event.index != null && event.index! < updatedList.length) {
+          updatedList[event.index!] = event.coapplicantData!;
+        } else {
+          updatedList.add(event.coapplicantData!);
+        }
+
+        emit(
+          state.copyWith(
+            coAppList: updatedList,
+            status: SaveStatus.success,
+            isApplicantsAdded: "Y",
+            isCifValid: false,
+          ),
+        );
       } else {
-        updatedList.add(event.coapplicantData);
+        emit(
+          state.copyWith(
+            coAppList: [],
+            status: SaveStatus.success,
+            isApplicantsAdded: "N",
+            isCifValid: false,
+          ),
+        );
       }
-
-      emit(
-        state.copyWith(
-          coAppList: updatedList,
-          status: SaveStatus.success,
-          isApplicantsAdded: "Y",
-          isCifValid: false,
-        ),
-      );
+      
     } catch (e) {
       emit(state.copyWith(status: SaveStatus.failure, isCifValid: false));
     }
