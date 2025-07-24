@@ -106,13 +106,14 @@ class _GoogleMapsCardState extends State<GoogleMapsCard> {
                         Marker(
                           markerId: const MarkerId('dynamic_marker'),
                           position: widget.location,
-                          infoWindow: const InfoWindow(
+                          infoWindow: InfoWindow(
                             title: 'Current Location',
-                            snippet: 'You are here.',
+                            snippet:
+                                'You are here.${widget.location.latitude},${widget.location.longitude}',
                           ),
                         ),
                       },
-                      zoomControlsEnabled: false,
+                      zoomControlsEnabled: true,
                       myLocationButtonEnabled: false,
                       liteModeEnabled: false,
                     ),

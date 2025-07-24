@@ -106,20 +106,22 @@ class NewLeadPage extends StatelessWidget {
                                 }
                               }
                               if (!canNavigate) {
-                               showDialog(
-                              context: context,
-                              builder: (_) => SysmoAlert.warning(
-                                message: "Please complete the previous step before processing.",
-                                onButtonPressed: () {
-                                  Navigator.pop(context);
-                                            },
-                                          ),
-                                          );
-                                           Future.microtask(() {
-                                          tabController.index = tabController.previousIndex;
-                                        });
-                                    // ScaffoldMessenger.of(context).showSnackBar(
-                               //   SnackBar(
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => SysmoAlert.warning(
+                                    message: "Please complete the previous step before processing.",
+                                    onButtonPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                );
+
+                                Future.microtask(() {
+                                  tabController.index = tabController.previousIndex;
+                                });
+                               
+                                // ScaffoldMessenger.of(context).showSnackBar(
+                                //   SnackBar(
                                 //     content: Row(
                                 //       children: [
                                 //         Icon(
@@ -156,8 +158,7 @@ class NewLeadPage extends StatelessWidget {
                                 //     duration: const Duration(seconds: 2),
                                 //   ),
                                 // );
-                   
-                                 }
+                              }
                             },
                             tabs: <Widget>[
                               statusTabBar(

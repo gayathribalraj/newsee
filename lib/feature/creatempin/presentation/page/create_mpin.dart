@@ -145,6 +145,20 @@ createMpin(BuildContext context, AsyncResponseHandler? asyncResponseHandler) {
                 ),
                 onPressed: () async {
                   try {
+                    if (confirmPin.length != 4) {
+                      showDialog(
+                        context: context,
+                        builder:
+                            (_) => SysmoAlert.info(
+                              message: 'Invalid MPIN',
+                              onButtonPressed:
+                                  () => Navigator.of(context).pop(),
+                            ),
+                      );
+
+                      return;
+                    }
+
                     isloading.value = true;
                     await Future.delayed(Duration(seconds: 2));
                     final encPinValue = encryptMPIN(
@@ -187,33 +201,38 @@ createMpin(BuildContext context, AsyncResponseHandler? asyncResponseHandler) {
                                   response.data[ApiConstants
                                       .api_response_errorMessage],
                               onButtonPressed: () {
+                                isloading.value = false;
                                 Navigator.pop(context);
                               },
                             ),
                       );
                     }
                   } catch (e) {
-                    isloading.value = false;
-                    print(
-                      'Exception occured : mpin registration failed : stacktrace : $e',
+                    showDialog(
+                      context: context,
+                      builder:
+                          (_) => SysmoAlert.failure(
+                            message: 'MPIN Registration Failed : $e',
+                            onButtonPressed: () {
+                              isloading.value = false;
+                              Navigator.pop(context);
+                            },
+                          ),
                     );
                   }
                 },
 
                 child: ValueListenableBuilder(
-                  valueListenable: isloading, 
+                  valueListenable: isloading,
                   builder: (context, value, _) {
-                    return value == false ?  Text("Create") : 
-                    
-                    CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 2,
-
-                    );
-                    
-                  }
-                )
-                
+                    return value == false
+                        ? Text("Register MPIN")
+                        : CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        );
+                  },
+                ),
               ),
             ],
           ),
