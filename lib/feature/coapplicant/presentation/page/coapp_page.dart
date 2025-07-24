@@ -36,7 +36,6 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
           child: Builder(
             builder: (tabContext) {
               final tabController = DefaultTabController.of(tabContext);
-              final coappState =  context.watch<CoappDetailsBloc>().state;
               return MultiBlocProvider(
                 providers: [
                   BlocProvider.value(value: context.read<CoappDetailsBloc>()),
@@ -72,7 +71,6 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
 
   @override
   Widget build(BuildContext context) {
-     final TabController tabController =  DefaultTabController.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Co-Applicants/Gurantors"),
@@ -81,6 +79,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: BlocConsumer<CoappDetailsBloc, CoappDetailsState>(
+          // If the save is successful and the user selected "No" goto next tab,
           listener:(context, state) {
             if(state.status == SaveStatus.success && state.isApplicantsAdded == "N") {
               goToNextTab(context: context);
@@ -120,6 +119,10 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                     const Text("No"),
                   ],
                 ),
+
+   /* When the user selects the "No" button, 
+   only then show the Next button.If no option is selected, the Next button should remain hidden.
+   */
                 if (state.isApplicantsAdded == 'N')
 
                 Center(

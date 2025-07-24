@@ -114,6 +114,8 @@ final class CoappDetailsBloc
     Emitter emit,
   ) async {
     try {
+// Check if a co-applicant was added
+
       if (event.coappadded!) {
         final updatedList = List<CoapplicantData>.from(state.coAppList);
 
@@ -132,6 +134,7 @@ final class CoappDetailsBloc
           ),
         );
       } else {
+// If co-applicant is not added clear the list and emit new state
         emit(
           state.copyWith(
             coAppList: [],
