@@ -96,7 +96,17 @@ final class CoappDetailsBloc
 
     print('listOfLov => $listOfLov');
 
-    emit(state.copyWith(lovList: listOfLov, stateCityMaster: stateCityMaster));
+    final customerType =
+        listOfLov.where((lov) {
+          if (lov.Header == 'CustType') {
+            return lov.optvalue == '001' || lov.optvalue == '002';
+          }
+          return true;
+        }).toList();
+
+    emit(
+      state.copyWith(lovList: customerType, stateCityMaster: stateCityMaster),
+    );
   }
 
   Future<void> saveCoAppDetailsPage(
@@ -296,12 +306,18 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
     } else if (nameParts.length == 1) {
       firstName = nameParts[0];
     }
+
+    String mobileno = '';
+    if (response.mobile.length == 12 && response.mobile.startsWith("91")) {
+      mobileno = response.mobile.substring(2);
+    }
+
     final data = CoapplicantData(
       firstName: firstName,
       middleName: middleName,
       lastName: lastName,
       email: response.email ?? '',
-      primaryMobileNumber: response.mobile ?? '',
+      primaryMobileNumber: mobileno,
       // aadharRefNo: response.referenceId ?? '',
       aadharRefNo: response.referenceId ?? '',
       address1:

@@ -354,6 +354,7 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
         'docDesc': doc.lpdDocDesc,
         'token': ApiConfig.AUTH_TOKEN,
         'verticle': '7',
+        'rowId': doc.lpdRowId,
       });
 
       final responseHandler = await UploadDocumentRepoImpl().uploadDoc(

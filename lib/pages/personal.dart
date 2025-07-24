@@ -115,7 +115,13 @@ class Personal extends StatelessWidget {
     }
   }
 
-  void scrollToErrorField() {
+  /* 
+    @author : karthick.d  
+    @desc   : scroll to error field which identified first in the widget tree
+              
+   */
+
+  void scrollToErrorField() async {
     final fields = [
       {'key': _titleKey, 'controlName': 'title'},
       {'key': _firstNameKey, 'controlName': 'firstName'},
@@ -146,23 +152,17 @@ class Personal extends StatelessWidget {
     for (var field in fields) {
       final control = form.control(field['controlName'] as String);
       if (control.invalid && control.touched) {
-        control.focus();
-        break;
-        // final context = (field['key'] as GlobalKey).currentContext;
-        // if (context != null) {
-        //   final RenderBox renderBox = context.findRenderObject() as RenderBox;
-        //   final position = renderBox.localToGlobal(Offset.zero);
-        //   print(
-        //     'controlName => ${field['controlName']} , dy => ${position.dy}',
-        //   );
-        //   // Scroll to the position of the invalid field
-        //   _scrollController.animateTo(
-        //     position.dy,
-        //     duration: const Duration(milliseconds: 300),
-        //     curve: Curves.easeInOut,
-        //   );
-        //   break; // Stop after finding the first invalid field
-        // }
+        final context = (field['key'] as GlobalKey).currentContext;
+        if (context != null) {
+          await Scrollable.ensureVisible(
+            context,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            alignment: 0.1,
+          );
+          control.focus();
+          break;
+        }
       }
     }
   }
