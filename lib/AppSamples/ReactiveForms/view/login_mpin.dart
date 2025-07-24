@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
-import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:newsee/widgets/sysmo_mpin.dart';
 
 /*

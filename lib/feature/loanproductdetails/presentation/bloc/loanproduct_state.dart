@@ -30,6 +30,7 @@ class LoanproductState extends Equatable {
   final ProductMaster? selectedProduct;
   final bool? showBottomSheet;
   final SaveStatus? status;
+  final bool? getLead;
   @override
   List<Object?> get props => [
     leadId,
@@ -42,6 +43,7 @@ class LoanproductState extends Equatable {
     productmasterList,
     showBottomSheet,
     status,
+    getLead
   ];
 
   const LoanproductState({
@@ -56,6 +58,7 @@ class LoanproductState extends Equatable {
     this.selectedProduct,
     this.showBottomSheet,
     this.status,
+    this.getLead
   });
 
   LoanproductState copyWith({
@@ -70,6 +73,8 @@ class LoanproductState extends Equatable {
     ProductMaster? selectedProduct,
     bool? showBottomSheet,
     SaveStatus? status,
+    bool? getLead
+
   }) {
     return LoanproductState(
       leadId: leadId ?? this.leadId,
@@ -85,6 +90,7 @@ class LoanproductState extends Equatable {
       selectedProduct: selectedProduct,
       showBottomSheet: showBottomSheet ?? this.showBottomSheet,
       status: status ?? this.status,
+      getLead: getLead ?? this.getLead
     );
   }
 
@@ -101,6 +107,7 @@ class LoanproductState extends Equatable {
       'selectedProduct': selectedProduct?.toMap(),
       'showBottomSheet': showBottomSheet,
       'status': status,
+      'getLead': getLead
     };
   }
 
@@ -112,6 +119,7 @@ class LoanproductState extends Equatable {
     selectedProduct: null,
     showBottomSheet: false,
     status: SaveStatus.init,
+    getLead: false
   );
 
   factory LoanproductState.fromMap(Map<String, dynamic> map) {
@@ -166,6 +174,7 @@ class LoanproductState extends Equatable {
               ? map['showBottomSheet'] as bool
               : null,
       status: map['status'] != null ? map['status'] as SaveStatus : null,
+      getLead: map['getLead'] != null ? map['getLead'] as bool : null,
     );
   }
 

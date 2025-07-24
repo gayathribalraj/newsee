@@ -53,6 +53,7 @@ class SearchableMultiSelectDropdown<T> extends StatelessWidget {
           child: DropdownSearch<T>.multiSelection(
             items: items,
             selectedItems: selItems(),
+            enabled: field.control.enabled,
             itemAsString: (item) => itemValueMapper(item),
             popupProps: PopupPropsMultiSelection.menu(
               showSearchBox: true,

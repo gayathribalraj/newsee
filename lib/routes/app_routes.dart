@@ -18,6 +18,11 @@ import 'package:newsee/feature/documentupload/presentation/bloc/document_bloc.da
 import 'package:newsee/feature/documentupload/presentation/pages/document_page.dart';
 import 'package:newsee/feature/documentupload/presentation/widget/image_view.dart';
 import 'package:newsee/feature/landholding/presentation/page/land_holding_page.dart';
+import 'package:newsee/feature/leadInbox/domain/modal/get_lead_response.dart';
+import 'package:newsee/feature/masters/data/repository/master_repo_impl.dart';
+import 'package:newsee/feature/masters/domain/modal/master_version.dart';
+import 'package:newsee/feature/masters/domain/repository/master_repo.dart';
+import 'package:newsee/feature/masters/presentation/bloc/masters_bloc.dart';
 import 'package:newsee/feature/masters/presentation/page/masters_page.dart';
 import 'package:newsee/feature/cic_check/cic_check_page.dart';
 import 'package:newsee/pages/home_page.dart';
@@ -122,7 +127,10 @@ final routes = GoRouter(
     GoRoute(
       path: AppRouteConstants.NEWLEAD_PAGE['path']!,
       name: AppRouteConstants.NEWLEAD_PAGE['name'],
-      builder: (context, state) => NewLeadPage(),
+      builder: (context, state)  {
+        final GetLeadResponse? leadData = (state.extra as Map<String,dynamic>?)?['leadData']!;
+        return NewLeadPage(fullLeadData: leadData);
+      } 
     ),
     GoRoute(
       path: AppRouteConstants.MASTERS_PAGE['path']!,

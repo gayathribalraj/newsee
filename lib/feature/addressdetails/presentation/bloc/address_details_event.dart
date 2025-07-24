@@ -24,6 +24,11 @@ class OnStateCityChangeEvent extends AddressDetailsEvent {
   OnStateCityChangeEvent({required this.stateCode, this.cityCode});
 }
 
+class AddressDetailsFetchEvent extends AddressDetailsEvent {
+  final List<Map<String,dynamic>>? leadAddressDetails;
+  AddressDetailsFetchEvent({required this.leadAddressDetails});
+}
+
 // class OnCityChangeEvent<T> extends AddressDetailsEvent {
 //   final T stateCode;
 //   final T cityCode;

@@ -53,6 +53,7 @@ final class CoappDetailsBloc
     });
     on<AadhaarValidateEvent>(validateAadaar);
     on<ScannerResponseEvent>(onScannerSuccess);
+    on<CoApplicantandGurantorFetchEvent>(onCoappandGauDetailsFetch);
   }
 
   _deleteApplicant(DeleteCoApplicantEvent event, Emitter emit) {
@@ -361,6 +362,173 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
     } else {
       print('getStateCode $geographyMaster');
       return geographyMaster.code;
+    }
+  }
+
+  Future<void> onCoappandGauDetailsFetch(CoApplicantandGurantorFetchEvent event, Emitter emit) async {
+    try {
+
+      Database _db = await DBConfig().database;
+      List<Lov> listOfLov = await LovCrudRepo(_db).getAll();
+      List<GeographyMaster> stateCityMaster = await GeographymasterCrudRepo(
+        _db,
+      ).getByColumnNames(
+        columnNames: [
+          TableKeysGeographyMaster.stateId,
+          TableKeysGeographyMaster.cityId,
+        ],
+        columnValues: ['0', '0'],
+      );
+      
+      List<CoapplicantData> coappandGauList = [];
+      List<GeographyMaster>? cityMaster = [];
+      List<GeographyMaster>? districtMaster = [];
+
+      String coappAdded = event.leadDetails!['lldCoappfrstname'] != null ? 'Y' : 'N';
+      if(coappAdded == 'Y') {
+        CoapplicantData?  coappData = mapCoApplicant(event.leadDetails);
+        CoapplicantData?  gaurantorData = mapGaurantor(event.leadDetails);
+        coappandGauList.add(coappData!);
+        coappandGauList.add(gaurantorData!);
+        List<GeographyMaster>? coappCityList = await getCoappandGaurantorCityandDistrictList(coappData.state, null);
+        List<GeographyMaster>? coappDistrictList = await getCoappandGaurantorCityandDistrictList(coappData.state, coappData.cityDistrict);
+        List<GeographyMaster>? gaurantorCityList = await getCoappandGaurantorCityandDistrictList(gaurantorData.state, null);
+        List<GeographyMaster>? gaurantorDistrictList = await getCoappandGaurantorCityandDistrictList(gaurantorData.state, gaurantorData.cityDistrict);
+        cityMaster.addAll(coappCityList ?? []);
+        cityMaster.addAll(gaurantorCityList ?? []);
+
+        cityMaster = {
+          for (var city in cityMaster) city.cityParentId: city
+        }.values.toList();
+      }
+
+      print("finally print cityMaster -cityMaster => $cityMaster");
+
+      emit(
+        state.copyWith(
+          status: SaveStatus.success,
+          lovList: listOfLov,
+          stateCityMaster: stateCityMaster,
+          isApplicantsAdded: coappAdded,
+          coAppList: coappandGauList,
+          cityMaster: cityMaster,
+          districtMaster: [],
+          getLead: true
+        )
+      );
+      
+
+    } catch (error) {
+      emit(
+        state.copyWith(status: SaveStatus.failure)
+      );
+    }
+  }
+
+  CoapplicantData? mapCoApplicant(val) {
+    try {
+      CoapplicantData coappData = CoapplicantData(
+        applicantType: 'C',
+        customertype: val['lldCoappCbsid'] != null ? '002' : '001',
+        cifNumber: val['lldCoappCbsid'],
+        constitution: val['lldCoappConst'],
+        title: val['lldCoappTitle'],
+        firstName: val['lldCoappfrstname'],
+        middleName: val['lldCoappmidname'],
+        lastName: val['lldLastnameCoapplican'],
+        dob: val['lldCoappdob'].toString(),
+        relationshipFirm: val['lldCoappRelationFirm'],
+        residentialStatus: val['lldCoappResidentStatus'],
+        email: val['lldCoappemailid'],
+        primaryMobileNumber: val['lldCoappmobno'],
+        secondaryMobileNumber: val['lldCoappSecMobNo'],
+        panNumber: val['lldCoapppanno'],
+        aadharRefNo: val['lldCoappadharno'],
+        address1: val['lldCoappaddress'],
+        address2: val['lldCoappaddresslane1'],
+        address3: val['lldCoappaddresslane2'],
+        state: val['lldCoappstate'],
+        cityDistrict: val['lldCoappcity'],
+        pincode: val['lldCoapppinno'],
+        loanLiabilityCount: val['lpcbscoborrLiabilityCount'],
+        loanLiabilityAmount: val['lpcbscoborrLiabilityAmount'],
+        depositCount: val['lpcbscoborrdepositCount'],
+        depositAmount: val['lpcbscoborrdepositAmount']
+      );
+      return coappData;
+    } catch (error) {
+      print("mapCoApplicant-error => $error");
+      return null;
+    }
+  }
+
+  CoapplicantData? mapGaurantor(val) {
+    try {
+      CoapplicantData gaurantorData = CoapplicantData(
+        applicantType: 'G',
+        customertype: val['lldGuaCbsid'] != null ? '002' : '001',
+        cifNumber: val['lldGuaCbsid'],
+        constitution: val['lleadGuaConst'],
+        title: val['lleadGuTitle'],
+        firstName: val['lldguafrstname'],
+        middleName: val['lldguamidname'],
+        lastName: val['lldgualastname'],
+        dob: val['lldguadob'].toString(),
+        relationshipFirm: val['lldGuaRelationFirm'],
+        residentialStatus: val['lldGuaResidentStatus'],
+        email: val['lldguaemailid'],
+        primaryMobileNumber: val['lldguamobno'],
+        secondaryMobileNumber: val['lldGuaSecMobNo'],
+        panNumber: val['lldGuapanno'],
+        aadharRefNo: val['lldGuaadharno'],
+        address1: val['lldGuaaddress'],
+        address2: val['lldGuaaddresslane1'],
+        address3: val['lldGuaaddresslane2'],
+        state: val['lldGuastate'],
+        cityDistrict: val['lldGuacity'],
+        pincode: val['lldGuapinno'],
+        loanLiabilityCount: val['lpcbsgauLiabilityCount'],
+        loanLiabilityAmount: val['lpcbsgauLiabilityAmount'],
+        depositCount: val['lpcbsgaudepositCount'],
+        depositAmount: val['lpcbsgaudepositAmount']
+      );
+      return gaurantorData;
+    } catch (error) {
+      print("mapGaurantor-error => $error");
+      return null;
+    }
+  }
+
+  Future<List<GeographyMaster>?> getCoappandGaurantorCityandDistrictList(stateCode, cityCode) async {
+    try {
+      final CityDistrictRequest citydistrictrequest = CityDistrictRequest(
+        stateCode: stateCode,
+        cityCode: cityCode,
+      );
+      Cityrepository cityrepository = CitylistRepoImpl();
+      AsyncResponseHandler response = await cityrepository.fetchCityList(
+        citydistrictrequest,
+      );
+
+      Map<String, dynamic> _resp = response.right as Map<String, dynamic>;
+
+      List<GeographyMaster> cityMaster =
+        _resp['cityMaster'] != null && _resp['cityMaster'].isNotEmpty
+            ? _resp['cityMaster'] as List<GeographyMaster>
+            : [];
+    List<GeographyMaster> districtMaster =
+        _resp['districtMaster'] != null && _resp['districtMaster'].isNotEmpty
+            ? _resp['districtMaster'] as List<GeographyMaster>
+            : [];
+      
+      if(cityCode == null) {
+        return cityMaster;
+      } else {
+        return districtMaster;
+      }
+    } catch (error) {
+      print("mapGaurantor-error => $error");
+      return null;
     }
   }
 }

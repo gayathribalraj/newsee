@@ -73,6 +73,7 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
           padding: const EdgeInsets.all(12),
           child: DropdownSearch<T>(
             items: widget.items,
+            enabled: field.control.enabled,
             selectedItem: widget.selItem(),
             itemAsString: (item) => itemvalueMapper(item),
             dropdownDecoratorProps: DropDownDecoratorProps(

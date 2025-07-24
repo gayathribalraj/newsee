@@ -8,6 +8,7 @@ class AddressDetailsState extends Equatable {
   final List<GeographyMaster>? districtMaster;
   final AddressData? addressData;
   final SaveStatus? status;
+  final bool? getLead;
 
   AddressDetailsState({
     required this.addressData,
@@ -16,6 +17,7 @@ class AddressDetailsState extends Equatable {
     required this.cityMaster,
     required this.districtMaster,
     required this.status,
+    this.getLead
   });
 
   factory AddressDetailsState.init() => AddressDetailsState(
@@ -25,6 +27,7 @@ class AddressDetailsState extends Equatable {
     stateCityMaster: [],
     cityMaster: [],
     districtMaster: [],
+    getLead: false
   );
 
   @override
@@ -35,6 +38,7 @@ class AddressDetailsState extends Equatable {
     stateCityMaster,
     cityMaster,
     districtMaster,
+    getLead
   ];
 
   AddressDetailsState copyWith({
@@ -44,6 +48,7 @@ class AddressDetailsState extends Equatable {
     List<GeographyMaster>? stateCityMaster,
     List<GeographyMaster>? cityMaster,
     List<GeographyMaster>? districtMaster,
+    bool? getLead
   }) {
     return AddressDetailsState(
       lovList: lovList ?? this.lovList,
@@ -52,6 +57,7 @@ class AddressDetailsState extends Equatable {
       stateCityMaster: stateCityMaster ?? this.stateCityMaster,
       cityMaster: cityMaster ?? this.cityMaster,
       districtMaster: districtMaster ?? this.districtMaster,
+      getLead: getLead ?? this.getLead
     );
   }
 }

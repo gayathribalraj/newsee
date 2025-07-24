@@ -12,6 +12,7 @@ import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/feature/leadInbox/data/repository/lead_respository_impl.dart';
+import 'package:newsee/feature/leadInbox/domain/modal/get_lead_response.dart';
 import 'package:newsee/feature/leadInbox/domain/modal/group_lead_inbox.dart';
 import 'package:newsee/feature/leadInbox/domain/modal/lead_request.dart';
 import 'package:newsee/feature/leadInbox/domain/repository/lead_repository.dart';
@@ -29,6 +30,7 @@ class LeadBloc extends Bloc<LeadEvent, LeadState> {
       super(LeadState()) {
     on<SearchLeadEvent>(onSearchLead);
     on<CreateProposalLeadEvent>(onCreateProposalRequest);
+    on<GetLeadDataEvent>(onGetLeadData);
   }
 
   Future<void> onSearchLead(
@@ -105,6 +107,54 @@ class LeadBloc extends Bloc<LeadEvent, LeadState> {
     } on Exception catch (e) {
       print('Proposal Creation Request Error => $e');
       emit(state.copyWith(proposalSubmitStatus: SaveStatus.failure));
+    }
+  }
+
+  Future<void> onGetLeadData(GetLeadDataEvent event, Emitter emit) async {
+    try {
+      emit(state.copyWith(getLeaStatus: SaveStatus.loading));
+      final req = {
+        'LeadId': event.leadId,
+        'token': ApiConstants.api_qa_token,
+      };
+      final response = await leadRepository.getLeadData(req);
+
+      if (response.isRight()) {
+        emit(
+          state.copyWith(
+            getLeaStatus: SaveStatus.success,
+            getleadData: response.right
+          )
+        );
+      } else {
+        emit(
+          state.copyWith(
+            getLeaStatus: SaveStatus.failure,
+            errorMessage: response.left.message
+          )
+        );
+      }
+
+      Future.delayed(Duration(seconds: 2));
+      emit(
+        state.copyWith(
+          getLeaStatus: SaveStatus.update
+        )
+      );
+    } catch(error) {
+      print('Proposal Creation Request Error => $error');
+      emit(
+        state.copyWith(
+          getLeaStatus: SaveStatus.failure,
+          errorMessage: error.toString()
+        )
+      );
+      Future.delayed(Duration(seconds: 2));
+      emit(
+        state.copyWith(
+          getLeaStatus: SaveStatus.update
+        )
+      );
     }
   }
 }

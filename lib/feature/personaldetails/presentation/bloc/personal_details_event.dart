@@ -39,3 +39,8 @@ class ScannerResponseEvent extends PersonalDetailsEvent {
   final Map<String, dynamic> scannerResponse;
   ScannerResponseEvent({required this.scannerResponse});
 }
+
+class PersonalDetailsFetchEvent extends PersonalDetailsEvent {
+  final Map<String, dynamic>? leadDetails;
+  PersonalDetailsFetchEvent({required this.leadDetails});
+}

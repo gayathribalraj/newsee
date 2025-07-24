@@ -3,15 +3,12 @@ import 'package:equatable/equatable.dart';
 import 'package:newsee/AppData/DBConstants/table_key_geographymaster.dart';
 import 'package:newsee/AppData/app_api_constants.dart';
 import 'package:newsee/AppData/app_constants.dart';
-import 'package:newsee/AppSamples/ReactiveForms/config/appconfig.dart';
 import 'package:newsee/Utils/geographymaster_response_mapper.dart';
-import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/core/db/db_config.dart';
 import 'package:newsee/feature/addressdetails/data/repository/citylist_repo_impl.dart';
 import 'package:newsee/feature/addressdetails/domain/model/citydistrictrequest.dart';
 import 'package:newsee/feature/addressdetails/domain/repository/cityrepository.dart';
-import 'package:newsee/feature/coapplicant/presentation/bloc/coapp_details_bloc.dart';
 import 'package:newsee/feature/landholding/data/repository/land_Holding_respository_impl.dart';
 import 'package:newsee/feature/landholding/domain/modal/LandData.dart';
 import 'package:newsee/feature/landholding/domain/modal/Land_Holding_delete_request.dart';
@@ -127,20 +124,31 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
       final LandHoldingRepository landHoldingRepository =
           LandHoldingRespositoryImpl();
       final response = await landHoldingRepository.submitLandHolding(landReq);
-      List<LandData> landData =
+
+      if (response.isRight()) {
+        List<LandData> landData =
           response.right.agriLandHoldingsList
               .map((e) => LandData.fromMap(e))
               .toList();
 
-      print("LandData from response => $landData");
-      emit(
-        state.copyWith(
-          status: SaveStatus.success,
-          landData: landData,
-          selectedLandData: null,
-          errorMessage: null
-        ),
-      );
+        print("LandData from response => $landData");
+        emit(
+          state.copyWith(
+            status: SaveStatus.success,
+            landData: landData,
+            selectedLandData: null,
+            errorMessage: null
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: SaveStatus.failure,
+            errorMessage: response.left.message
+          ),
+        );
+      }
+      
     } catch (e) {
       print("Error in LandDetailsSaveEvent: $e");
       emit(

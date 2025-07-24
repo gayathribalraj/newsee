@@ -19,6 +19,8 @@ class LeadState extends Equatable {
   final int? totApplication;
   final String? proposalNo;
   final SaveStatus? proposalSubmitStatus;
+  final SaveStatus? getLeaStatus;
+  final GetLeadResponse? getleadData;
 
   const LeadState({
     this.status = LeadStatus.initial,
@@ -28,6 +30,8 @@ class LeadState extends Equatable {
     this.totApplication,
     this.proposalNo,
     this.proposalSubmitStatus,
+    this.getLeaStatus,
+    this.getleadData
   });
 
   factory LeadState.init() => const LeadState();
@@ -40,6 +44,8 @@ class LeadState extends Equatable {
     int? totApplication,
     String? proposalNo,
     SaveStatus? proposalSubmitStatus,
+    SaveStatus? getLeaStatus,
+    GetLeadResponse? getleadData
   }) {
     return LeadState(
       status: status ?? this.status,
@@ -49,6 +55,8 @@ class LeadState extends Equatable {
       totApplication: totApplication ?? this.totApplication,
       proposalNo: proposalNo ?? this.proposalNo,
       proposalSubmitStatus: proposalSubmitStatus ?? this.proposalSubmitStatus,
+      getLeaStatus: getLeaStatus ?? this.getLeaStatus,
+      getleadData: getleadData ?? this.getleadData
     );
   }
 
@@ -60,5 +68,7 @@ class LeadState extends Equatable {
     totApplication,
     proposalNo,
     proposalSubmitStatus,
+    getLeaStatus,
+    getleadData
   ];
 }

@@ -7,6 +7,7 @@ import 'package:newsee/core/api/failure.dart';
 import 'package:newsee/core/api/http_connection_failure.dart';
 import 'package:newsee/core/api/http_exception_parser.dart';
 import 'package:newsee/feature/leadInbox/data/datasource/lead_remote_datasource.dart';
+import 'package:newsee/feature/leadInbox/domain/modal/get_lead_response.dart';
 import 'package:newsee/feature/leadInbox/domain/modal/group_lead_inbox.dart';
 import 'package:newsee/feature/leadInbox/domain/modal/lead_request.dart';
 import 'package:newsee/feature/leadInbox/domain/modal/lead_responce_model.dart';
@@ -39,9 +40,12 @@ class LeadRepositoryImpl implements LeadRepository {
         }
         check the cache 
        */
+
+      final endPoint = ApiConfig.LEAD_INBOX_API_ENDPOINT;
+
       final response = await LeadRemoteDatasource(
         dio: ApiClient().getDio(),
-      ).searchLead(req.toMap());
+      ).searchLead(req.toMap(), endPoint);
 
       final responseData = response.data;
       final isSuccess =
@@ -88,5 +92,35 @@ class LeadRepositoryImpl implements LeadRepository {
         HttpConnectionFailure(message: "Unexpected Failure during Lead Search"),
       );
     }
+  }
+
+  @override
+  Future<AsyncResponseHandler<Failure, GetLeadResponse>> getLeadData(request) async {
+    try {
+      final endPoint = ApiConfig.GET_LEAD_DETAILS;
+      final response = await LeadRemoteDatasource(
+        dio: ApiClient().getDio(),
+      ).searchLead(request, endPoint);
+
+      final isSuccess = response.data[ApiConfig.API_RESPONSE_SUCCESS_KEY] == true;
+      final responseData = response.data[ApiConfig.API_RESPONSE_RESPONSE_KEY];
+
+      if (isSuccess) {
+        GetLeadResponse getleadResponse = GetLeadResponse.fromMap(responseData);
+        return AsyncResponseHandler.right(getleadResponse);
+      } else {
+        final errorMessage = responseData['ErrorMessage'] ?? "Unknown error";
+        return AsyncResponseHandler.left(AuthFailure(message: errorMessage));
+      }
+    } on DioException catch (e) {
+      final failure = DioHttpExceptionParser(exception: e).parse();
+      return AsyncResponseHandler.left(failure);
+    } catch (error, st) {
+      print(" LeadResponseHandler Exception: $error\n$st");
+      return AsyncResponseHandler.left(
+        HttpConnectionFailure(message: "Unexpected Failure during Lead Search"),
+      );
+    }
+    
   }
 }

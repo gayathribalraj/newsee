@@ -27,6 +27,11 @@ class LoanproductInit extends LoanproductEvent {
   LoanproductInit({required this.loanproductState});
 }
 
+class LoanproductFetchEvent extends LoanproductEvent {
+  final Map<String, dynamic>? leadDetails;
+  LoanproductFetchEvent({required this.leadDetails});
+}
+
 /*
 @author   : karthick.d  06/06/2025
 @desc     : event for listening dropdown change in loandetails page
