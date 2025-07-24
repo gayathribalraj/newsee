@@ -115,6 +115,44 @@ class Personal extends StatelessWidget {
     }
   }
 
+  mapPersonalData(val) {
+    try {
+      form.control('title').updateValue(val['title']);
+      form.control('firstName').updateValue(val['firstName']);
+      form.control('middleName').updateValue(val['middleName']);
+      form.control('lastName').updateValue(val['lastName']);
+      form.control('dob').updateValue(getDateFormat(val['dob']));
+      form.control('residentialStatus').updateValue(val['residentialStatus']);
+      form
+          .control('primaryMobileNumber')
+          .updateValue(val['primaryMobileNumber']);
+      form
+          .control('secondaryMobileNumber')
+          .updateValue(val['secondaryMobileNumber']);
+      form.control('email').updateValue(val['email']);
+      form.control('panNumber').updateValue(val['panNumber']);
+      form.control('aadharRefNo').updateValue(val['aadharRefNo']);
+      form
+          .control('secondaryMobileNumber')
+          .updateValue(val['secondaryMobileNumber']);
+      form
+          .control('loanAmountRequested')
+          .updateValue(val['loanAmountRequested']);
+      form.control('natureOfActivity').updateValue(val['natureOfActivity']);
+      form.control('occupationType').updateValue(val['occupationType']);
+      form.control('agriculturistType').updateValue(val['agriculturistType']);
+      form.control('farmerCategory').updateValue(val['farmerCategory']);
+      form.control('farmerType').updateValue(val['farmerType']);
+      form.control('religion').updateValue(val['religion']);
+      form.control('caste').updateValue(val['caste']);
+      form.control('gender').updateValue(val['gender']);
+      form.control('subActivity').updateValue(val['subActivity']);
+      form.markAsDisabled();
+    } catch (error) {
+      print("mapPersonalData-catch-error $error");
+    }
+  }
+
   /* 
     @author : karthick.d  
     @desc   : scroll to error field which identified first in the widget tree
@@ -182,7 +220,8 @@ class Personal extends StatelessWidget {
             print(
               'personaldetail::BlocConsumer:listen => ${state.lovList} ${state.personalData} ${state.status?.name}',
             );
-            if (state.status == SaveStatus.success) {
+            if (state.status == SaveStatus.success &&
+                (state.getLead == false || state.getLead == null)) {
               showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -222,8 +261,14 @@ class Personal extends StatelessWidget {
               } else if (dedupeState.aadharvalidateResponse != null) {
                 mapAadhaarData(dedupeState.aadharvalidateResponse);
               }
-            } else if (state.status == SaveStatus.success) {
+            } else if (state.status == SaveStatus.success &&
+                state.getLead == false) {
               print('saved personal data =>${state.personalData}');
+            } else if (state.status == SaveStatus.success &&
+                state.getLead == true) {
+              Map<String, dynamic> personalDetails =
+                  state.personalData!.toMap();
+              mapPersonalData(personalDetails);
             }
             return ReactiveForm(
               formGroup: form,
@@ -758,29 +803,29 @@ class Personal extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            print("personal Details value ${form.value}");
+                            if (state.getLead == null ||
+                                state.getLead == false) {
+                              if (form.valid) {
+                                PersonalData personalData =
+                                    PersonalData.fromMap(form.value);
+                                PersonalData personalDataFormatted =
+                                    personalData.copyWith(
+                                      dob: getDateFormatedByProvided(
+                                        personalData.dob,
+                                        from: AppConstants.Format_dd_MM_yyyy,
+                                        to: AppConstants.Format_yyyy_MM_dd,
+                                      ),
+                                    );
 
-                            if (form.valid) {
-                              PersonalData personalData = PersonalData.fromMap(
-                                form.value,
-                              );
-                              PersonalData personalDataFormatted = personalData
-                                  .copyWith(
-                                    dob: getDateFormatedByProvided(
-                                      personalData.dob,
-                                      from: AppConstants.Format_dd_MM_yyyy,
-                                      to: AppConstants.Format_yyyy_MM_dd,
-                                    ),
-                                  );
-
-                              context.read<PersonalDetailsBloc>().add(
-                                PersonalDetailsSaveEvent(
-                                  personalData: personalDataFormatted,
-                                ),
-                              );
-                            } else {
-                              form.markAllAsTouched();
-                              scrollToErrorField();
+                                context.read<PersonalDetailsBloc>().add(
+                                  PersonalDetailsSaveEvent(
+                                    personalData: personalDataFormatted,
+                                  ),
+                                );
+                              } else {
+                                form.markAllAsTouched();
+                                scrollToErrorField();
+                              }
                             }
                           },
                           child: Text('Next'),

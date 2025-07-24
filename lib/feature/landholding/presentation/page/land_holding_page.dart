@@ -492,8 +492,8 @@ class LandHoldingPage extends StatelessWidget {
                                       controlName: 'distanceFromBranch',
                                       label: 'Distance from Branch (in Kms)',
                                       mantatory: true,
-                                      // minlength: 1,
-                                      // maxlength: 3,
+                                      minlength: 1,
+                                      maxlength: 3
                                     ),
 
                                     IntegerTextField(

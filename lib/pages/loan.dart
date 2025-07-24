@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/Utils/utils.dart';
@@ -11,7 +10,6 @@ import 'package:newsee/feature/masters/domain/modal/productschema.dart';
 import 'package:newsee/widgets/k_willpopscope.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:newsee/widgets/bottom_sheet.dart';
-import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/productcard.dart';
 import 'package:newsee/widgets/searchable_drop_down.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -127,7 +125,7 @@ class Loan extends StatelessWidget {
               Navigator.of(_context).pop();
             }
       
-            if (state.status == SaveStatus.success) {
+            if (state.status == SaveStatus.success && state.getLead == false) {
               Globalconfig.loanAmountMaximum = int.parse(
                 state.selectedProduct?.prdamtToRange ?? '0',
               );
@@ -160,6 +158,18 @@ class Loan extends StatelessWidget {
           },
           // child: BlocBuilder<LoanproductBloc, LoanproductState>(
           builder: (context, state) {
+            if (state.getLead!) {
+              form.controls['typeofloan']?.updateValue(
+                state.selectedProductScheme?.optionValue.toString()
+              );
+              form.controls['maincategory']?.updateValue(
+                state.selectedMainCategory?.lsfFacId.toString()
+              );
+              form.controls['subcategory']?.updateValue(
+                state.selectedSubCategoryList?.lsfFacId.toString()
+              );
+              form.markAsDisabled();
+            }
             return ReactiveForm(
               formGroup: form,
               child: SafeArea(
@@ -315,52 +325,55 @@ class Loan extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            final blocState =
+                            if (state.getLead == null || state.getLead == false) {
+                              final blocState =
                                 context.read<LoanproductBloc>().state;
-                            final selectedProduct = blocState.selectedProduct;
-      
-                            if (form.valid) {
-                              if (selectedProduct == null) {
-                                showDialog(
-                                  context: context,
-                                  builder:
-                                      (ctx) => AlertDialog(
-                                        title: Row(
-                                          children: [
-                                            Icon(Icons.info, color: Colors.teal),
-                                            SizedBox(width: 8),
-      
-                                            Text(
-                                              'Alert',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
+                              final selectedProduct = blocState.selectedProduct;
+        
+                              if (form.valid) {
+                                if (selectedProduct == null) {
+                                  showDialog(
+                                    context: context,
+                                    builder:
+                                        (ctx) => AlertDialog(
+                                          title: Row(
+                                            children: [
+                                              Icon(Icons.info, color: Colors.teal),
+                                              SizedBox(width: 8),
+        
+                                              Text(
+                                                'Alert',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
+                                            ],
+                                          ),
+                                          content: Text(
+                                            'Please choose a product before processing..',
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed:
+                                                  () => Navigator.of(ctx).pop(),
+                                              child: Text('OK'),
                                             ),
                                           ],
                                         ),
-                                        content: Text(
-                                          'Please choose a product before processing..',
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed:
-                                                () => Navigator.of(ctx).pop(),
-                                            child: Text('OK'),
-                                          ),
-                                        ],
-                                      ),
+                                  );
+                                  return;
+                                }
+                                print('loan product form value => ${form.value}');
+                                context.read<LoanproductBloc>().add(
+                                  SaveLoanProduct(choosenProduct: form.value),
                                 );
-                                return;
+                              } else {
+                                form.markAllAsTouched();
                               }
-                              print('loan product form value => ${form.value}');
-                              context.read<LoanproductBloc>().add(
-                                SaveLoanProduct(choosenProduct: form.value),
-                              );
-                            } else {
-                              form.markAllAsTouched();
                             }
+                            
                           },
                           child: Text('Next'),
                         ),

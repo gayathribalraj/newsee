@@ -13,9 +13,9 @@ class LeadRemoteDatasource {
   final Dio dio;
   LeadRemoteDatasource({required this.dio});
 
-  Future<Response> searchLead(Map<String, dynamic> payload) async {
+  Future<Response> searchLead(Map<String, dynamic> payload, endPoint) async {
     return await dio.post(
-      ApiConfig.LEAD_INBOX_API_ENDPOINT,
+      endPoint,
       data: payload,
       options: Options(
         headers: {

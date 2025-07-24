@@ -38,6 +38,11 @@ class CompletedLeads extends StatelessWidget {
               state.proposalSubmitStatus == SaveStatus.failure) {
             dismissLoading(context);
           }
+          if (state.getLeaStatus == SaveStatus.loading) {
+            presentLoading(context, 'Fetching Lead Details...');
+          } else if (state.getLeaStatus == SaveStatus.success || state.getLeaStatus == SaveStatus.failure) {
+            dismissLoading(context);
+          }
 
           if (state.proposalSubmitStatus == SaveStatus.success &&
               state.proposalNo != null) {
@@ -67,6 +72,23 @@ class CompletedLeads extends StatelessWidget {
               builder:
                   (_) => SysmoAlert.failure(
                     message: "Proposal Creation Failed",
+                    onButtonPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+            );
+          }
+
+          if(state.getLeaStatus == SaveStatus.loading) {
+
+          } else if(state.getLeaStatus == SaveStatus.success) {
+            context.pushNamed('newlead', extra: {'leadData': state.getleadData});
+          } else if(state.getLeaStatus == SaveStatus.failure) {
+            showDialog(
+              context: context,
+              builder:
+                  (_) => SysmoAlert.failure(
+                    message: state.errorMessage.toString(),
                     onButtonPressed: () {
                       Navigator.pop(context);
                     },
@@ -163,7 +185,10 @@ class CompletedLeads extends StatelessWidget {
                   createdon: lead['lpdCreatedOn'] ?? 'N/A',
                   location: lead['lleadprefbrnch'] ?? 'N/A',
                   loanamount: lead['lldLoanamtRequested']?.toString() ?? '',
-                  onTap: () {},
+                  onTap: () {
+                    context.read<LeadBloc>().add(GetLeadDataEvent(leadId: lead['lleadid']));
+                    
+                  },
                   showarrow: false,
                   button: TextButton(
                     onPressed: () {

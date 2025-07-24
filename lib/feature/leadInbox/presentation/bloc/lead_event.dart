@@ -15,3 +15,8 @@ class CreateProposalLeadEvent extends LeadEvent {
   final String leadId;
   const CreateProposalLeadEvent({required this.leadId});
 }
+
+class GetLeadDataEvent extends LeadEvent {
+  final String leadId;
+  const GetLeadDataEvent({required this.leadId});
+}

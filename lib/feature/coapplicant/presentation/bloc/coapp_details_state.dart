@@ -18,6 +18,7 @@ class CoappDetailsState extends Equatable {
   final List<GeographyMaster>? cityMaster;
   final String? isApplicantsAdded;
   final bool isCifValid;
+  final bool getLead;
 
   CoappDetailsState({
     required this.lovList,
@@ -29,6 +30,7 @@ class CoappDetailsState extends Equatable {
     required this.districtMaster,
     this.isApplicantsAdded = 'N',
     this.isCifValid = false,
+    this.getLead = false
   });
 
   factory CoappDetailsState.initial() => CoappDetailsState(
@@ -40,6 +42,7 @@ class CoappDetailsState extends Equatable {
     districtMaster: [],
     isApplicantsAdded: 'N',
     isCifValid: false,
+    getLead: false
   );
 
   CoappDetailsState copyWith({
@@ -52,6 +55,7 @@ class CoappDetailsState extends Equatable {
     List<GeographyMaster>? districtMaster,
     String? isApplicantsAdded,
     bool? isCifValid,
+    bool? getLead
   }) {
     return CoappDetailsState(
       lovList: lovList ?? this.lovList,
@@ -63,6 +67,7 @@ class CoappDetailsState extends Equatable {
       districtMaster: districtMaster ?? this.districtMaster,
       isApplicantsAdded: isApplicantsAdded ?? this.isApplicantsAdded,
       isCifValid: isCifValid ?? this.isCifValid,
+      getLead: getLead ?? this.getLead
     );
   }
 
@@ -77,5 +82,6 @@ class CoappDetailsState extends Equatable {
     districtMaster,
     isApplicantsAdded,
     isCifValid,
+    getLead
   ];
 }

@@ -2,36 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
-import 'package:newsee/feature/CropDetails/presentation/page/cropdetailspage.dart';
 import 'package:newsee/feature/addressdetails/presentation/bloc/address_details_bloc.dart';
-import 'package:newsee/feature/cif/presentation/bloc/cif_bloc.dart';
 import 'package:newsee/feature/coapplicant/presentation/bloc/coapp_details_bloc.dart';
 import 'package:newsee/feature/coapplicant/presentation/page/coapp_page.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
 import 'package:newsee/feature/dedupe/presentation/page/dedupe_page.dart';
+import 'package:newsee/feature/leadInbox/domain/modal/get_lead_response.dart';
 import 'package:newsee/feature/leadsubmit/presentation/bloc/lead_submit_bloc.dart';
 import 'package:newsee/feature/loanproductdetails/presentation/bloc/loanproduct_bloc.dart';
 import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
 import 'package:newsee/pages/address.dart';
 import 'package:newsee/pages/lead_submit_page.dart';
 import 'package:newsee/pages/loan.dart';
-import 'package:newsee/pages/location.dart';
 import 'package:newsee/pages/personal.dart';
-import 'package:newsee/widgets/address_tab_bar.dart';
-import 'package:newsee/widgets/latlongbutton.dart';
 import 'package:newsee/widgets/side_navigation.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 
 class NewLeadPage extends StatelessWidget {
+  final GetLeadResponse? fullLeadData;
+  NewLeadPage({this.fullLeadData});
+
   @override
   Widget build(BuildContext context) {
+    print("newlead page- fullLeadData $fullLeadData");
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create:
               (context) =>
                   LoanproductBloc()..add(
-                    LoanproductInit(loanproductState: LoanproductState.init()),
+                      fullLeadData == null ? 
+                      LoanproductInit(loanproductState: LoanproductState.init())
+                        :
+                      LoanproductFetchEvent(leadDetails: fullLeadData?.LeadDetails)
                   ),
         ),
         BlocProvider(create: (context) => DedupeBloc()),
@@ -39,24 +42,36 @@ class NewLeadPage extends StatelessWidget {
           create:
               (context) =>
                   PersonalDetailsBloc()
-                    ..add(PersonalDetailsInitEvent(cifResponseModel: null)),
+                    ..add(
+                      fullLeadData == null ? 
+                       PersonalDetailsInitEvent(cifResponseModel: null) : 
+                       PersonalDetailsFetchEvent(leadDetails: fullLeadData?.LeadDetails)
+                    ),
           lazy: false,
         ),
         BlocProvider(
           create:
               (context) =>
                   AddressDetailsBloc()
-                    ..add(AddressDetailsInitEvent(cifResponseModel: null)),
+                    ..add(
+                      fullLeadData == null ? 
+                      AddressDetailsInitEvent(cifResponseModel: null) :
+                      AddressDetailsFetchEvent(leadAddressDetails: fullLeadData?.LeadAddressDetails)
+                    ),
           lazy: false,
         ),
         BlocProvider(
-          create: (context) => CoappDetailsBloc()..add(CoAppDetailsInitEvent()),
+          create: (context) => CoappDetailsBloc()..add(
+            fullLeadData == null ? 
+            CoAppDetailsInitEvent() :
+            CoApplicantandGurantorFetchEvent(leadDetails: fullLeadData?.LeadDetails)
+          ),
           lazy: false,
         ),
         BlocProvider(create: (context) => LeadSubmitBloc()),
       ],
       child: DefaultTabController(
-        length: 6,
+        length: fullLeadData == null ? 6 : 4,
         child: Scaffold(
           appBar:
               Globalconfig.isInitialRoute
@@ -93,13 +108,21 @@ class NewLeadPage extends StatelessWidget {
                             indicatorColor: Colors.white,
                             indicatorWeight: 3,
                             onTap: (index) {
-                              final statusList = [
+                              final firstStatusList = [
                                 loanState.status,
                                 dedupeState.status,
                                 personalState.status,
                                 addressState.status,
                                 // coappState.status,
                               ];
+
+                              final getstatusList = [
+                                loanState.status,
+                                personalState.status,
+                                addressState.status,
+                              ];
+
+                              final statusList = fullLeadData == null ?  firstStatusList : getstatusList;
 
                               bool canNavigate = true;
                               for (int i = 0; i < index; i++) {
@@ -165,7 +188,7 @@ class NewLeadPage extends StatelessWidget {
                                 // );
                               }
                             },
-                            tabs: <Widget>[
+                            tabs: fullLeadData == null ? <Widget>[
                               statusTabBar(
                                 icon: Icons.badge,
                                 isComplete:
@@ -198,6 +221,29 @@ class NewLeadPage extends StatelessWidget {
                                   color: Colors.white70,
                                 ),
                               ),
+                            ] 
+                              :
+                            <Widget>[
+                              statusTabBar(
+                                icon: Icons.badge,
+                                isComplete:
+                                    loanState.status == SaveStatus.success,
+                              ),
+                              statusTabBar(
+                                icon: Icons.face,
+                                isComplete:
+                                    personalState.status == SaveStatus.success,
+                              ),
+                              statusTabBar(
+                                icon: Icons.location_city,
+                                isComplete:
+                                    addressState.status == SaveStatus.success,
+                              ),
+                              statusTabBar(
+                                icon: Icons.add_reaction,
+                                isComplete:
+                                    coappState.status == SaveStatus.success,
+                              ),
                             ],
                           );
                         },
@@ -206,13 +252,20 @@ class NewLeadPage extends StatelessWidget {
                   ),
           drawer: Globalconfig.isInitialRoute ? null : Sidenavigationbar(),
           body: TabBarView(
-            children: [
+            children: fullLeadData == null ? [
               Loan(title: 'loan'),
               DedupeView(title: 'dedupe'),
               Personal(title: 'personal'),
               Address(title: 'address'),
               CoApplicantPage(title: 'Co Applicant Details'),
               LeadSubmitPage(title: 'Lead Details'),
+            ] 
+              : 
+            [
+              Loan(title: 'loan'),
+              Personal(title: 'personal'),
+              Address(title: 'address'),
+              CoApplicantPage(title: 'Co Applicant Details'),
             ],
           ),
         ),

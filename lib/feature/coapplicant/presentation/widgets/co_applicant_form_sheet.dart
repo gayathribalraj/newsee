@@ -17,7 +17,6 @@ import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:newsee/widgets/k_willpopscope.dart';
 import 'package:newsee/widgets/searchable_drop_down.dart';
-import 'package:path/path.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class CoApplicantFormBottomSheet extends StatefulWidget {
@@ -150,6 +149,9 @@ class _CoApplicantFormBottomSheetState
               }
             },
             builder: (context, state) {
+              if(state.status == SaveStatus.success && state.getLead) {
+                coAppAndGurantorForm.markAsDisabled();
+              }
               DedupeState? dedupeState;
               dedupeState = context.watch<DedupeBloc>().state;
               print(dedupeState);
@@ -638,6 +640,19 @@ class _CoApplicantFormBottomSheetState
                               coAppAndGurantorForm.controls['state']
                                   ?.updateValue("");
                               return <GeographyMaster>[];
+                            } else if (state.getLead) {
+                              String? stateCode = widget.existingData!.state;
+      
+                              GeographyMaster? geographyMaster = state
+                                  .stateCityMaster
+                                  ?.firstWhere((val) => val.code == stateCode);
+                              if (geographyMaster != null) {
+                                coAppAndGurantorForm.controls['state']
+                                    ?.updateValue(geographyMaster.code);
+                                return geographyMaster;
+                              } else {
+                                return <GeographyMaster>[];
+                              }
                             }
                           },
                         ),
@@ -721,64 +736,68 @@ class _CoApplicantFormBottomSheetState
                               ),
                             ),
                             onPressed: () {
-                              print(
-                                "coapplicant Details value ${coAppAndGurantorForm.value}, ${coAppAndGurantorForm.valid}, ${state.isCifValid}",
-                              );
-                              if ((coAppAndGurantorForm
-                                              .control('customertype')
-                                              .value ==
-                                          '001' ||
-                                      coAppAndGurantorForm
-                                              .control('customertype')
-                                              .value ==
-                                          '002') &&
-                                  state.isCifValid == false) {
-                                showErrorDialog(
-                                  context,
-                                  'Please validate Dedupe/CIF before submitting.',
+                              if (state.getLead == false) {
+                                print(
+                                  "coapplicant Details value ${coAppAndGurantorForm.value}, ${coAppAndGurantorForm.valid}, ${state.isCifValid}",
                                 );
-                                return;
-                              } else {
-                                if (coAppAndGurantorForm.valid) {
-                                  print('formco: $coAppAndGurantorForm');
-                                  CoapplicantData coapplicantData =
-                                      CoapplicantData.fromMap(
-                                        coAppAndGurantorForm.value,
-                                      );
-                                  CoapplicantData coapplicantDataFormatted =
-                                      coapplicantData.copyWith(
-                                        dob: getDateFormatedByProvided(
-                                          coapplicantData.dob,
-                                          from: AppConstants.Format_dd_MM_yyyy,
-                                          to: AppConstants.Format_yyyy_MM_dd,
-                                        ),
-                                        applicantType: widget.applicantType,
-                                      );
-                                  context.read<CoappDetailsBloc>().add(
-                                    CoAppDetailsSaveEvent(
-                                      coapplicantData: coapplicantDataFormatted,
-                                      index: widget.index,
-                                    ),
-                                  );
-                                  Navigator.of(context).pop({});
-                                } else {
-                                  coAppAndGurantorForm.controls.forEach((
-                                    key,
-                                    control,
-                                  ) {
-                                    if (control.invalid) {
-                                      print(
-                                        'Field "$key" is invalid: ${control.errors}',
-                                      );
-                                    }
-                                  });
-                                  coAppAndGurantorForm.markAllAsTouched();
+                                if ((coAppAndGurantorForm
+                                                .control('customertype')
+                                                .value ==
+                                            '001' ||
+                                        coAppAndGurantorForm
+                                                .control('customertype')
+                                                .value ==
+                                            '002') &&
+                                    state.isCifValid == false) {
                                   showErrorDialog(
                                     context,
-                                    'Please Check and Enter Valid Data',
+                                    'Please validate Dedupe/CIF before submitting.',
                                   );
+                                  return;
+                                } else {
+                                  if (coAppAndGurantorForm.valid) {
+                                    print('formco: $coAppAndGurantorForm');
+                                    CoapplicantData coapplicantData =
+                                        CoapplicantData.fromMap(
+                                          coAppAndGurantorForm.value,
+                                        );
+                                    CoapplicantData coapplicantDataFormatted =
+                                        coapplicantData.copyWith(
+                                          dob: getDateFormatedByProvided(
+                                            coapplicantData.dob,
+                                            from: AppConstants.Format_dd_MM_yyyy,
+                                            to: AppConstants.Format_yyyy_MM_dd,
+                                          ),
+                                          applicantType: widget.applicantType,
+                                        );
+                                    context.read<CoappDetailsBloc>().add(
+                                      CoAppDetailsSaveEvent(
+                                        coapplicantData: coapplicantDataFormatted,
+                                        index: widget.index,
+                                      ),
+                                    );
+                                    Navigator.of(context).pop({});
+                                  } else {
+                                    coAppAndGurantorForm.controls.forEach((
+                                      key,
+                                      control,
+                                    ) {
+                                      if (control.invalid) {
+                                        print(
+                                          'Field "$key" is invalid: ${control.errors}',
+                                        );
+                                      }
+                                    });
+                                    coAppAndGurantorForm.markAllAsTouched();
+                                    showErrorDialog(
+                                      context,
+                                      'Please Check and Enter Valid Data',
+                                    );
+                                  }
                                 }
                               }
+                              
+                              
                             },
                             child: Text('Save'),
                           ),

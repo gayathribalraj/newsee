@@ -33,6 +33,7 @@ final class AddressDetailsBloc
     on<AddressDetailsInitEvent>(initAddressDetails);
     on<AddressDetailsSaveEvent>(saveAddressDetails);
     on<OnStateCityChangeEvent>(getCityListBasedOnState);
+    on<AddressDetailsFetchEvent>(onAddressFetch);
     // on<OnStateCityChangeEvent>(getDisctrictListBasedOnCity);
   }
 
@@ -218,4 +219,71 @@ First, it attempts to fetch the data from the local database.If no matching data
   //     }
   //   }
   // }
+
+  Future<void> onAddressFetch(AddressDetailsFetchEvent event, Emitter emit) async {
+    try {
+      Database _db = await DBConfig().database;
+      List<Lov> listOfLov = await LovCrudRepo(_db).getAll();
+      List<GeographyMaster> stateCityMaster = await GeographymasterCrudRepo(
+        _db,
+      ).getByColumnNames(
+        columnNames: [
+          TableKeysGeographyMaster.stateId,
+          TableKeysGeographyMaster.cityId,
+        ],
+        columnValues: ['0', '0'],
+      );
+
+      final addressList1 = event.leadAddressDetails![0];
+
+      final getcityList = await getCityandDistrict(addressList1['state'], null);
+
+      final getDistrictList = await getCityandDistrict(addressList1['state'], addressList1['city']);
+
+      AddressData addressData = AddressData(
+        addressType: addressList1['addresstype'],
+        address1: addressList1['addressline1'],
+        address2: addressList1['addressline2'],
+        address3: addressList1['addressline3'],
+        state: addressList1['state'],
+        cityDistrict: addressList1['city'],
+        area: addressList1['area'],
+        pincode: addressList1['pincode']
+      );
+
+      emit(
+        state.copyWith(
+          lovList: listOfLov,
+          stateCityMaster: stateCityMaster,
+          cityMaster: getcityList?.cityMaster,
+          districtMaster: getDistrictList?.districtMaster,
+          addressData: addressData,
+          status: SaveStatus.success,
+          getLead: true
+        ),
+      );
+      
+    } catch(error) {
+      emit(state.copyWith(status: SaveStatus.failure));
+    }
+  }
+
+  Future<AddressDetailsState?> getCityandDistrict(val1, val2) async {
+    try {
+      final CityDistrictRequest citydistrictrequest = CityDistrictRequest(
+        stateCode: val1,
+        cityCode: val2,
+      );
+      Cityrepository cityrepository = CitylistRepoImpl();
+      AsyncResponseHandler response = await cityrepository.fetchCityList(
+        citydistrictrequest,
+      );
+
+      AddressDetailsState addressDetailsState =
+          mapGeographyMasterResponseForAddressPage(state, response);
+      return addressDetailsState;
+    } catch(error) {
+      return null;
+    }
+  }
 }

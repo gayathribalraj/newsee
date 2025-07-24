@@ -10,13 +10,10 @@ import 'package:newsee/feature/loader/presentation/bloc/global_loading_bloc.dart
 import 'package:newsee/feature/loader/presentation/bloc/global_loading_event.dart';
 import 'package:newsee/feature/masters/domain/modal/geography_master.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
-import 'package:newsee/feature/masters/domain/modal/statecitymaster.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
-import 'package:newsee/widgets/custom_loading.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:newsee/widgets/k_willpopscope.dart';
-import 'package:newsee/widgets/loader.dart';
 import 'package:newsee/widgets/searchable_drop_down.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -80,6 +77,22 @@ class Address extends StatelessWidget {
     }
   }
 
+  mapAddressDetails(val) {
+    try {
+      form.control('addressType').updateValue(val.addressType);
+      form.control('address1').updateValue(val.address1);
+      form.control('address2').updateValue(val.address2);
+      form.control('address3').updateValue(val.address3);
+      form.control('state').updateValue(val.state);
+      form.control('cityDistrict').updateValue(val.cityDistrict);
+      form.control('area').updateValue(val.area);
+      form.control('pincode').updateValue(val.pincode);
+      form.markAsDisabled();
+    } catch (error) {
+      print('mapAddressDetails-error => $error');
+    }
+  }
+
   addressSplit(String str) {
     try {
       if (str.trim() == '') {
@@ -119,7 +132,7 @@ class Address extends StatelessWidget {
             print(
               'addressdetail::BlocConsumer:listen => ${state.lovList} ${state.addressData} ${state.status?.name}',
             );
-            if (state.status == SaveStatus.success) {
+            if (state.status == SaveStatus.success && state.getLead == false) {
               goToNextTab(context);
             }
             if (state.status == SaveStatus.mastersucess ||
@@ -142,7 +155,9 @@ class Address extends StatelessWidget {
               } else if (dedupeState.aadharvalidateResponse != null) {
                 print(dedupeState.aadharvalidateResponse);
                 mapAadharResponse(dedupeState.aadharvalidateResponse);
-              }
+              } 
+            } else if (state.status == SaveStatus.success && state.getLead == true) {
+              mapAddressDetails(state.addressData);
             }
             return Stack(
               alignment: Alignment.topLeft,
@@ -339,18 +354,20 @@ class Address extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () {
-                                print("Address Details value ${form.value}");
-                                if (form.valid) {
-                                  AddressData addressData = AddressData.fromMap(
-                                    form.value,
-                                  );
-                                  context.read<AddressDetailsBloc>().add(
-                                    AddressDetailsSaveEvent(
-                                      addressData: addressData,
-                                    ),
-                                  );
-                                } else {
-                                  form.markAllAsTouched();
+                                if (state.getLead == null || state.getLead == false) {
+                                  print("Address Details value ${form.value}");
+                                  if (form.valid) {
+                                    AddressData addressData = AddressData.fromMap(
+                                      form.value,
+                                    );
+                                    context.read<AddressDetailsBloc>().add(
+                                      AddressDetailsSaveEvent(
+                                        addressData: addressData,
+                                      ),
+                                    );
+                                  } else {
+                                    form.markAllAsTouched();
+                                  }
                                 }
                               },
                               child: Text('Next'),

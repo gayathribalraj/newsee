@@ -32,6 +32,7 @@ class LoanproductBloc extends Bloc<LoanproductEvent, LoanproductState> {
     on<LoanProductDropdownChange>(onLoanProductDropdownChange);
     on<ResetShowBottomSheet>(onResetShowBottomSheet);
     on<SaveLoanProduct>(onSaveLoanProduct);
+    on<LoanproductFetchEvent>(onLoanDetailsFetch);
   }
 
   // set the initial data for Type Of loan Dropdown
@@ -205,4 +206,75 @@ class LoanproductBloc extends Bloc<LoanproductEvent, LoanproductState> {
       }
     }
   }
+  
+  Future<void> onLoanDetailsFetch(LoanproductFetchEvent event, Emitter emit) async {
+    try {
+
+      Database db = await DBConfig().database;
+      List<ProductSchema> productSchemaList = await ProductSchemaCrudRepo(db).getAll();
+      List<ProductMaster> productMasterList = await ProductMasterCrudRepo(db).getAll();
+      List<Product> productList = await ProductsCrudRepo(db).getAll();
+      print('productSchemaList from DB => ${productSchemaList.length}');
+
+      String typeOfLoan = event.leadDetails!['lleadloantyp'] as String;
+      String productID   = event.leadDetails!['lfProdId'] as String;
+
+      ProductSchema productSchema = productSchemaList.firstWhere(
+        (p) => p.optionValue == typeOfLoan,
+      );
+
+      List<Lov> listOfLov = await LovCrudRepo(db).getByColumnNames(
+        columnNames: ['Header', 'optvalue'],
+        columnValues: ['AgriProductType', productSchema.optionId],
+      );
+
+      final optCode = listOfLov.first.optCode;
+      print('listOfLov.first.optCode => $optCode');
+
+      List<Product> mainCategoryList = await ProductsCrudRepo(
+        db,
+      ).getByColumnName(columnName: 'lsfFacType', columnValue: optCode);
+      print('mainCategoryList => $mainCategoryList');
+
+      ProductMaster productMaster = productMasterList.firstWhere(
+        (p) => p.prdCode == productID,
+      );
+
+      Product mainProduct = mainCategoryList.firstWhere(
+        (p) => p.lsfFacId == productMaster.prdMainCat,
+      );
+
+      List<Product> subCategoryList = await ProductsCrudRepo(
+        db,
+      ).getByColumnName(
+        columnName: 'lsfFacParentId',
+        columnValue: productMaster.prdMainCat,
+      );
+
+      Product subProduct = subCategoryList.firstWhere(
+        (p) => p.lsfFacId == productMaster.prdSubCat,
+      );
+
+      emit(
+        state.copyWith(
+          productSchemeList: productSchemaList,
+          selectedProductScheme: productSchema,
+          mainCategoryList: mainCategoryList,
+          selectedMainCategory: mainProduct,
+          subCategoryList: subCategoryList,
+          selectedSubCategoryList: subProduct,
+          selectedProduct: productMaster,
+          status: SaveStatus.success,
+          getLead: true
+        ),
+      );
+      
+    
+    } catch(error) {
+      emit(state.copyWith(status: SaveStatus.failure));
+    }
+  }
+
+  
+    
 }
