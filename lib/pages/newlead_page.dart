@@ -113,7 +113,7 @@ class NewLeadPage extends StatelessWidget {
                                 dedupeState.status,
                                 personalState.status,
                                 addressState.status,
-                                // coappState.status,
+                                coappState.status,
                               ];
 
                               final getstatusList = [
