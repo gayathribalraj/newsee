@@ -184,11 +184,17 @@ void closeBottomSheetIfExists(BuildContext context) {
 }
 
 CoapplicantData mapCoapplicantDataFromCif(CifResponse response) {
+  String mobileno = '';
+  if (response.lleadmobno!.length == 12 &&
+      response.lleadmobno!.startsWith("91")) {
+    mobileno = response.lleadmobno!.substring(2);
+  }
+
   CoapplicantData data = CoapplicantData(
     firstName: response.lleadfrstname,
     lastName: response.lleadlastname,
     email: response.lleademailid,
-    primaryMobileNumber: response.lleadmobno,
+    primaryMobileNumber: mobileno != '' ? mobileno : response.lleadmobno,
     panNumber: response.lleadpanno,
     address1: response.lleadaddress,
     address2: response.lleadaddresslane1,

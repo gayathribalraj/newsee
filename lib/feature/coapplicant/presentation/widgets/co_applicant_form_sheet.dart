@@ -8,6 +8,7 @@ import 'package:newsee/feature/aadharvalidation/domain/modal/aadharvalidate_requ
 import 'package:newsee/feature/coapplicant/applicants_utility_service.dart';
 import 'package:newsee/feature/coapplicant/domain/modal/coapplicant_data.dart';
 import 'package:newsee/feature/coapplicant/presentation/bloc/coapp_details_bloc.dart';
+import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
 import 'package:newsee/feature/loader/presentation/bloc/global_loading_bloc.dart';
 import 'package:newsee/feature/loader/presentation/bloc/global_loading_event.dart';
 import 'package:newsee/feature/masters/domain/modal/geography_master.dart';
@@ -149,6 +150,9 @@ class _CoApplicantFormBottomSheetState
               }
             },
             builder: (context, state) {
+              DedupeState? dedupeState;
+              dedupeState = context.watch<DedupeBloc>().state;
+              print(dedupeState);
               return ReactiveForm(
                 formGroup: coAppAndGurantorForm,
                 child: Padding(
@@ -403,9 +407,13 @@ class _CoApplicantFormBottomSheetState
                           label: 'Last Name',
                           mantatory: true,
                         ), // lastName
+
                         SearchableDropdown(
                           controlName: 'relationshipFirm',
-                          label: 'Relationship With Firm',
+                          label:
+                              dedupeState.constitution == 'NI'
+                                  ? 'Relationship With Firm'
+                                  : 'Relationship With Applicant',
                           items:
                               state.lovList!
                                   .where((v) => v.Header == 'CoAppRelationship')
