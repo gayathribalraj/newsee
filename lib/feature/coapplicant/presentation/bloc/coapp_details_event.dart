@@ -26,8 +26,11 @@ class CoAppDetailsSaveEvent extends CoappDetailsEvent {
   final CoapplicantData coapplicantData;
   // final bool isEdit;
   final int? index;
+  final bool coAppAdded;
+
   CoAppDetailsSaveEvent({
     required this.coapplicantData,
+    required this.coAppAdded,
     // this.isEdit = false,
     this.index,
   });

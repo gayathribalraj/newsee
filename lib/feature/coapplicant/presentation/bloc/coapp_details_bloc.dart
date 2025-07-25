@@ -69,6 +69,11 @@ final class CoappDetailsBloc
               .toList();
 
       emit(state.copyWith(coAppList: updatedList, status: SaveStatus.success));
+
+      // if list is empty, update SaveStatus to failure
+      if (updatedList.isEmpty) {
+        emit(state.copyWith(status: SaveStatus.failure));
+      }
     } catch (e) {
       print(e);
     }
@@ -115,22 +120,40 @@ final class CoappDetailsBloc
     Emitter emit,
   ) async {
     try {
-      final updatedList = List<CoapplicantData>.from(state.coAppList);
+      // Check if co-applicant was not added
 
-      if (event.index != null && event.index! < updatedList.length) {
-        updatedList[event.index!] = event.coapplicantData;
+      if (event.coAppAdded == false) {
+        emit(
+          state.copyWith(
+            coAppList: [],
+            status: SaveStatus.success,
+            isApplicantsAdded: "N",
+            isCifValid: false,
+          ),
+        );
       } else {
-        updatedList.add(event.coapplicantData);
-      }
+        // Create a copy of the current co-applicant list
 
-      emit(
-        state.copyWith(
-          coAppList: updatedList,
-          status: SaveStatus.success,
-          isApplicantsAdded: "Y",
-          isCifValid: false,
-        ),
-      );
+        final updatedList = List<CoapplicantData>.from(state.coAppList);
+        // If index is provided and valid, update existing co-applicant
+
+        if (event.index != null && event.index! < updatedList.length) {
+          updatedList[event.index!] = event.coapplicantData!;
+        } else {
+          // Else, add new co-applicant to the list
+
+          updatedList.add(event.coapplicantData!);
+        }
+
+        emit(
+          state.copyWith(
+            coAppList: updatedList,
+            status: SaveStatus.success,
+            isApplicantsAdded: "Y",
+            isCifValid: false,
+          ),
+        );
+      }
     } catch (e) {
       emit(state.copyWith(status: SaveStatus.failure, isCifValid: false));
     }
@@ -350,9 +373,11 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
     }
   }
 
-  Future<void> onCoappandGauDetailsFetch(CoApplicantandGurantorFetchEvent event, Emitter emit) async {
+  Future<void> onCoappandGauDetailsFetch(
+    CoApplicantandGurantorFetchEvent event,
+    Emitter emit,
+  ) async {
     try {
-
       Database _db = await DBConfig().database;
       List<Lov> listOfLov = await LovCrudRepo(_db).getAll();
       List<GeographyMaster> stateCityMaster = await GeographymasterCrudRepo(
@@ -364,27 +389,45 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
         ],
         columnValues: ['0', '0'],
       );
-      
+
       List<CoapplicantData> coappandGauList = [];
       List<GeographyMaster>? cityMaster = [];
       List<GeographyMaster>? districtMaster = [];
 
-      String coappAdded = event.leadDetails!['lldCoappfrstname'] != null ? 'Y' : 'N';
-      if(coappAdded == 'Y') {
-        CoapplicantData?  coappData = mapCoApplicant(event.leadDetails);
-        CoapplicantData?  gaurantorData = mapGaurantor(event.leadDetails);
+      String coappAdded =
+          event.leadDetails!['lldCoappfrstname'] != null ? 'Y' : 'N';
+      if (coappAdded == 'Y') {
+        CoapplicantData? coappData = mapCoApplicant(event.leadDetails);
+        CoapplicantData? gaurantorData = mapGaurantor(event.leadDetails);
         coappandGauList.add(coappData!);
         coappandGauList.add(gaurantorData!);
-        List<GeographyMaster>? coappCityList = await getCoappandGaurantorCityandDistrictList(coappData.state, null);
-        List<GeographyMaster>? coappDistrictList = await getCoappandGaurantorCityandDistrictList(coappData.state, coappData.cityDistrict);
-        List<GeographyMaster>? gaurantorCityList = await getCoappandGaurantorCityandDistrictList(gaurantorData.state, null);
-        List<GeographyMaster>? gaurantorDistrictList = await getCoappandGaurantorCityandDistrictList(gaurantorData.state, gaurantorData.cityDistrict);
+        List<GeographyMaster>? coappCityList =
+            await getCoappandGaurantorCityandDistrictList(
+              coappData.state,
+              null,
+            );
+        List<GeographyMaster>? coappDistrictList =
+            await getCoappandGaurantorCityandDistrictList(
+              coappData.state,
+              coappData.cityDistrict,
+            );
+        List<GeographyMaster>? gaurantorCityList =
+            await getCoappandGaurantorCityandDistrictList(
+              gaurantorData.state,
+              null,
+            );
+        List<GeographyMaster>? gaurantorDistrictList =
+            await getCoappandGaurantorCityandDistrictList(
+              gaurantorData.state,
+              gaurantorData.cityDistrict,
+            );
         cityMaster.addAll(coappCityList ?? []);
         cityMaster.addAll(gaurantorCityList ?? []);
 
-        cityMaster = {
-          for (var city in cityMaster) city.cityParentId: city
-        }.values.toList();
+        cityMaster =
+            {
+              for (var city in cityMaster) city.cityParentId: city,
+            }.values.toList();
       }
 
       print("finally print cityMaster -cityMaster => $cityMaster");
@@ -398,15 +441,11 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
           coAppList: coappandGauList,
           cityMaster: cityMaster,
           districtMaster: [],
-          getLead: true
-        )
+          getLead: true,
+        ),
       );
-      
-
     } catch (error) {
-      emit(
-        state.copyWith(status: SaveStatus.failure)
-      );
+      emit(state.copyWith(status: SaveStatus.failure));
     }
   }
 
@@ -438,7 +477,7 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
         loanLiabilityCount: val['lpcbscoborrLiabilityCount'],
         loanLiabilityAmount: val['lpcbscoborrLiabilityAmount'],
         depositCount: val['lpcbscoborrdepositCount'],
-        depositAmount: val['lpcbscoborrdepositAmount']
+        depositAmount: val['lpcbscoborrdepositAmount'],
       );
       return coappData;
     } catch (error) {
@@ -475,7 +514,7 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
         loanLiabilityCount: val['lpcbsgauLiabilityCount'],
         loanLiabilityAmount: val['lpcbsgauLiabilityAmount'],
         depositCount: val['lpcbsgaudepositCount'],
-        depositAmount: val['lpcbsgaudepositAmount']
+        depositAmount: val['lpcbsgaudepositAmount'],
       );
       return gaurantorData;
     } catch (error) {
@@ -484,7 +523,10 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
     }
   }
 
-  Future<List<GeographyMaster>?> getCoappandGaurantorCityandDistrictList(stateCode, cityCode) async {
+  Future<List<GeographyMaster>?> getCoappandGaurantorCityandDistrictList(
+    stateCode,
+    cityCode,
+  ) async {
     try {
       final CityDistrictRequest citydistrictrequest = CityDistrictRequest(
         stateCode: stateCode,
@@ -498,15 +540,15 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
       Map<String, dynamic> _resp = response.right as Map<String, dynamic>;
 
       List<GeographyMaster> cityMaster =
-        _resp['cityMaster'] != null && _resp['cityMaster'].isNotEmpty
-            ? _resp['cityMaster'] as List<GeographyMaster>
-            : [];
-    List<GeographyMaster> districtMaster =
-        _resp['districtMaster'] != null && _resp['districtMaster'].isNotEmpty
-            ? _resp['districtMaster'] as List<GeographyMaster>
-            : [];
-      
-      if(cityCode == null) {
+          _resp['cityMaster'] != null && _resp['cityMaster'].isNotEmpty
+              ? _resp['cityMaster'] as List<GeographyMaster>
+              : [];
+      List<GeographyMaster> districtMaster =
+          _resp['districtMaster'] != null && _resp['districtMaster'].isNotEmpty
+              ? _resp['districtMaster'] as List<GeographyMaster>
+              : [];
+
+      if (cityCode == null) {
         return cityMaster;
       } else {
         return districtMaster;

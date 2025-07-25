@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/AppData/app_constants.dart';
+import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/feature/coapplicant/domain/modal/coapplicant_data.dart';
 import 'package:newsee/feature/coapplicant/presentation/bloc/coapp_details_bloc.dart';
 import 'package:newsee/feature/coapplicant/presentation/widgets/co_applicant_form_sheet.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
 import 'package:newsee/widgets/confirmation_delete_alert.dart';
+import 'package:newsee/widgets/sysmo_alert.dart';
 
 class CoApplicantPage extends StatefulWidget {
   final String title;
@@ -78,7 +80,13 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: BlocBuilder<CoappDetailsBloc, CoappDetailsState>(
+        child: BlocConsumer<CoappDetailsBloc, CoappDetailsState>(
+          // Check if save was successful and no co-applicants were added
+          listener: (context, state) {
+            if (state.isApplicantsAdded == "N") {
+              goToNextTab(context: context);
+            }
+          },
           builder: (context, state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,6 +119,52 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                     const Text("No"),
                   ],
                 ),
+                Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 3, 9, 110),
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () {
+                      // If save is already successful, go to the next tab
+
+                      if (state.status == SaveStatus.success) {
+                        goToNextTab(context: context);
+                      }
+                      // If no applicants are added, trigger event to save with coAppAdded as false
+                      else if (state.isApplicantsAdded == 'N') {
+                        context.read<CoappDetailsBloc>().add(
+                          CoAppDetailsSaveEvent(
+                            coapplicantData: CoapplicantData()!,
+                            coAppAdded: false,
+                          ),
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder:
+                              (_) => SysmoAlert.warning(
+                                message:
+                                    "Please add at least one Co-Applicant/Guarantor before proceeding",
+                                onButtonPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                        );
+                      }
+                    },
+
+                    child: Text('Next'),
+                  ),
+                ),
+
                 if (state.isApplicantsAdded == 'Y' &&
                     state.coAppList.isNotEmpty) ...[
                   const SizedBox(height: 16),
@@ -164,6 +218,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                             final confirmed = await confirmAndDeleteImage(
                               context,
                             );
+
                             if (confirmed == true) {
                               context.read<CoappDetailsBloc>().add(
                                 DeleteCoApplicantEvent(data),

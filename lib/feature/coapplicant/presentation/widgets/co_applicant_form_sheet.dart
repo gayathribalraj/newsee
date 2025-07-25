@@ -774,6 +774,7 @@ class _CoApplicantFormBottomSheetState
                                       CoAppDetailsSaveEvent(
                                         coapplicantData: coapplicantDataFormatted,
                                         index: widget.index,
+                                        coAppAdded: true
                                       ),
                                     );
                                     Navigator.of(context).pop({});
