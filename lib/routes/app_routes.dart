@@ -78,7 +78,7 @@ final routes = GoRouter(
             child: Scaffold(
               body: BlocProvider(
                 create: (_) => AuthBloc(authRepository: AuthRepository),
-                child: LoginpageView(),
+                child:LoginpageView(),
               ),
             ),
           ),

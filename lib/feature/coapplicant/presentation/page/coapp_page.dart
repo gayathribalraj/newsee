@@ -82,11 +82,20 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
         padding: const EdgeInsets.all(16.0),
         child: BlocConsumer<CoappDetailsBloc, CoappDetailsState>(
           // Check if save was successful and no co-applicants were added
-          listener: (context, state) {
-            if (state.isApplicantsAdded == "N") {
-              goToNextTab(context: context);
-            }
-          },
+         listener: (context, state) {
+                if (state.isApplicantsAdded == "N" && state.status == SaveStatus.success) {
+                  goToNextTab(context: context);
+                }
+
+                // Auto navigation after editing or adding co-applicant when "Yes" selected
+                if (state.isApplicantsAdded == "Y" &&
+                    state.status == SaveStatus.success &&
+                    state.coAppList.isNotEmpty) {
+                      
+                  // Trigger only after edit/add completed
+                  goToNextTab(context: context);
+                }
+},
           builder: (context, state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,18 +144,58 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                     onPressed: () {
                       // If save is already successful, go to the next tab
 
-                      if (state.status == SaveStatus.success) {
-                        goToNextTab(context: context);
-                      }
-                      // If no applicants are added, trigger event to save with coAppAdded as false
-                      else if (state.isApplicantsAdded == 'N') {
+                      // if (state.status == SaveStatus.success) {
+                      //   goToNextTab(context: context);
+                      // }
+                      if (state.isApplicantsAdded == 'N') {
+                        // User selected 'No' - proceed
                         context.read<CoappDetailsBloc>().add(
                           CoAppDetailsSaveEvent(
                             coapplicantData: CoapplicantData()!,
                             coAppAdded: false,
                           ),
                         );
-                      } else {
+                      }
+                      // If no applicants are added, trigger event to save with coAppAdded as false
+                      // else if (state.isApplicantsAdded == 'N') {
+                      //   context.read<CoappDetailsBloc>().add(
+                      //     CoAppDetailsSaveEvent(
+                      //       coapplicantData: CoapplicantData()!,
+                      //       coAppAdded: false,
+                      //     ),
+                      //   );
+                      // }
+                      else if (state.status == SaveStatus.success &&
+                          state.isApplicantsAdded == 'Y') {
+                        // User selected Yes and saved - stay here to allow editing
+                        showDialog(
+                          context: context,
+                          builder:
+                              (_) => SysmoAlert.warning(
+                                message:
+                                    "Please add or edit Co-Applicant/Guarantor before proceeding",
+                                onButtonPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                        );
+                      }
+                      //  else {
+                      //   showDialog(
+                      //     context: context,
+                      //     builder:
+                      //         (_) => SysmoAlert.warning(
+                      //           message:
+                      //               "Please add at least one Co-Applicant/Guarantor before proceeding",
+                      //           onButtonPressed: () {
+                      //             Navigator.pop(context);
+                      //           },
+                      //         ),
+                      //   );
+                      // }
+                      // },
+                      else {
+                        // No applicants added yet and status is not success
                         showDialog(
                           context: context,
                           builder:

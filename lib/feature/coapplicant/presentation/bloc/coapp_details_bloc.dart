@@ -111,7 +111,11 @@ final class CoappDetailsBloc
         }).toList();
 
     emit(
-      state.copyWith(lovList: customerType, stateCityMaster: stateCityMaster),
+      state.copyWith(
+        status: SaveStatus.edit,
+        lovList: customerType, 
+        stateCityMaster: stateCityMaster
+      ),
     );
   }
 
