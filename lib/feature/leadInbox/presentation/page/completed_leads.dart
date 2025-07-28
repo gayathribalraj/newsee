@@ -13,6 +13,7 @@ import 'package:newsee/AppData/app_api_constants.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/feature/leadInbox/domain/modal/group_lead_inbox.dart';
+import 'package:newsee/widgets/button_frame.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:newsee/widgets/loader.dart';
 import 'package:newsee/widgets/success_bottom_sheet.dart';
@@ -40,7 +41,8 @@ class CompletedLeads extends StatelessWidget {
           }
           if (state.getLeaStatus == SaveStatus.loading) {
             presentLoading(context, 'Fetching Lead Details...');
-          } else if (state.getLeaStatus == SaveStatus.success || state.getLeaStatus == SaveStatus.failure) {
+          } else if (state.getLeaStatus == SaveStatus.success ||
+              state.getLeaStatus == SaveStatus.failure) {
             dismissLoading(context);
           }
 
@@ -79,11 +81,13 @@ class CompletedLeads extends StatelessWidget {
             );
           }
 
-          if(state.getLeaStatus == SaveStatus.loading) {
-
-          } else if(state.getLeaStatus == SaveStatus.success) {
-            context.pushNamed('newlead', extra: {'leadData': state.getleadData});
-          } else if(state.getLeaStatus == SaveStatus.failure) {
+          if (state.getLeaStatus == SaveStatus.loading) {
+          } else if (state.getLeaStatus == SaveStatus.success) {
+            context.pushNamed(
+              'newlead',
+              extra: {'leadData': state.getleadData},
+            );
+          } else if (state.getLeaStatus == SaveStatus.failure) {
             showDialog(
               context: context,
               builder:
@@ -186,27 +190,19 @@ class CompletedLeads extends StatelessWidget {
                   location: lead['lleadprefbrnch'] ?? 'N/A',
                   loanamount: lead['lldLoanamtRequested']?.toString() ?? '',
                   onTap: () {
-                    context.read<LeadBloc>().add(GetLeadDataEvent(leadId: lead['lleadid']));
-                    
+                    context.read<LeadBloc>().add(
+                      GetLeadDataEvent(leadId: lead['lleadid']),
+                    );
                   },
                   showarrow: false,
-                  button: TextButton(
+                  button: ButtonFrame(
+                    text: 'Create Proposal',
+                    icon: Icons.create,
                     onPressed: () {
                       context.read<LeadBloc>().add(
                         CreateProposalLeadEvent(leadId: lead['lleadid'] ?? ''),
                       );
                     },
-                    style: TextButton.styleFrom(
-                      side: const BorderSide(color: Colors.teal),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      minimumSize: const Size(40, 25),
-                    ),
-                    child: const Text(
-                      'Create Proposal',
-                      style: TextStyle(color: Colors.teal),
-                    ),
                   ),
                 );
               },
