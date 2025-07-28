@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/feature/auth/presentation/bloc/auth_bloc.dart';
+import 'package:newsee/feature/dashboard/dashboard_page.dart';
 import 'package:newsee/pages/home_page.dart';
 
 class Sidenavigationbar extends StatelessWidget {
@@ -50,6 +51,16 @@ class Sidenavigationbar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.dashboard_rounded, color: Colors.teal),
             title: Text("Dashboard"),
+            onTap: () {
+              Navigator.push(
+                sidemenucontext,
+                MaterialPageRoute(builder: (context) => DashboardPage()),
+              );
+            },
+          ),
+             ListTile(
+            leading: Icon(Icons.home_filled, color: Colors.teal),
+            title: Text("HomePage"),
             onTap: () {
               onTabSelected?.call(0);
               Navigator.push(
