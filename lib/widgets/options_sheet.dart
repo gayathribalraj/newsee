@@ -19,7 +19,7 @@ class OptionsSheet extends StatelessWidget {
   final String? status;
   final List<String>? details;
   final List<String>? detailsName;
-
+  final Color? bgColor;
   const OptionsSheet({
     required this.icon,
     required this.title,
@@ -28,6 +28,7 @@ class OptionsSheet extends StatelessWidget {
     this.status,
     this.details,
     this.detailsName,
+    this.bgColor,
   });
 
   @override
@@ -43,7 +44,7 @@ class OptionsSheet extends StatelessWidget {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: Colors.teal.withOpacity(0.5),
+          color: bgColor ?? Colors.teal.withOpacity(0.5),
           borderRadius: BorderRadius.circular(15),
         ),
         alignment: Alignment.center,

@@ -72,10 +72,7 @@ class CompletedLeads extends StatelessWidget {
           }
 
           final allLeads =
-              state.leadResponseModel
-                  ?.map((e) => e.toMap())
-                  .toList() ??
-              [];
+              state.leadResponseModel?.map((e) => e.toMap()).toList() ?? [];
 
           final filteredLeads =
               allLeads.where((lead) {
