@@ -12,8 +12,8 @@ class AadharValidateDatasource {
   @return     : Future<Response> Response - > HttpResponse
    */
 
-  validateAadhaar(payload) async {
-    Response response = await dio.post(
+  Future<Response> validateAadhaar(payload) async {
+    return await dio.post(
       ApiConfig.AADHAAR_API_ENDPOINT,
       data: {
         "aadhaarNumber": payload,
@@ -21,6 +21,5 @@ class AadharValidateDatasource {
             "U2FsdGVkX1/Wa6+JeCIOVLl8LTr8WUocMz8kIGXVbEI9Q32v7zRLrnnvAIeJIVV3",
       },
     );
-    return response;
   }
 }

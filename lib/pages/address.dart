@@ -6,6 +6,7 @@ import 'package:newsee/feature/aadharvalidation/domain/modal/aadharvalidate_resp
 import 'package:newsee/feature/addressdetails/presentation/bloc/address_details_bloc.dart';
 import 'package:newsee/feature/cif/domain/model/user/cif_response.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
+import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/feature/loader/presentation/bloc/global_loading_bloc.dart';
 import 'package:newsee/feature/loader/presentation/bloc/global_loading_event.dart';
 import 'package:newsee/feature/masters/domain/modal/geography_master.dart';
@@ -87,7 +88,10 @@ class Address extends StatelessWidget {
       form.control('cityDistrict').updateValue(val.cityDistrict);
       form.control('area').updateValue(val.area);
       form.control('pincode').updateValue(val.pincode);
-      form.markAsDisabled();
+      final leadref = DraftService().getCurrentLeadRef();
+      if (leadref == '' && leadref.isEmpty) {
+        form.markAsDisabled();
+      }
     } catch (error) {
       print('mapAddressDetails-error => $error');
     }
@@ -155,8 +159,12 @@ class Address extends StatelessWidget {
               } else if (dedupeState.aadharvalidateResponse != null) {
                 print(dedupeState.aadharvalidateResponse);
                 mapAadharResponse(dedupeState.aadharvalidateResponse);
-              } 
-            } else if (state.status == SaveStatus.success && state.getLead == true) {
+              }
+            } else if (state.status == SaveStatus.success &&
+                state.getLead == false) {
+              mapAddressDetails(state.addressData);
+            } else if (state.status == SaveStatus.success &&
+                state.getLead == true) {
               mapAddressDetails(state.addressData);
             }
             return Stack(
@@ -354,12 +362,12 @@ class Address extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () {
-                                if (state.getLead == null || state.getLead == false) {
+                                if (state.getLead == null ||
+                                    state.getLead == false) {
                                   print("Address Details value ${form.value}");
                                   if (form.valid) {
-                                    AddressData addressData = AddressData.fromMap(
-                                      form.value,
-                                    );
+                                    AddressData addressData =
+                                        AddressData.fromMap(form.value);
                                     context.read<AddressDetailsBloc>().add(
                                       AddressDetailsSaveEvent(
                                         addressData: addressData,

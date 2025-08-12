@@ -19,12 +19,14 @@ import 'package:newsee/widgets/side_navigation.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 
 class NewLeadPage extends StatelessWidget {
-  final GetLeadResponse? fullLeadData;
-  NewLeadPage({this.fullLeadData});
+  // final GetLeadResponse? fullLeadData;
+  final dynamic fullLeadData;
+  final String? tabType;
+  NewLeadPage({this.fullLeadData, this.tabType});
 
   @override
   Widget build(BuildContext context) {
-    print("newlead page- fullLeadData $fullLeadData");
+    print("newlead page- fullLeadData $fullLeadData, $tabType");
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -35,21 +37,46 @@ class NewLeadPage extends StatelessWidget {
                         ? LoanproductInit(
                           loanproductState: LoanproductState.init(),
                         )
-                        : LoanproductFetchEvent(
+                        : tabType == null
+                        ? LoanproductFetchEvent(
                           leadDetails: fullLeadData?.LeadDetails,
+                        )
+                        : LoanproductFetchEvent(
+                          leadDetails: fullLeadData?.loan,
                         ),
                   ),
         ),
-        BlocProvider(create: (context) => DedupeBloc()),
+        BlocProvider(
+          create:
+              (context) =>
+                  (tabType == 'draft')
+                      ? (fullLeadData?.dedupe is Map &&
+                              (fullLeadData!.dedupe as Map).isNotEmpty)
+                          ? (DedupeBloc()..add(
+                            DedupeDraftResponseFetch(
+                              responseData: fullLeadData!.dedupe,
+                            ),
+                          ))
+                          : (DedupeBloc()..add(DedupeDetailsInitEvent()))
+                      : (DedupeBloc()..add(DedupeDetailsInitEvent())),
+        ),
+
         BlocProvider(
           create:
               (context) =>
                   PersonalDetailsBloc()..add(
                     fullLeadData == null
                         ? PersonalDetailsInitEvent(cifResponseModel: null)
-                        : PersonalDetailsFetchEvent(
-                          leadDetails: fullLeadData?.LeadDetails,
-                        ),
+                        : (tabType == null
+                            ? PersonalDetailsFetchEvent(
+                              leadDetails: fullLeadData?.LeadDetails,
+                            )
+                            : (fullLeadData?.personal is Map &&
+                                fullLeadData?.personal.isNotEmpty)
+                            ? PersonalDetailsFetchEvent(
+                              leadDetails: fullLeadData?.personal,
+                            )
+                            : PersonalDetailsInitEvent(cifResponseModel: null)),
                   ),
           lazy: false,
         ),
@@ -59,9 +86,17 @@ class NewLeadPage extends StatelessWidget {
                   AddressDetailsBloc()..add(
                     fullLeadData == null
                         ? AddressDetailsInitEvent(cifResponseModel: null)
-                        : AddressDetailsFetchEvent(
-                          leadAddressDetails: fullLeadData?.LeadAddressDetails,
-                        ),
+                        : (tabType == null
+                            ? AddressDetailsFetchEvent(
+                              leadAddressDetails:
+                                  fullLeadData?.LeadAddressDetails,
+                            )
+                            : (fullLeadData?.address is Map &&
+                                fullLeadData?.address.isNotEmpty)
+                            ? AddressDetailsFetchEvent(
+                              leadAddressDetails: fullLeadData?.address,
+                            )
+                            : AddressDetailsInitEvent(cifResponseModel: null)),
                   ),
           lazy: false,
         ),
@@ -71,16 +106,30 @@ class NewLeadPage extends StatelessWidget {
                   CoappDetailsBloc()..add(
                     fullLeadData == null
                         ? CoAppDetailsInitEvent()
-                        : CoApplicantandGurantorFetchEvent(
-                          leadDetails: fullLeadData?.LeadDetails,
-                        ),
+                        : (tabType == null
+                            ? CoApplicantandGurantorFetchEvent(
+                              leadDetails: [fullLeadData!.LeadDetails],
+                            )
+                            : (fullLeadData!.coapplicant is List &&
+                                    (fullLeadData!.coapplicant as List)
+                                        .isNotEmpty
+                                ? CoApplicantandGurantorFetchEvent(
+                                  leadDetails: fullLeadData!.coapplicant,
+                                )
+                                : CoAppDetailsInitEvent())),
                   ),
+
           lazy: false,
         ),
         BlocProvider(create: (context) => LeadSubmitBloc()),
       ],
       child: DefaultTabController(
-        length: fullLeadData == null ? 6 : 4,
+        length:
+            fullLeadData == null
+                ? 6
+                : tabType == 'draft'
+                ? 6
+                : 4,
         child: Scaffold(
           appBar:
               Globalconfig.isInitialRoute
@@ -133,6 +182,8 @@ class NewLeadPage extends StatelessWidget {
 
                               final statusList =
                                   fullLeadData == null
+                                      ? firstStatusList
+                                      : tabType == 'draft'
                                       ? firstStatusList
                                       : getstatusList;
 
@@ -204,7 +255,7 @@ class NewLeadPage extends StatelessWidget {
                               }
                             },
                             tabs:
-                                fullLeadData == null
+                                fullLeadData == null || tabType == 'draft'
                                     ? <Widget>[
                                       statusTabBar(
                                         icon: Icons.badge,
@@ -281,6 +332,15 @@ class NewLeadPage extends StatelessWidget {
           body: TabBarView(
             children:
                 fullLeadData == null
+                    ? [
+                      Loan(title: 'loan'),
+                      DedupeView(title: 'dedupe'),
+                      Personal(title: 'personal'),
+                      Address(title: 'address'),
+                      CoApplicantPage(title: 'Co Applicant Details'),
+                      LeadSubmitPage(title: 'Lead Details'),
+                    ]
+                    : tabType == 'draft'
                     ? [
                       Loan(title: 'loan'),
                       DedupeView(title: 'dedupe'),

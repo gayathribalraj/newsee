@@ -1,0 +1,12 @@
+{
+    "responseData": {
+        "responseData": [
+            {
+                "code": "100",
+                "value": "MADURAI"
+            }
+        ]
+    },
+    "ErrorMessage": "District Master API triggered Successfully",
+    "Success": true
+}

@@ -326,7 +326,31 @@ class LandHoldingPage extends StatelessWidget {
                                           ),
                                         );
                                       },
-                                      selItem: () => null,
+                                      selItem: () {
+                                        final value = form.control('state').value;
+                                        if (value == null || value.toString().isEmpty) {
+                                          return null;
+                                        }
+                                        if (state.status == SaveStatus.update && state.selectedLandData?.lslLandState != null) {
+                                          String? stateCode = state.selectedLandData?.lslLandState;
+
+                                          GeographyMaster? geographyMaster = state
+                                              .stateCityMaster
+                                              ?.firstWhere((val) => val.code == stateCode);
+                                          print(geographyMaster);
+                                          if (geographyMaster != null) {
+                                            form.controls['state']
+                                                ?.updateValue(geographyMaster.code);
+                                            return geographyMaster;
+                                          } else {
+                                            return <GeographyMaster>[];
+                                          }
+                                        } else if (state.stateCityMaster!.isEmpty) {
+                                          form.controls['state']
+                                              ?.updateValue("");
+                                          return <GeographyMaster>[];
+                                        }
+                                      },
                                     ),
                                     SearchableDropdown(
                                       controlName: 'district',
@@ -337,7 +361,31 @@ class LandHoldingPage extends StatelessWidget {
                                           val.code,
                                         );
                                       },
-                                      selItem: () => null,
+                                      selItem: () {
+                                        final value = form.control('district').value;
+                                        if (value == null || value.toString().isEmpty) {
+                                          return null;
+                                        }
+                                        if (state.status == SaveStatus.update && state.selectedLandData?.lslLandState != null) {
+                                          String? cityCode = state.selectedLandData?.lslLandDistrict;
+
+                                          GeographyMaster? geographyMaster = state
+                                              .cityMaster
+                                              ?.firstWhere((val) => val.code == cityCode);
+                                          print(geographyMaster);
+                                          if (geographyMaster != null) {
+                                            form.controls['district']
+                                                ?.updateValue(geographyMaster.code);
+                                            return geographyMaster;
+                                          } else {
+                                            return <GeographyMaster>[];
+                                          }
+                                        } else if (state.stateCityMaster!.isEmpty) {
+                                          form.controls['district']
+                                              ?.updateValue("");
+                                          return <GeographyMaster>[];
+                                        }
+                                      },
                                     ),
                                     CustomTextField(
                                       controlName: 'village',

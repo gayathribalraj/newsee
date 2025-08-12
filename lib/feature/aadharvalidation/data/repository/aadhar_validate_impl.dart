@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
+import 'package:newsee/AppData/app_constants.dart';
+import 'package:newsee/AppData/globalconfig.dart';
+import 'package:newsee/Utils/offline_data_provider.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/core/api/api_client.dart';
 import 'package:newsee/core/api/auth_failure.dart';
@@ -30,9 +36,13 @@ class AadharValidateImpl extends AadharvalidateRepo {
   }) async {
     HttpConnectionFailure failure = HttpConnectionFailure(message: "");
     try {
-      var responseData = await AadharValidateDatasource(
-        dio: ApiClient().getDio(),
-      ).validateAadhaar(request);
+      final responseData =
+          Globalconfig.isOffline
+              ? await offlineDataProvider(path: AppConstants.aadhaarResponse)
+              : await AadharValidateDatasource(
+                dio: ApiClient().getDio(),
+              ).validateAadhaar(request);
+
       if (responseData.data['Success']) {
         final AadharvalidateResponse response = AadharvalidateResponse.fromMap(
           responseData.data['responseData']['data'],

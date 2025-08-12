@@ -11,6 +11,7 @@ import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/core/api/failure.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/feature/coapplicant/domain/modal/coapplicant_data.dart';
+import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/feature/leadsubmit/data/repository/lead_submit_repo_impl.dart';
 import 'package:newsee/feature/leadsubmit/data/repository/proposal_repo_impl.dart';
 import 'package:newsee/feature/leadsubmit/domain/modal/dedupe.dart';
@@ -129,6 +130,7 @@ final class LeadSubmitBloc extends Bloc<LeadSubmitEvent, LeadSubmitState> {
             leadSubmitRequest: LeadSubmitRequest.fromMap(leadSubmitRequest),
           ),
         );
+        deleteDraftFromStorage();
       } else {
         print('Lead Submit Failure...');
 
@@ -143,6 +145,12 @@ final class LeadSubmitBloc extends Bloc<LeadSubmitEvent, LeadSubmitState> {
 
       emit(state.copyWith(leadSubmitStatus: SubmitStatus.failure));
     }
+  }
+
+  deleteDraftFromStorage() async {
+    final draftService = DraftService();
+    final leadref = draftService.getCurrentLeadRef();
+    await draftService.deleteDraft(leadref);
   }
 
   Future<void> onCreateProposalRequest(

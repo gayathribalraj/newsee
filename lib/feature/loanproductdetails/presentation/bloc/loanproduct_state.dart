@@ -43,7 +43,7 @@ class LoanproductState extends Equatable {
     productmasterList,
     showBottomSheet,
     status,
-    getLead
+    getLead,
   ];
 
   const LoanproductState({
@@ -58,7 +58,7 @@ class LoanproductState extends Equatable {
     this.selectedProduct,
     this.showBottomSheet,
     this.status,
-    this.getLead
+    this.getLead,
   });
 
   LoanproductState copyWith({
@@ -73,8 +73,7 @@ class LoanproductState extends Equatable {
     ProductMaster? selectedProduct,
     bool? showBottomSheet,
     SaveStatus? status,
-    bool? getLead
-
+    bool? getLead,
   }) {
     return LoanproductState(
       leadId: leadId ?? this.leadId,
@@ -90,7 +89,7 @@ class LoanproductState extends Equatable {
       selectedProduct: selectedProduct,
       showBottomSheet: showBottomSheet ?? this.showBottomSheet,
       status: status ?? this.status,
-      getLead: getLead ?? this.getLead
+      getLead: getLead ?? this.getLead,
     );
   }
 
@@ -107,7 +106,7 @@ class LoanproductState extends Equatable {
       'selectedProduct': selectedProduct?.toMap(),
       'showBottomSheet': showBottomSheet,
       'status': status,
-      'getLead': getLead
+      'getLead': getLead,
     };
   }
 
@@ -119,7 +118,7 @@ class LoanproductState extends Equatable {
     selectedProduct: null,
     showBottomSheet: false,
     status: SaveStatus.init,
-    getLead: false
+    getLead: false,
   );
 
   factory LoanproductState.fromMap(Map<String, dynamic> map) {

@@ -14,11 +14,11 @@ import 'package:newsee/widgets/download_progress_widget.dart';
 
 class MastersPage extends StatelessWidget {
   const MastersPage({super.key});
-  debugMasters(BuildContext context, MastersState state) {
-    print(
-      '${state.masterResponse?.masterType.name}  MasterDownload Status => ${state.status}',
-    );
-  }
+  // debugMasters(BuildContext context, MastersState state) {
+  //   print(
+  //     '${state.masterResponse?.masterType.name}  MasterDownload Status => ${state.status}',
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +129,7 @@ class MastersPage extends StatelessWidget {
                   updateDownloadProgress(4);
                   print('progress completed => $progress');
                   await Future.delayed(const Duration(seconds: 2));
-                  if(Globalconfig.masterUpdate) {
+                  if (Globalconfig.masterUpdate) {
                     // Navigator.push(
                     //   context,
                     //   MaterialPageRoute(builder: (context) => HomePage(tabdata: 4)),

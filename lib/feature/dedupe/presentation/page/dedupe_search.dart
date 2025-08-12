@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/feature/aadharvalidation/domain/modal/aadharvalidate_request.dart';
 import 'package:newsee/feature/dedupe/domain/model/deduperequest.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
+import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
@@ -21,7 +22,7 @@ class DedupeSearch extends StatelessWidget {
     this.onSuccess,
   });
 
-  disposeResponse(context, state) {
+  disposeResponse(context, state) async {
     print("Welcome here for you $state");
     Navigator.of(context).pop();
     if (state.dedupeResponse?.remarksFlag) {
@@ -36,6 +37,18 @@ class DedupeSearch extends StatelessWidget {
       if (tabController.index < tabController.length - 1) {
         tabController.animateTo(tabController.index + 1);
       }
+    }
+
+    if (onSuccess == null) {
+      final draftService = DraftService();
+      await draftService.saveOrUpdateTabData(
+        tabKey: 'dedupe',
+        tabData: {
+          'aadharvalidateResponse': state.aadharvalidateResponse,
+          'isNewCustomer': state.isNewCustomer,
+          'constitution': state.constitution,
+        },
+      );
     }
 
     if (onSuccess != null) {

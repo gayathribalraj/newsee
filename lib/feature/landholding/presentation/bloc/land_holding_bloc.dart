@@ -61,11 +61,21 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
               .toList();
       print("LandData from response at get=> $landData");
 
+      List<GeographyMaster>? cityMaster = [];
+
+      for(var i=0; i < landData.length; i++) {
+        List<GeographyMaster>? coappCityList = await getCityMaster(landData[i].lslLandState, null);
+        cityMaster.addAll(coappCityList ?? []);
+      }
+
+      
+
       emit(
         state.copyWith(
           lovlist: listOfLov,
           status: SaveStatus.init,
           stateCityMaster: stateCityMaster,
+          cityMaster: cityMaster,
           landData: landData,
         ),
       );
@@ -252,5 +262,38 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
         districtMaster: _landHoldingState.districtMaster,
       ),
     );
+  }
+
+  Future<List<GeographyMaster>?> getCityMaster(stateCode, cityCode) async {
+    try {
+      final CityDistrictRequest citydistrictrequest = CityDistrictRequest(
+        stateCode: stateCode,
+        cityCode: cityCode,
+      );
+      Cityrepository cityrepository = CitylistRepoImpl();
+      AsyncResponseHandler response = await cityrepository.fetchCityList(
+        citydistrictrequest,
+      );
+
+      Map<String, dynamic> _resp = response.right as Map<String, dynamic>;
+
+      List<GeographyMaster> cityMaster =
+        _resp['cityMaster'] != null && _resp['cityMaster'].isNotEmpty
+            ? _resp['cityMaster'] as List<GeographyMaster>
+            : [];
+    List<GeographyMaster> districtMaster =
+        _resp['districtMaster'] != null && _resp['districtMaster'].isNotEmpty
+            ? _resp['districtMaster'] as List<GeographyMaster>
+            : [];
+      
+      if(cityCode == null) {
+        return cityMaster;
+      } else {
+        return districtMaster;
+      }
+    } catch (error) {
+      print("mapGaurantor-error => $error");
+      return null;
+    }
   }
 }

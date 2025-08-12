@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:newsee/AppData/app_api_constants.dart';
+import 'package:newsee/AppData/app_constants.dart';
+import 'package:newsee/Utils/offline_data_provider.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/core/api/api_client.dart';
@@ -54,7 +58,7 @@ class MasterRepoImpl extends MasterRepo {
     MasterResponse partialResponse = MasterResponse(
       masterType: masterTypes,
       master: [],
-      skipMaster: false
+      skipMaster: false,
     );
     // MasterResponse partiallResponse = MasterPartialDownload(
     //   master;
@@ -64,13 +68,13 @@ class MasterRepoImpl extends MasterRepo {
     AuthFailure failure = AuthFailure(message: "");
 
     try {
-      print("Globalconfig.diffListOfMaster-in master page ${Globalconfig.diffListOfMaster}");
+      print(
+        "Globalconfig.diffListOfMaster-in master page ${Globalconfig.diffListOfMaster}",
+      );
       var listofmaster = Globalconfig.diffListOfMaster;
 
       bool getMaster(String name) {
-        var getlist = listofmaster.where(
-          (val) => val.mastername == name
-        );
+        var getlist = listofmaster.where((val) => val.mastername == name);
         if (getlist.isNotEmpty) {
           return true;
         } else {
@@ -88,9 +92,12 @@ class MasterRepoImpl extends MasterRepo {
           /* Lov Master fetch from API and Save in respective table */
           masterTypes = MasterTypes.lov;
           if (listofmaster.isEmpty || lovlist) {
-            Response response = await MastersRemoteDatasource(
-              dio: ApiClient().getDio(),
-            ).downloadMaster(request);
+            final response =
+                Globalconfig.isOffline
+                    ? await offlineDataProvider(path: AppConstants.lovResponse)
+                    : await MastersRemoteDatasource(
+                      dio: ApiClient().getDio(),
+                    ).downloadMaster(request);
 
             final String versionFromResponse = response.data['version'];
             final String masterNameFromResponse = ApiConstants.master_key_lov;
@@ -147,17 +154,20 @@ class MasterRepoImpl extends MasterRepo {
             partialResponse = MasterResponse(
               masterType: MasterTypes.products,
               master: [],
-              skipMaster: true
+              skipMaster: true,
             );
-
           }
         case ApiConstants.master_key_products:
-
           masterTypes = MasterTypes.products;
           if (listofmaster.isEmpty || productmasterlist) {
-            Response response = await MastersRemoteDatasource(
-              dio: ApiClient().getDio(),
-            ).downloadMaster(request);
+            final response =
+                Globalconfig.isOffline
+                    ? await offlineDataProvider(
+                      path: AppConstants.productResponse,
+                    )
+                    : await MastersRemoteDatasource(
+                      dio: ApiClient().getDio(),
+                    ).downloadMaster(request);
 
             final String versionFromResponse = response.data['version'];
             final String masterNameFromResponse =
@@ -261,18 +271,22 @@ class MasterRepoImpl extends MasterRepo {
             partialResponse = MasterResponse(
               masterType: MasterTypes.productschema,
               master: [],
-              skipMaster: true
+              skipMaster: true,
             );
-
           }
 
         case ApiConstants.master_key_productschema:
           masterTypes = MasterTypes.productschema;
           if (listofmaster.isEmpty || productschemalist) {
+            final response =
+                Globalconfig.isOffline
+                    ? await offlineDataProvider(
+                      path: AppConstants.productSchemaResponse,
+                    )
+                    : await MastersRemoteDatasource(
+                      dio: ApiClient().getDio(),
+                    ).downloadMaster(request);
 
-            Response response = await MastersRemoteDatasource(
-              dio: ApiClient().getDio(),
-            ).downloadMaster(request);
             List<ProductSchema> productSchemaList = ProductSchemaParserImpl()
                 .parseResponse(response);
 
@@ -282,9 +296,8 @@ class MasterRepoImpl extends MasterRepo {
 
             if (productSchemaList.isNotEmpty) {
               Iterator<ProductSchema> it = productSchemaList.iterator;
-              ProductSchemaCrudRepo productSchemaCrudRepo = ProductSchemaCrudRepo(
-                db,
-              );
+              ProductSchemaCrudRepo productSchemaCrudRepo =
+                  ProductSchemaCrudRepo(db);
               productSchemaCrudRepo.deleteAll();
               while (it.moveNext()) {
                 productSchemaCrudRepo.save(it.current);
@@ -333,17 +346,21 @@ class MasterRepoImpl extends MasterRepo {
             partialResponse = MasterResponse(
               masterType: MasterTypes.statecitymaster,
               master: [],
-              skipMaster: true
+              skipMaster: true,
             );
-
           }
 
         case ApiConstants.master_key_statecity:
           masterTypes = MasterTypes.statecitymaster;
           if (listofmaster.isEmpty || statecitylist) {
-            Response response = await MastersRemoteDatasource(
-              dio: ApiClient().getDio(),
-            ).downloadMaster(request);
+            final response =
+                Globalconfig.isOffline
+                    ? await offlineDataProvider(
+                      path: AppConstants.statecityResponse,
+                    )
+                    : await MastersRemoteDatasource(
+                      dio: ApiClient().getDio(),
+                    ).downloadMaster(request);
 
             final String versionFromResponse = response.data['version'];
             final String masterNameFromResponse =
@@ -394,12 +411,12 @@ class MasterRepoImpl extends MasterRepo {
                 "Master Name: $masterNameFromResponse, Version: $versionFromResponse, Failure",
               );
               failure = AuthFailure(message: errorMessage);
-            } 
+            }
           } else {
             partialResponse = MasterResponse(
               masterType: MasterTypes.success,
               master: [],
-              skipMaster: true
+              skipMaster: true,
             );
           }
 
@@ -435,7 +452,10 @@ class MasterRepoImpl extends MasterRepo {
     try {
       final masterVersionCrudRepo = MasterversionCrudRepo(db);
 
-      var dblength =  await masterVersionCrudRepo.getByColumnName(columnName: 'mastername', columnValue: masterNameFromResponse);
+      var dblength = await masterVersionCrudRepo.getByColumnName(
+        columnName: 'mastername',
+        columnValue: masterNameFromResponse,
+      );
 
       if (dblength.isEmpty) {
         await masterVersionCrudRepo.save(
@@ -452,12 +472,10 @@ class MasterRepoImpl extends MasterRepo {
             version: versionFromResponse,
             status: isMasterDownloadSuccess,
           ),
-      );
+        );
       }
-
-      
     } catch (e) {
       print("Error inserting masterversion : $e");
     }
-  }  // now lov is a List contains Map<String,dynamic>
+  } // now lov is a List contains Map<String,dynamic>
 }

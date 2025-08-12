@@ -1,0 +1,9 @@
+{
+    "responseData": {
+        "CBS": true,
+        "remarksFlag": false,
+        "remarks": "No Loan Account Available for the CustomerId"
+    },
+    "ErrorMessage": "Dudupe API triggered Successfully",
+    "Success": true
+}

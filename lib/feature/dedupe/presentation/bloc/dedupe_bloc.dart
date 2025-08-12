@@ -22,6 +22,63 @@ class DedupeBloc extends Bloc<DedupeEvent, DedupeState> {
     on<ValiateAadharEvent>(onValidateAadhar);
     on<SearchCifEvent>(onSearchCif);
     on<OpenSheetEvent>(openbottomsheet);
+    on<DedupeDraftResponseFetch>(dedupeDraftResponse);
+    on<DedupeDetailsInitEvent>(initDedupeDetails);
+  }
+
+  Future<void> initDedupeDetails(
+    DedupeDetailsInitEvent event,
+    Emitter emit,
+  ) async {
+    print('event');
+    emit(
+      state.copyWith(
+        isNewCustomer: null,
+        constitution: null,
+        status: DedupeFetchStatus.init,
+      ),
+    );
+  }
+
+  Future<void> dedupeDraftResponse(
+    DedupeDraftResponseFetch event,
+    Emitter emit,
+  ) async {
+    print('dedupe: ${event.responseData}');
+    if (event.responseData!.isNotEmpty) {
+      if (event.responseData?['isNewCustomer'] == true) {
+        emit(
+          state.copyWith(
+            status: DedupeFetchStatus.success,
+            isNewCustomer: event.responseData?['isNewCustomer'] as bool?,
+            constitution: event.responseData?['constitution'] as String?,
+            aadharvalidateResponse:
+                event.responseData?['aadharvalidateResponse'] != null
+                    ? AadharvalidateResponse.fromJson(
+                      event.responseData?['aadharvalidateResponse'] ?? {},
+                    )
+                    : null,
+            isAadhaarValidated: true,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: DedupeFetchStatus.success,
+            isNewCustomer: event.responseData?['isNewCustomer'],
+            constitution: event.responseData?['constitution'],
+            cifResponse:
+                event.responseData?['cifResponse'] != null
+                    ? CifResponse.fromJson(
+                      Map<String, dynamic>.from(
+                        event.responseData!['cifResponse'],
+                      ),
+                    )
+                    : null,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> dedupeFetch(FetchDedupeEvent event, Emitter emit) async {

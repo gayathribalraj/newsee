@@ -1,0 +1,32 @@
+{
+    "responseData": {
+        "data": {
+            "pincode": "603111",
+            "country": "India",
+            "gender": "FEMALE",
+            "documentType": "AADHAAR",
+            "xmlBase64": "PD94bWwgd5Yz4=",
+            "locality": "",
+            "mobile": "9025436676",
+            "dateOfBirth": "1991-05-24",
+            "maskAadhaarNumber": "XXXXXXXX9123",
+            "house": "NO 3/2",
+            "referenceId": "8da053b4-7891-4535-9a3f-e9ac834f50a2",
+            "responseCode": "SRC001",
+            "careOf": "D/O:  Rajesh",
+            "street": "VEERANAM ROAD STREET",
+            "district": "Kancheepuram",
+            "name": "Revathi R",
+            "postOfficeName": "Arungunam",
+            "vtcName": "Munuthikuppam",
+            "photoBase64": "/9j/4q1E7qHkx8qoQrqThifun65NFFWnenz9TNJKfKkf//Z",
+            "state": "Tamil Nadu",
+            "landmark": "munithikuppam",
+            "responseMessage": "Successfully Completed.",
+            "subDistrict": "Maduranthakam",
+            "email": ""
+        }
+    },
+    "ErrorMessage": "Aadhaar API triggered Successfully",
+    "Success": true
+}

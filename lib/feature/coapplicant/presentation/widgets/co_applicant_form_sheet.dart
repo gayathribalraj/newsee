@@ -118,28 +118,6 @@ class _CoApplicantFormBottomSheetState
                     }
                   }
                 }
-
-                // for (final ctrl in controls) {
-                //   if (cifresponse?[ctrl.key] != null) {
-                //     if (ctrl.key == 'dob') {
-                //       final formattedDate = getDateFormatedByProvided(
-                //         cifresponse?[ctrl.key],
-                //         from: AppConstants.Format_dd_MM_yyyy,
-                //         to: AppConstants.Format_yyyy_MM_dd,
-                //       );
-                //       print('formattedDate in coapppage => $formattedDate');
-                //       coAppAndGurantorForm.controls[ctrl.key]?.updateValue(
-                //         formattedDate,
-                //       );
-                //     }
-                //     if (ctrl.key == 'state' || ctrl.key == 'cityDistrict') {
-                //       coAppAndGurantorForm.controls[ctrl.key]?.updateValue("");
-                //     }
-                //     coAppAndGurantorForm.controls[ctrl.key]?.updateValue(
-                //       cifresponse?[ctrl.key],
-                //     );
-                //   }
-                // }
               } else if (state.status == SaveStatus.dedupefailure) {
                 // showSnack(context, message: 'Cif pulling failed...');
                 showErrorDialog(
@@ -149,7 +127,7 @@ class _CoApplicantFormBottomSheetState
               }
             },
             builder: (context, state) {
-              if(state.status == SaveStatus.success && state.getLead) {
+              if (state.status == SaveStatus.success && state.getLead) {
                 coAppAndGurantorForm.markAsDisabled();
               }
               DedupeState? dedupeState;
@@ -642,7 +620,7 @@ class _CoApplicantFormBottomSheetState
                               return <GeographyMaster>[];
                             } else if (state.getLead) {
                               String? stateCode = widget.existingData!.state;
-      
+
                               GeographyMaster? geographyMaster = state
                                   .stateCityMaster
                                   ?.firstWhere((val) => val.code == stateCode);
@@ -763,16 +741,21 @@ class _CoApplicantFormBottomSheetState
                                         );
                                     CoapplicantData coapplicantDataFormatted =
                                         coapplicantData.copyWith(
-                                          dob: getDateFormatedByProvided(
+                                          // dob: getDateFormatedByProvided(
+                                          //   coapplicantData.dob,
+                                          //   from:
+                                          //       AppConstants.Format_dd_MM_yyyy,
+                                          //   to: AppConstants.Format_yyyy_MM_dd,
+                                          // ),
+                                          dob: getDateFormat(
                                             coapplicantData.dob,
-                                            from: AppConstants.Format_dd_MM_yyyy,
-                                            to: AppConstants.Format_yyyy_MM_dd,
                                           ),
                                           applicantType: widget.applicantType,
                                         );
                                     context.read<CoappDetailsBloc>().add(
                                       CoAppDetailsSaveEvent(
-                                        coapplicantData: coapplicantDataFormatted,
+                                        coapplicantData:
+                                            coapplicantDataFormatted,
                                         index: widget.index,
                                       ),
                                     );
@@ -796,8 +779,6 @@ class _CoApplicantFormBottomSheetState
                                   }
                                 }
                               }
-                              
-                              
                             },
                             child: Text('Save'),
                           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/AppSamples/ReactiveForms/view/login-with-account.dart';
 import 'package:newsee/Model/login_request.dart';
 import 'package:newsee/blocs/login/login_bloc.dart';
@@ -11,7 +12,8 @@ import 'package:newsee/feature/auth/presentation/bloc/auth_bloc.dart';
 
 class LoginBlocProvide extends StatelessWidget {
   final bool? createPIN;
-  const LoginBlocProvide(this.createPIN, {super.key});
+  final OperationNetwork network;
+  const LoginBlocProvide(this.createPIN, this.network);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class LoginBlocProvide extends StatelessWidget {
                 ),
               ),
             ),
-        child: LoginpageWithAC(createPIN),
+        child: LoginpageWithAC(createPIN, network),
       ),
     );
   }

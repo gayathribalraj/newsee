@@ -5,6 +5,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:newsee/feature/draft/presentation/pages/draft_inbox.dart';
 import 'package:newsee/feature/leadInbox/presentation/page/completed_leads.dart';
 import 'package:newsee/feature/proposal_inbox/presentation/page/proposal_inbox_leads.dart';
 import 'pending_leads.dart';
@@ -18,7 +19,7 @@ class LeadTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Column(
         children: [
           Container(
@@ -27,13 +28,18 @@ class LeadTabBar extends StatelessWidget {
               labelColor: Colors.white,
               unselectedLabelColor: Colors.white70,
               indicatorColor: Colors.white,
-              tabs: [Tab(text: "Leads"), Tab(text: "Applications")],
+              tabs: [
+                Tab(text: "Leads"),
+                Tab(text: "Draft"),
+                Tab(text: "Applications"),
+              ],
             ),
           ),
           Expanded(
             child: TabBarView(
               children: [
                 CompletedLeads(searchQuery: searchQuery),
+                DraftInbox(),
                 ProposalInbox(searchQuery: searchQuery),
               ],
             ),

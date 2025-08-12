@@ -19,8 +19,9 @@ class OptionsSheet extends StatelessWidget {
   final String? status;
   final List<String>? details;
   final List<String>? detailsName;
-  final Color? bgColor;
+
   const OptionsSheet({
+    super.key,
     required this.icon,
     required this.title,
     required this.onTap,
@@ -28,83 +29,116 @@ class OptionsSheet extends StatelessWidget {
     this.status,
     this.details,
     this.detailsName,
-    this.bgColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final bool isCompleted = status?.toLowerCase() == 'completed';
 
-    return ListTile(
+    return InkWell(
       onTap: () {
         FocusScope.of(context).unfocus();
         onTap();
       },
-      leading: Container(
-        width: 40,
-        height: 40,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: bgColor ?? Colors.teal.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        alignment: Alignment.center,
-        child: Icon(icon, color: Colors.white, size: 20),
-      ),
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-      ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (subtitle != null && subtitle!.isNotEmpty)
-            Text(
-              subtitle!,
-              style: const TextStyle(fontSize: 16, color: Colors.black),
+          color: Colors.grey.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
             ),
-          if (details != null &&
-              details!.isNotEmpty &&
-              detailsName != null) ...[
-            ...List.generate(details!.length, (index) {
-              final label =
-                  index < detailsName!.length ? detailsName![index] : '';
-              final detail = details![index];
-              return Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (label.isNotEmpty)
-                      Text(
-                        '$label: ',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.black,
-                        ),
-                      ),
-                    Expanded(
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Leading Icon Container
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.teal.shade200, Colors.teal.shade700],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              alignment: Alignment.center,
+              child: Icon(icon, color: Colors.white, size: 24),
+            ),
+            const SizedBox(width: 12),
+            // Title, subtitle, and details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  if (subtitle != null && subtitle!.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
                       child: Text(
-                        detail,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.black,
+                        subtitle!,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade800,
                         ),
                       ),
                     ),
+                  if (details != null &&
+                      details!.isNotEmpty &&
+                      detailsName != null) ...[
+                    const SizedBox(height: 6),
+                    ...List.generate(details!.length, (index) {
+                      final label =
+                          index < detailsName!.length
+                              ? detailsName![index]
+                              : '';
+                      final detail = details![index];
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: RichText(
+                          text: TextSpan(
+                            text: label.isNotEmpty ? '$label: ' : '',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: detail,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
                   ],
-                ),
-              );
-            }),
-          ],
-        ],
-      ),
-      trailing:
-          status != null
-              ? Container(
+                ],
+              ),
+            ),
+            // Trailing Status Pill
+            if (status != null)
+              Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 4,
@@ -113,6 +147,13 @@ class OptionsSheet extends StatelessWidget {
                   color:
                       isCompleted ? Colors.green.shade100 : Colors.red.shade100,
                   borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Text(
                   status!,
@@ -125,11 +166,10 @@ class OptionsSheet extends StatelessWidget {
                             : Colors.red.shade800,
                   ),
                 ),
-              )
-              : null,
-      shape: Border(bottom: BorderSide(color: Colors.grey.shade200)),
-      tileColor: Colors.transparent,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -44,6 +44,16 @@ class AppConstants {
   static const String mpinRegistrationFailure = 'MPIN Registeration Failed';
   static const String mpinLoginSuccess = 'MPIN Login Successfull';
   static const String mpinLoginFailure = 'MPIN Login Failed';
+  static const String offlineDatasourceRootPath = 'assets/data/';
+  static const String aadhaarResponse = 'assets/data/aadhaar_response.json';
+  static const String cifResponsonse = 'assets/data/cif.json';
+  static const String cityListResponse = 'assets/data/citylist.json';
+  static const String dedupeResponse = 'assets/data/dedupe.json';
+  static const String districtResponse = 'assets/data/districtlist.json';
+  static const String lovResponse = 'assets/data/lov.json';
+  static const String productResponse = 'assets/data/product.json';
+  static const String productSchemaResponse = 'assets/data/productschema.json';
+  static const String statecityResponse = 'assets/data/statecity.json';
 }
 
 class BioMetricResult {

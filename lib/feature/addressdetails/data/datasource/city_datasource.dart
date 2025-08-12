@@ -23,8 +23,8 @@ class CityDatasource {
     return response;
   }
 
-  fecthDistrictList(CityDistrictRequest payload) async {
-    Response response = await dio.post(
+  Future<Response> fecthDistrictList(CityDistrictRequest payload) async {
+    return await dio.post(
       ApiConfig.GETDISCTRICT_API_ENDPOINT,
       data: {
         "stateCode": payload.stateCode,
@@ -33,6 +33,5 @@ class CityDatasource {
             "U2FsdGVkX1/Wa6+JeCIOVLl8LTr8WUocMz8kIGXVbEI9Q32v7zRLrnnvAIeJIVV3",
       },
     );
-    return response;
   }
 }

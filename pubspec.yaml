@@ -119,6 +119,15 @@ flutter:
     - assets/MSME.svg
     - assets/Vehicle_Loan.svg
     - assets/Retail_loan.svg
+    - assets/data/cif.json
+    - assets/data/dedupe.json
+    - assets/data/aadhaar_response.json
+    - assets/data/lov.json
+    - assets/data/product.json
+    - assets/data/productschema.json
+    - assets/data/statecity.json
+    - assets/data/citylist.json
+    - assets/data/districtlist.json
 
     # - assets/logo1.jpg
 

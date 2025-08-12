@@ -1,0 +1,1317 @@
+{
+    "Setupmaster": {
+        "Listofvalues": [
+            {
+                "Header": "AgriProductType",
+                "optvalue": "1",
+                "optDesc": "Agri KCC (Kisan Credit Card)",
+                "optCode": "KCC"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "10",
+                "optDesc": "Agri Minor Irrigation",
+                "optCode": "AMI"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "100",
+                "optDesc": "Test Scheme",
+                "optCode": "TSC"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "11",
+                "optDesc": "Agri AnimalHusbandry",
+                "optCode": "AAAH"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "12",
+                "optDesc": "Agri Fisheries",
+                "optCode": "AAF"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "129",
+                "optDesc": "PS-SSI-METAL - ALUMINIUM EXTRUSION PRODUCTS",
+                "optCode": "1188\t"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "13",
+                "optDesc": "Agri JLG",
+                "optCode": "JLG"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "14",
+                "optDesc": "Agriculture Infrastructure Fund",
+                "optCode": "AIF"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "15",
+                "optDesc": "Food and Agro processing",
+                "optCode": "FAP"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "16",
+                "optDesc": "Rice Sheller",
+                "optCode": "ARS"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "17",
+                "optDesc": "PMFME",
+                "optCode": "PFE"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "18",
+                "optDesc": "Animal Husbandry InfraStruc Dev Fund",
+                "optCode": "AHIDF"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "19",
+                "optDesc": "Food & Non-Food Co-Op Process",
+                "optCode": "FNPC"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "2",
+                "optDesc": "Agri SHG (Self Help Group)",
+                "optCode": "SHG"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "20",
+                "optDesc": "Agri Clinic & Agri Business Centre",
+                "optCode": "ACABC"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "21",
+                "optDesc": "Scheme for Rehabilitation of Manual Scavengers",
+                "optCode": "SRMS"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "22",
+                "optDesc": "Simplified Agri Gold Loan",
+                "optCode": "SAGL"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "23",
+                "optDesc": "AGRI-TAJ",
+                "optCode": "ATJ"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "24",
+                "optDesc": "KCC-JEWEL LOAN",
+                "optCode": "KJL"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "25",
+                "optDesc": "Agri Kcc Above 1.6",
+                "optCode": "KCCA"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "27",
+                "optDesc": "Horticulture",
+                "optCode": "HTC"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "29",
+                "optDesc": "Agri kcc renew",
+                "optCode": "KCCSR"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "3",
+                "optDesc": "Agri Kisan Tatkal Scheme",
+                "optCode": "KTS"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "31",
+                "optDesc": "SIMPLE kcc renew",
+                "optCode": "KCCSR"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "32",
+                "optDesc": "Fresh SHG",
+                "optCode": "FSHG"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "33",
+                "optDesc": "Agri SHG",
+                "optCode": "SHG"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "35",
+                "optDesc": "SHG NULM",
+                "optCode": "NULM"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "36",
+                "optDesc": "SHG NRLM",
+                "optCode": "NRLM"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "37",
+                "optDesc": "SHGLK",
+                "optCode": "SHGLK"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "38",
+                "optDesc": "NULM SHGLK",
+                "optCode": "NULSHG"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "39",
+                "optDesc": "Agri Transport Loan",
+                "optCode": "ATL"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "4",
+                "optDesc": "Agri Farm Mechanization",
+                "optCode": "AFM"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "42",
+                "optDesc": "Agri Allied Mudra",
+                "optCode": "AAMD"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "45",
+                "optDesc": "Agri Food && Agro Krishi Saral",
+                "optCode": "FAS"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "46",
+                "optDesc": "Matysa Samridhi",
+                "optCode": "AMS"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "47",
+                "optDesc": "Agri FPO Finance",
+                "optCode": "AFPO"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "5",
+                "optDesc": "Agri Gold Loan",
+                "optCode": "AGL"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "50",
+                "optDesc": "Agri Enwr Scheme",
+                "optCode": "ENWR"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "6",
+                "optDesc": "Agri Two-wheeler",
+                "optCode": "ATW"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "7",
+                "optDesc": "Agri Dairyrrrrr",
+                "optCode": "AAD"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "8",
+                "optDesc": "Agri Poultry",
+                "optCode": "APL"
+            },
+            {
+                "Header": "AgriProductType",
+                "optvalue": "9",
+                "optDesc": "Agri WAREHOUSE",
+                "optCode": "AWH"
+            },
+            {
+                "Header": "IrrigationNew",
+                "optvalue": "1",
+                "optDesc": "River",
+                "optCode": ""
+            },
+            {
+                "Header": "IrrigationNew",
+                "optvalue": "10",
+                "optDesc": "Tube Wells",
+                "optCode": "TW"
+            },
+            {
+                "Header": "IrrigationNew",
+                "optvalue": "2",
+                "optDesc": "Canal",
+                "optCode": "255"
+            },
+            {
+                "Header": "IrrigationNew",
+                "optvalue": "3",
+                "optDesc": "Pump",
+                "optCode": "645"
+            },
+            {
+                "Header": "IrrigationNew",
+                "optvalue": "4",
+                "optDesc": "Well",
+                "optCode": "98"
+            },
+            {
+                "Header": "IrrigationNew",
+                "optvalue": "6",
+                "optDesc": "Rainfed",
+                "optCode": "875"
+            },
+            {
+                "Header": "IrrigationNew",
+                "optvalue": "7",
+                "optDesc": "Surface Water",
+                "optCode": "001"
+            },
+            {
+                "Header": "IrrigationNew",
+                "optvalue": "8",
+                "optDesc": "Municipal Water",
+                "optCode": "MW"
+            },
+            {
+                "Header": "IrrigationNew",
+                "optvalue": "9",
+                "optDesc": "Tanks",
+                "optCode": "002"
+            },
+            {
+                "Header": "Constitution",
+                "optvalue": "I",
+                "optDesc": "Individual",
+                "optCode": "I"
+            },
+            {
+                "Header": "Constitution",
+                "optvalue": "N",
+                "optDesc": "NonIndividual",
+                "optCode": "N"
+            },
+            {
+                "Header": "AddressType",
+                "optvalue": "1",
+                "optDesc": "Registered Office",
+                "optCode": "1"
+            },
+            {
+                "Header": "AddressType",
+                "optvalue": "10",
+                "optDesc": "Engineering Parts of Automobiles",
+                "optCode": ""
+            },
+            {
+                "Header": "AddressType",
+                "optvalue": "12",
+                "optDesc": "Business",
+                "optCode": "Bus999"
+            },
+            {
+                "Header": "AddressType",
+                "optvalue": "17",
+                "optDesc": "Corporate Office",
+                "optCode": "3"
+            },
+            {
+                "Header": "AddressType",
+                "optvalue": "2",
+                "optDesc": "Correspondence",
+                "optCode": "A1222"
+            },
+            {
+                "Header": "AddressType",
+                "optvalue": "3",
+                "optDesc": "Residential",
+                "optCode": "4"
+            },
+            {
+                "Header": "AddressType",
+                "optvalue": "5",
+                "optDesc": "Factory",
+                "optCode": "2"
+            },
+            {
+                "Header": "AddressType",
+                "optvalue": "9",
+                "optDesc": "Administrative",
+                "optCode": ""
+            },
+            {
+                "Header": "AgricultType",
+                "optvalue": "1",
+                "optDesc": "Farmer",
+                "optCode": ""
+            },
+            {
+                "Header": "AgricultType",
+                "optvalue": "2",
+                "optDesc": "Fisheries",
+                "optCode": "1"
+            },
+            {
+                "Header": "AgricultType",
+                "optvalue": "3",
+                "optDesc": "Animal Husbandry",
+                "optCode": "2"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000001",
+                "optDesc": "GENERAL",
+                "optCode": "CAS000001"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000002",
+                "optDesc": "BACKWARD",
+                "optCode": "CAS000002"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000003",
+                "optDesc": "MOST BACKWARD",
+                "optCode": "CAS000003"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000004",
+                "optDesc": "SC",
+                "optCode": "CAS000004"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000005",
+                "optDesc": "ST",
+                "optCode": "CAS000005"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000006",
+                "optDesc": "OBC",
+                "optCode": "CAS000006"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000007",
+                "optDesc": "OTHERES",
+                "optCode": "CAS000007"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000008",
+                "optDesc": "NT(NOMADIC TRIBE)",
+                "optCode": "CAS000008"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000009",
+                "optDesc": "VJ(VIMUKTA JATI)",
+                "optCode": "CAS000009"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000010",
+                "optDesc": "NORTH EASTERN REGION (NER)-GENERAL",
+                "optCode": "CAS000010"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000011",
+                "optDesc": "NORTH EASTERN REGION (NER-SC)",
+                "optCode": "CAS000011"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "CAS000012",
+                "optDesc": "NORTH EASTERN REGION (NER-ST)",
+                "optCode": "CAS000012"
+            },
+            {
+                "Header": "Caste",
+                "optvalue": "NA",
+                "optDesc": "NOT Applicable",
+                "optCode": "NA"
+            },
+            {
+                "Header": "CustType",
+                "optvalue": "001",
+                "optDesc": "NTB",
+                "optCode": ""
+            },
+            {
+                "Header": "CustType",
+                "optvalue": "002",
+                "optDesc": "ETB",
+                "optCode": ""
+            },
+            {
+                "Header": "CustType",
+                "optvalue": "020101",
+                "optDesc": "020101:NON PERSONAL-GOVERNMENT-CENTRAL",
+                "optCode": "020101"
+            },
+            {
+                "Header": "CustType",
+                "optvalue": "I",
+                "optDesc": "Individual",
+                "optCode": "IND"
+            },
+            {
+                "Header": "CustType",
+                "optvalue": "N",
+                "optDesc": "Non Individual",
+                "optCode": "NonIND"
+            },
+            {
+                "Header": "FarmerCategory",
+                "optvalue": "1",
+                "optDesc": "Owner",
+                "optCode": ""
+            },
+            {
+                "Header": "FarmerCategory",
+                "optvalue": "2",
+                "optDesc": "Sharecropper",
+                "optCode": "1"
+            },
+            {
+                "Header": "FarmerCategory",
+                "optvalue": "3",
+                "optDesc": "Tenant",
+                "optCode": "2"
+            },
+            {
+                "Header": "FarmerType",
+                "optvalue": "1",
+                "optDesc": "Small",
+                "optCode": ""
+            },
+            {
+                "Header": "FarmerType",
+                "optvalue": "2",
+                "optDesc": "Marginal",
+                "optCode": "1"
+            },
+            {
+                "Header": "FarmerType",
+                "optvalue": "3",
+                "optDesc": "Other",
+                "optCode": "2"
+            },
+            {
+                "Header": "Gender",
+                "optvalue": "1",
+                "optDesc": "Female",
+                "optCode": "F"
+            },
+            {
+                "Header": "Gender",
+                "optvalue": "2",
+                "optDesc": "Male",
+                "optCode": "M"
+            },
+            {
+                "Header": "Gender",
+                "optvalue": "5",
+                "optDesc": "Transgender",
+                "optCode": "T"
+            },
+            {
+                "Header": "LandYes",
+                "optvalue": "1",
+                "optDesc": "Yes",
+                "optCode": ""
+            },
+            {
+                "Header": "LandYes",
+                "optvalue": "2",
+                "optDesc": "No",
+                "optCode": ""
+            },
+            {
+                "Header": "LeadStatus",
+                "optvalue": "1",
+                "optDesc": "Open",
+                "optCode": ""
+            },
+            {
+                "Header": "LeadStatus",
+                "optvalue": "2",
+                "optDesc": "Converted",
+                "optCode": ""
+            },
+            {
+                "Header": "LeadStatus",
+                "optvalue": "3",
+                "optDesc": "Rejected",
+                "optCode": ""
+            },
+            {
+                "Header": "LeadStatus",
+                "optvalue": "4",
+                "optDesc": "Document Pending",
+                "optCode": ""
+            },
+            {
+                "Header": "ModeOfContact",
+                "optvalue": "1",
+                "optDesc": "By Call",
+                "optCode": ""
+            },
+            {
+                "Header": "ModeOfContact",
+                "optvalue": "2",
+                "optDesc": "By Mail",
+                "optCode": ""
+            },
+            {
+                "Header": "ModeOfContact",
+                "optvalue": "3",
+                "optDesc": "Personal Visit",
+                "optCode": ""
+            },
+            {
+                "Header": "ModeOfContact",
+                "optvalue": "4",
+                "optDesc": "Doorstep Banking",
+                "optCode": ""
+            },
+            {
+                "Header": "NatureOfActivity",
+                "optvalue": "1",
+                "optDesc": "Farming Activity",
+                "optCode": "F"
+            },
+            {
+                "Header": "NatureOfActivity",
+                "optvalue": "2",
+                "optDesc": "Allied Activity",
+                "optCode": "A"
+            },
+            {
+                "Header": "NatureOfActivity",
+                "optvalue": "3",
+                "optDesc": "Both",
+                "optCode": "F,A"
+            },
+            {
+                "Header": "NatureOfActivity",
+                "optvalue": "4",
+                "optDesc": "Others",
+                "optCode": ""
+            },
+            {
+                "Header": "NatureOfIrrFac",
+                "optvalue": "1",
+                "optDesc": "Bore Well",
+                "optCode": ""
+            },
+            {
+                "Header": "NatureOfIrrFac",
+                "optvalue": "2",
+                "optDesc": "Open Well ",
+                "optCode": ""
+            },
+            {
+                "Header": "NatureOfIrrFac",
+                "optvalue": "3",
+                "optDesc": "Canal",
+                "optCode": ""
+            },
+            {
+                "Header": "NatureOfRight",
+                "optvalue": "1",
+                "optDesc": "Owned",
+                "optCode": ""
+            },
+            {
+                "Header": "NatureOfRight",
+                "optvalue": "2",
+                "optDesc": "Ancestral",
+                "optCode": ""
+            },
+            {
+                "Header": "NatureOfRight",
+                "optvalue": "3",
+                "optDesc": "Tenant Farmer",
+                "optCode": ""
+            },
+            {
+                "Header": "NatureOfRight",
+                "optvalue": "4",
+                "optDesc": "Oral Lease",
+                "optCode": ""
+            },
+            {
+                "Header": "NatureOfRight",
+                "optvalue": "5",
+                "optDesc": "Shared Croppers",
+                "optCode": ""
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "01",
+                "optDesc": "SALARIED",
+                "optCode": "01"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "02",
+                "optDesc": "BUSINESS",
+                "optCode": "02"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "03",
+                "optDesc": "PROF/SELF EMPLOYED",
+                "optCode": "03"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "1",
+                "optDesc": "Accountant (Cost/Chartered)",
+                "optCode": "1"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "10",
+                "optDesc": "Civil Servant/Govt Servant",
+                "optCode": "10"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "100",
+                "optDesc": "EX SERVICEMEN",
+                "optCode": ""
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "11",
+                "optDesc": "Consultant",
+                "optCode": "11"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "12",
+                "optDesc": "Contractor",
+                "optCode": "12"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "13",
+                "optDesc": "Defence Personnel",
+                "optCode": "13"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "14",
+                "optDesc": "Director",
+                "optCode": "14"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "15",
+                "optDesc": "Doctor",
+                "optCode": "15"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "17",
+                "optDesc": "Ex-Servicemen",
+                "optCode": "17"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "18",
+                "optDesc": "Executive Director",
+                "optCode": "18"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "19",
+                "optDesc": "Financial Broker",
+                "optCode": "19"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "2",
+                "optDesc": "Agriculturist",
+                "optCode": "2"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "20",
+                "optDesc": "Govt Servant",
+                "optCode": "20"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "21",
+                "optDesc": "House Wife",
+                "optCode": "21"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "22",
+                "optDesc": "Industrialist",
+                "optCode": "22"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "23",
+                "optDesc": "Journalist",
+                "optCode": "23"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "24",
+                "optDesc": "Lawyer/Solicitor",
+                "optCode": "24"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "25",
+                "optDesc": "Legislator",
+                "optCode": "25"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "26",
+                "optDesc": "Magistrate",
+                "optCode": "26"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "27",
+                "optDesc": "Managing Director",
+                "optCode": "27"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "28",
+                "optDesc": "MIGRANT LABOURER",
+                "optCode": "28"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "29",
+                "optDesc": "Nurse",
+                "optCode": "29"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "3",
+                "optDesc": "Architect",
+                "optCode": "3"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "30",
+                "optDesc": "Others",
+                "optCode": "30"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "31",
+                "optDesc": "Pensioner",
+                "optCode": "31"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "32",
+                "optDesc": "Pharmacist",
+                "optCode": "32"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "33",
+                "optDesc": "STREET VENDORS",
+                "optCode": "33"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "34",
+                "optDesc": "Real Estate Services",
+                "optCode": "34"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "35",
+                "optDesc": "STREET HAWKERS",
+                "optCode": "35"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "38",
+                "optDesc": "Self Help Groups",
+                "optCode": "36"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "39",
+                "optDesc": "Self Employed",
+                "optCode": "37"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "4",
+                "optDesc": "Artisan and Craftsman",
+                "optCode": "4"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "40",
+                "optDesc": "Service",
+                "optCode": "38"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "41",
+                "optDesc": "Student",
+                "optCode": "39"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "42",
+                "optDesc": "Staff - Officer",
+                "optCode": "40"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "43",
+                "optDesc": "Staff - Clerical",
+                "optCode": "41"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "44",
+                "optDesc": "Sub Staff/PTE",
+                "optCode": "42"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "45",
+                "optDesc": "Teacher",
+                "optCode": "43"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "46",
+                "optDesc": "Trader",
+                "optCode": "44"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "47",
+                "optDesc": "Transport Operator",
+                "optCode": "45"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "48",
+                "optDesc": "Unemployed",
+                "optCode": "46"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "49",
+                "optDesc": "Professor",
+                "optCode": "47"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "5",
+                "optDesc": "Artist",
+                "optCode": "5"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "50",
+                "optDesc": "Asst. Professor",
+                "optCode": "48"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "6",
+                "optDesc": "Author/Writer",
+                "optCode": "6"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "7",
+                "optDesc": "Banker",
+                "optCode": "7"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "8",
+                "optDesc": "Businessman",
+                "optCode": "8"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "9",
+                "optDesc": "Business Executive",
+                "optCode": "9"
+            },
+            {
+                "Header": "OccupationType",
+                "optvalue": "99",
+                "optDesc": "OTHERS",
+                "optCode": "99"
+            },
+            {
+                "Header": "CoAppRelationship",
+                "optvalue": "1",
+                "optDesc": "Father",
+                "optCode": ""
+            },
+            {
+                "Header": "CoAppRelationship",
+                "optvalue": "2",
+                "optDesc": "Mother",
+                "optCode": ""
+            },
+            {
+                "Header": "CoAppRelationship",
+                "optvalue": "3",
+                "optDesc": "Son",
+                "optCode": ""
+            },
+            {
+                "Header": "CoAppRelationship",
+                "optvalue": "4",
+                "optDesc": "Daughter",
+                "optCode": ""
+            },
+            {
+                "Header": "CoAppRelationship",
+                "optvalue": "5",
+                "optDesc": "Husband",
+                "optCode": ""
+            },
+            {
+                "Header": "CoAppRelationship",
+                "optvalue": "6",
+                "optDesc": "Wife",
+                "optCode": ""
+            },
+            {
+                "Header": "Religion",
+                "optvalue": "1",
+                "optDesc": "Buddhist",
+                "optCode": "1"
+            },
+            {
+                "Header": "Religion",
+                "optvalue": "2",
+                "optDesc": "Christian",
+                "optCode": "2"
+            },
+            {
+                "Header": "Religion",
+                "optvalue": "3",
+                "optDesc": "Hindu",
+                "optCode": "3"
+            },
+            {
+                "Header": "Religion",
+                "optvalue": "4",
+                "optDesc": "Jain",
+                "optCode": "4"
+            },
+            {
+                "Header": "Religion",
+                "optvalue": "5",
+                "optDesc": "Muslim",
+                "optCode": "5"
+            },
+            {
+                "Header": "Religion",
+                "optvalue": "6",
+                "optDesc": "Parsi",
+                "optCode": "6"
+            },
+            {
+                "Header": "Religion",
+                "optvalue": "7",
+                "optDesc": "Sikh",
+                "optCode": "7"
+            },
+            {
+                "Header": "Religion",
+                "optvalue": "8",
+                "optDesc": "Zorastrian",
+                "optCode": "8"
+            },
+            {
+                "Header": "Religion",
+                "optvalue": "9",
+                "optDesc": "Others",
+                "optCode": "9"
+            },
+            {
+                "Header": "ResidentialStatus",
+                "optvalue": "1",
+                "optDesc": "INDIAN",
+                "optCode": "01"
+            },
+            {
+                "Header": "ResidentialStatus",
+                "optvalue": "2",
+                "optDesc": "NRI",
+                "optCode": "02"
+            },
+            {
+                "Header": "Season",
+                "optvalue": "1",
+                "optDesc": "Kharif",
+                "optCode": ""
+            },
+            {
+                "Header": "Season",
+                "optvalue": "2",
+                "optDesc": "Rabi",
+                "optCode": ""
+            },
+            {
+                "Header": "Season",
+                "optvalue": "3",
+                "optDesc": "Summer",
+                "optCode": ""
+            },
+            {
+                "Header": "Season",
+                "optvalue": "4",
+                "optDesc": "Annual",
+                "optCode": ""
+            },
+            {
+                "Header": "NameOfTheCrop",
+                "optvalue": "1",
+                "optDesc": "Wheat",
+                "optCode": ""
+            },
+            {
+                "Header": "NameOfTheCrop",
+                "optvalue": "11",
+                "optDesc": "Onion - Rabi",
+                "optCode": ""
+            },
+            {
+                "Header": "NameOfTheCrop",
+                "optvalue": "13",
+                "optDesc": "Mango",
+                "optCode": "12"
+            },
+            {
+                "Header": "NameOfTheCrop",
+                "optvalue": "14",
+                "optDesc": "Brinjal",
+                "optCode": "3"
+            },
+            {
+                "Header": "NameOfTheCrop",
+                "optvalue": "2",
+                "optDesc": "Tomato",
+                "optCode": ""
+            },
+            {
+                "Header": "NameOfTheCrop",
+                "optvalue": "3",
+                "optDesc": "Jute",
+                "optCode": ""
+            },
+            {
+                "Header": "SourceChannel",
+                "optvalue": "1",
+                "optDesc": "Aggregators",
+                "optCode": ""
+            },
+            {
+                "Header": "SourceChannel",
+                "optvalue": "10",
+                "optDesc": "Others",
+                "optCode": ""
+            },
+            {
+                "Header": "SourceChannel",
+                "optvalue": "2",
+                "optDesc": "Branch",
+                "optCode": ""
+            },
+            {
+                "Header": "SourceChannel",
+                "optvalue": "3",
+                "optDesc": "Marketing Team",
+                "optCode": ""
+            },
+            {
+                "Header": "SourceChannel",
+                "optvalue": "4",
+                "optDesc": "Tie Up (Eg. Bank Bazaar)",
+                "optCode": ""
+            },
+            {
+                "Header": "SourceChannel",
+                "optvalue": "5",
+                "optDesc": "BC",
+                "optCode": ""
+            },
+            {
+                "Header": "SourceChannel",
+                "optvalue": "6",
+                "optDesc": "Online",
+                "optCode": ""
+            },
+            {
+                "Header": "SourceChannel",
+                "optvalue": "7",
+                "optDesc": "Mobile",
+                "optCode": ""
+            },
+            {
+                "Header": "SourceChannel",
+                "optvalue": "8",
+                "optDesc": "SMS",
+                "optCode": ""
+            },
+            {
+                "Header": "SourceChannel",
+                "optvalue": "9",
+                "optDesc": "Call Centers",
+                "optCode": ""
+            },
+            {
+                "Header": "SubActivity",
+                "optvalue": "1",
+                "optDesc": "Plantation Crops",
+                "optCode": "1.3"
+            },
+            {
+                "Header": "SubActivity",
+                "optvalue": "2",
+                "optDesc": "Other Crops",
+                "optCode": "1.3"
+            },
+            {
+                "Header": "SubActivity",
+                "optvalue": "3",
+                "optDesc": "Animal Husbandry",
+                "optCode": "2.3"
+            },
+            {
+                "Header": "SubActivity",
+                "optvalue": "4",
+                "optDesc": "Fisheries (Inland & Aquaculture)",
+                "optCode": "2.3"
+            },
+            {
+                "Header": "SubActivity",
+                "optvalue": "5",
+                "optDesc": "Fisheries (Marine & Mariculture)",
+                "optCode": "2.3"
+            },
+            {
+                "Header": "Title",
+                "optvalue": "1",
+                "optDesc": "MISS",
+                "optCode": "MS."
+            },
+            {
+                "Header": "Title",
+                "optvalue": "10",
+                "optDesc": "Major",
+                "optCode": "MAJOR "
+            },
+            {
+                "Header": "Title",
+                "optvalue": "11",
+                "optDesc": "MASTER",
+                "optCode": "MSTER"
+            },
+            {
+                "Header": "Title",
+                "optvalue": "2",
+                "optDesc": "MRS",
+                "optCode": "MRS"
+            },
+            {
+                "Header": "Title",
+                "optvalue": "3",
+                "optDesc": "MR",
+                "optCode": "MR"
+            },
+            {
+                "Header": "Title",
+                "optvalue": "4",
+                "optDesc": "M/S",
+                "optCode": "M/S"
+            },
+            {
+                "Header": "Title",
+                "optvalue": "7",
+                "optDesc": "DR",
+                "optCode": "DR"
+            },
+            {
+                "Header": "Title",
+                "optvalue": "8",
+                "optDesc": "Colonel",
+                "optCode": "CL."
+            },
+            {
+                "Header": "Title",
+                "optvalue": "9",
+                "optDesc": "Lieutenant",
+                "optCode": "LT."
+            },
+            {
+                "Header": "TypeOfLand",
+                "optvalue": "1",
+                "optDesc": "Irrigated",
+                "optCode": ""
+            },
+            {
+                "Header": "TypeOfLand",
+                "optvalue": "2",
+                "optDesc": "Rainfed",
+                "optCode": ""
+            }
+        ]
+    },
+    "errorCode": "000",
+    "errorDesc": "Success",
+    "version": "5"
+}

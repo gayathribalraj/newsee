@@ -13,10 +13,16 @@ class Globalconfig {
 
   static bool masterUpdate = false;
   static int loanAmountMaximum = 0;
+  static bool isOffline = false;
+  final OperationNetwork _operationNetwork;
+
+  Globalconfig._(this._operationNetwork);
+
+  factory Globalconfig.fromValue({
+    OperationNetwork network = OperationNetwork.online,
+  }) => Globalconfig._(network);
+
+  OperationNetwork get operationNetwork => _operationNetwork;
 }
 
-/* 
-
-call masterVersionService() => { 'version' : ''}
-
- */
+enum OperationNetwork { online, offline }

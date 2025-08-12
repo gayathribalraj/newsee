@@ -1,0 +1,12 @@
+{
+    "responseData": {
+        "responseData": [
+            {
+                "code": "0001",
+                "value": "Chennai"
+            }
+        ]
+    },
+    "ErrorMessage": "City Master API triggered Successfully",
+    "Success": true
+}

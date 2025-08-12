@@ -25,7 +25,8 @@ class OnStateCityChangeEvent extends AddressDetailsEvent {
 }
 
 class AddressDetailsFetchEvent extends AddressDetailsEvent {
-  final List<Map<String,dynamic>>? leadAddressDetails;
+  // final List<Map<String,dynamic>>? leadAddressDetails;
+  final dynamic leadAddressDetails;
   AddressDetailsFetchEvent({required this.leadAddressDetails});
 }
 

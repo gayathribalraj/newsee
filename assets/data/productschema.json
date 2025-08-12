@@ -1,0 +1,184 @@
+{
+    "Setupmaster": {
+        "ProductScheme": [
+            {
+                "optionValue": "10",
+                "optionDesc": "Agri Jewel Loan Scheme",
+                "optionId": "26"
+            },
+            {
+                "optionValue": "42",
+                "optionDesc": "Simple Renewal Below 1.6L  ",
+                "optionId": "101"
+            },
+            {
+                "optionValue": "49",
+                "optionDesc": "Agri Jewel Loan",
+                "optionId": "22"
+            },
+            {
+                "optionValue": "55",
+                "optionDesc": "Dairy Farming",
+                "optionId": "7"
+            },
+            {
+                "optionValue": "14",
+                "optionDesc": "KCC Above1.6 Lakhs ",
+                "optionId": "25"
+            },
+            {
+                "optionValue": "65",
+                "optionDesc": "SHGLK",
+                "optionId": "37"
+            },
+            {
+                "optionValue": "74",
+                "optionDesc": "Minor Irrigation   ",
+                "optionId": "10"
+            },
+            {
+                "optionValue": "128",
+                "optionDesc": "Agri Krishi saral          ",
+                "optionId": "45"
+            },
+            {
+                "optionValue": "129",
+                "optionDesc": "Poultry    ",
+                "optionId": "8"
+            },
+            {
+                "optionValue": "103",
+                "optionDesc": "Agri Mudra ",
+                "optionId": "42"
+            },
+            {
+                "optionValue": "125",
+                "optionDesc": "FPO Finance  ",
+                "optionId": "47"
+            },
+            {
+                "optionValue": "43",
+                "optionDesc": "Assessment Renewal Above 1.6L ",
+                "optionId": "25"
+            },
+            {
+                "optionValue": "44",
+                "optionDesc": "Simple Renewal Above 1.6L",
+                "optionId": "25"
+            },
+            {
+                "optionValue": "45",
+                "optionDesc": "Assessment Renewal Below 1.6L ",
+                "optionId": "102"
+            },
+            {
+                "optionValue": "73",
+                "optionDesc": "WareHouse",
+                "optionId": "9"
+            },
+            {
+                "optionValue": "118",
+                "optionDesc": "IOB- Matsya Samridhi    ",
+                "optionId": "46"
+            },
+            {
+                "optionValue": "6",
+                "optionDesc": "Kisan Credit Card",
+                "optionId": "1"
+            },
+            {
+                "optionValue": "7",
+                "optionDesc": "Kissan Credit Card        ",
+                "optionId": "103"
+            },
+            {
+                "optionValue": "41",
+                "optionDesc": "AGRI Transport  ",
+                "optionId": "39"
+            },
+            {
+                "optionValue": "61",
+                "optionDesc": "SHG        ",
+                "optionId": "2"
+            },
+            {
+                "optionValue": "62",
+                "optionDesc": "NULM Group",
+                "optionId": "35"
+            },
+            {
+                "optionValue": "63",
+                "optionDesc": "NULM - SHGs",
+                "optionId": "35"
+            },
+            {
+                "optionValue": "64",
+                "optionDesc": "NRLM    ",
+                "optionId": "36"
+            },
+            {
+                "optionValue": "69",
+                "optionDesc": "Farm Mechanisation  ",
+                "optionId": "4"
+            },
+            {
+                "optionValue": "78",
+                "optionDesc": "Joint Liability Group     ",
+                "optionId": "13"
+            },
+            {
+                "optionValue": "104",
+                "optionDesc": "PMFME     ",
+                "optionId": "17"
+            },
+            {
+                "optionValue": "112",
+                "optionDesc": "Krishi Saral Plus    ",
+                "optionId": "45"
+            },
+            {
+                "optionValue": "80338",
+                "optionDesc": "ENWR Warehouse  ",
+                "optionId": "50"
+            },
+            {
+                "optionValue": "80343",
+                "optionDesc": "Agri Infra Fund          ",
+                "optionId": "14"
+            },
+            {
+                "optionValue": "80335",
+                "optionDesc": "Agri Krishi Mitra ",
+                "optionId": "104"
+            },
+            {
+                "optionValue": "80337",
+                "optionDesc": "Animal Husbandry ",
+                "optionId": "11"
+            },
+            {
+                "optionValue": "80345",
+                "optionDesc": "Plantation             ",
+                "optionId": "27"
+            },
+            {
+                "optionValue": "80347",
+                "optionDesc": "CKCC Allied ",
+                "optionId": ""
+            },
+            {
+                "optionValue": "80328",
+                "optionDesc": "Test Agri Scheme  ",
+                "optionId": "100"
+            },
+            {
+                "optionValue": "80354",
+                "optionDesc": "TEST KCC",
+                "optionId": "1"
+            }
+        ]
+    },
+    "errorCode": "000",
+    "errorDesc": "Success",
+    "version": "5"
+}

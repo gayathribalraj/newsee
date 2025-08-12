@@ -1,0 +1,189 @@
+{
+    "Setupmaster": {
+        "StateMaster": [
+            {
+                "code": "38",
+                "value": "TAMIL NADU"
+            },
+            {
+                "code": "38",
+                "value": "TAMILNADU"
+            },
+            {
+                "code": "20",
+                "value": "MADHYA PRADESH"
+            },
+            {
+                "code": "22",
+                "value": "MAHARASHTRA"
+            },
+            {
+                "code": "24",
+                "value": "MANIPUR"
+            },
+            {
+                "code": "84",
+                "value": "NCT OF DELHI"
+            },
+            {
+                "code": "4",
+                "value": "ASSAM"
+            },
+            {
+                "code": "6",
+                "value": "BIHAR"
+            },
+            {
+                "code": "7",
+                "value": "CHHATTISGARH"
+            },
+            {
+                "code": "9",
+                "value": "UTTAR PRADESH"
+            },
+            {
+                "code": "12",
+                "value": "HIMACHAL PRADESH"
+            },
+            {
+                "code": "14",
+                "value": "JAMMU AND KASHMIR"
+            },
+            {
+                "code": "16",
+                "value": "KARNATAKA"
+            },
+            {
+                "code": "18",
+                "value": "KERALA"
+            },
+            {
+                "code": "26",
+                "value": "MEGHALAYA"
+            },
+            {
+                "code": "28",
+                "value": "NAGALAND"
+            },
+            {
+                "code": "29",
+                "value": "JHARKHAND"
+            },
+            {
+                "code": "30",
+                "value": "ODISHA"
+            },
+            {
+                "code": "34",
+                "value": "RAJASTHAN"
+            },
+            {
+                "code": "39",
+                "value": "TELANGANA"
+            },
+            {
+                "code": "40",
+                "value": "TRIPURA"
+            },
+            {
+                "code": "43",
+                "value": "UTTARAKHAND"
+            },
+            {
+                "code": "44",
+                "value": "WEST BENGAL"
+            },
+            {
+                "code": "76",
+                "value": "ANDAMAN AND NICOBAR ISLANDS"
+            },
+            {
+                "code": "78",
+                "value": "ARUNACHAL PRADESH"
+            },
+            {
+                "code": "80",
+                "value": "CHANDIGARH"
+            },
+            {
+                "code": "82",
+                "value": "DADRA AND NAGAR HAVELI AND DAMAN AND DIU"
+            },
+            {
+                "code": "86",
+                "value": "GOA"
+            },
+            {
+                "code": "88",
+                "value": "LAKSHADWEEP"
+            },
+            {
+                "code": "92",
+                "value": "PUDUCHERRY"
+            },
+            {
+                "code": "10",
+                "value": "HARYANA"
+            },
+            {
+                "code": "32",
+                "value": "PUNJAB"
+            },
+            {
+                "code": "90",
+                "value": "MIZORAM"
+            },
+            {
+                "code": "2",
+                "value": "ANDHRA PRADESH"
+            },
+            {
+                "code": "8",
+                "value": "GUJARAT"
+            },
+            {
+                "code": "36",
+                "value": "SIKKIM"
+            },
+            {
+                "code": "1212",
+                "value": "TAM"
+            },
+            {
+                "code": "2345",
+                "value": "KAILASA"
+            },
+            {
+                "code": "100001",
+                "value": "SAMPTEST"
+            },
+            {
+                "code": "899",
+                "value": "TN"
+            },
+            {
+                "code": "999",
+                "value": "AP"
+            },
+            {
+                "code": "23",
+                "value": "AP"
+            },
+            {
+                "code": "044232",
+                "value": "`SDASD"
+            },
+            {
+                "code": "1234",
+                "value": "TESTSTATE"
+            },
+            {
+                "code": "100002",
+                "value": "TEST"
+            }
+        ]
+    },
+    "errorCode": "000",
+    "errorDesc": "Success",
+    "version": "2"
+}

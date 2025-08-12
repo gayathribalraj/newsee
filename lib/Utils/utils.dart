@@ -25,16 +25,28 @@ String formatAmount(String amount) {
 
 // Convert CIF Response Date to String Date(dd-MM-yyyy);
 String getDateFormat(dynamic value) {
-  try {
-    final DateFormat parser = DateFormat("MMM dd, yyyy, hh:mm:ss a");
-    DateTime date = parser.parse(value);
-    DateFormat formatter = DateFormat('dd-MM-yyyy');
-    String convertedDateString = formatter.format(date);
-    return convertedDateString;
-  } catch (error) {
-    print("getDateFormat-string $error");
-    return "";
+  // final DateFormat parser = DateFormat("MMM dd, yyyy, hh:mm:ss a");
+  // DateTime date = parser.parse(value);
+  // DateFormat formatter = DateFormat('dd-MM-yyyy');
+  // String convertedDateString = formatter.format(date);
+  // return convertedDateString;
+  if (value == null || value.toString().trim().isEmpty) return "";
+
+  final formats = [
+    DateFormat("MMM dd, yyyy, hh:mm:ss a"),
+    DateFormat("yyyy-MM-dd"),
+    DateFormat("dd-MM-yyyy"),
+  ];
+
+  for (var format in formats) {
+    try {
+      final date = format.parse(value.toString());
+      return DateFormat('dd-MM-yyyy').format(date);
+    } catch (e) {
+      print(e);
+    }
   }
+  return "";
 }
 
 // Convert Aadhaar Response Date to String Date(dd-MM-yyyy);

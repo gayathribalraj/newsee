@@ -4,6 +4,7 @@ import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/feature/cif/domain/model/user/cif_request.dart';
 import 'package:newsee/feature/cif/presentation/bloc/cif_bloc.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
+import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:newsee/widgets/response_widget.dart';
@@ -15,7 +16,7 @@ class CIFSearch extends StatelessWidget {
   CIFSearch({super.key, required this.cifForm, required this.tabController});
 
   //Dispose Popover
-  disposeResponse(context) {
+  disposeResponse(context, cifres) {
     print("Welcome here for you");
     cifForm.reset();
     showDialog(
@@ -24,12 +25,21 @@ class CIFSearch extends StatelessWidget {
       builder:
           (_) => SysmoAlert.success(
             message: "Dedupe Details Saved Successfully",
-            onButtonPressed: () {
+            onButtonPressed: () async {
               Navigator.pop(context);
               Navigator.of(context).pop();
               Navigator.of(context).pop();
               if (tabController.index < tabController.length - 1) {
                 tabController.animateTo(tabController.index + 1);
+                final draftService = DraftService();
+                await draftService.saveOrUpdateTabData(
+                  tabKey: 'dedupe',
+                  tabData: {
+                    'cifResponse': cifres.cifResponse,
+                    'isNewCustomer': cifres.isNewCustomer,
+                    'constitution': cifres.constitution,
+                  },
+                );
               }
             },
           ),
@@ -104,7 +114,7 @@ class CIFSearch extends StatelessWidget {
                         heightSize: 0.6,
                         dataList: dataList,
                         buttonshow: true,
-                        onpressed: () => disposeResponse(context),
+                        onpressed: () => disposeResponse(context, state),
                       ),
                     );
                   },

@@ -74,6 +74,6 @@ class ScannerResponseEvent extends CoappDetailsEvent {
 }
 
 class CoApplicantandGurantorFetchEvent extends CoappDetailsEvent {
-  final Map<String, dynamic>? leadDetails;
+  final List<Map<String, dynamic>>? leadDetails;
   CoApplicantandGurantorFetchEvent({required this.leadDetails});
 }
