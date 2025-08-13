@@ -128,7 +128,7 @@ flutter:
     - assets/data/statecity.json
     - assets/data/citylist.json
     - assets/data/districtlist.json
-
+    - assets/data/documents.json
     # - assets/logo1.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
