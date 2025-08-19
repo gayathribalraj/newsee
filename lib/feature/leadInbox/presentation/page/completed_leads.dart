@@ -162,7 +162,11 @@ class CompletedLeads extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: ListView.builder(
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.5,
+              ),
               itemCount: filteredLeads.length,
               itemBuilder: (context, index) {
                 final lead =

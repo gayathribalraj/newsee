@@ -78,7 +78,7 @@ class DocumentItem extends StatelessWidget {
                 icon: const Icon(Icons.add_circle, color: Colors.blue),
                 onPressed:
                     () =>
-                        showFileSourceSelector(context, index, doc.lpdDocDesc),
+                        showFileSourceSelector(context, index, doc.lpdDocDesc)
               ),
               Stack(
                 clipBehavior: Clip.none,
