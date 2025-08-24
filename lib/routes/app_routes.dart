@@ -14,9 +14,12 @@ import 'package:newsee/feature/CropDetails/presentation/page/cropdetailspage.dar
 import 'package:newsee/feature/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:newsee/feature/auth/data/repository/auth_repository_impl.dart';
 import 'package:newsee/feature/auth/presentation/bloc/auth_bloc.dart';
+import 'package:newsee/feature/dairydetails/presentation/bloc/dairy_details_bloc.dart';
+import 'package:newsee/feature/dairydetails/presentation/page/dairy_details_page.dart';
 import 'package:newsee/feature/documentupload/presentation/bloc/document_bloc.dart';
 import 'package:newsee/feature/documentupload/presentation/pages/document_page.dart';
 import 'package:newsee/feature/documentupload/presentation/widget/image_view.dart';
+import 'package:newsee/feature/fieldinvestigation/presentation/page/field_invetigation.dart';
 import 'package:newsee/feature/landholding/presentation/page/land_holding_page.dart';
 import 'package:newsee/feature/leadInbox/domain/modal/get_lead_response.dart';
 import 'package:newsee/feature/masters/data/repository/master_repo_impl.dart';
@@ -25,6 +28,8 @@ import 'package:newsee/feature/masters/domain/repository/master_repo.dart';
 import 'package:newsee/feature/masters/presentation/bloc/masters_bloc.dart';
 import 'package:newsee/feature/masters/presentation/page/masters_page.dart';
 import 'package:newsee/feature/cic_check/cic_check_page.dart';
+import 'package:newsee/feature/poultry/presentation/bloc/poultry_details_bloc.dart';
+import 'package:newsee/feature/poultry/presentation/page/poultry_details_page.dart';
 import 'package:newsee/pages/home_page.dart';
 import 'package:newsee/pages/newlead_page.dart';
 import 'package:newsee/pages/not_found_error.page.dart';
@@ -126,6 +131,44 @@ final routes = GoRouter(
       },
     ),
     GoRoute(
+      path: AppRouteConstants.FIELD_INVESTIGATION_PAGE['path']!,
+      name: AppRouteConstants.FIELD_INVESTIGATION_PAGE['name'],
+      builder: (context, state) {
+        final proposalnumber =
+            (state.extra as Map<String, dynamic>?)?['proposalNumber'] as String;
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didpop, data) async {
+            final shouldPop = await showDialog<bool>(
+              context: context,
+              builder:
+                  (context) => AlertDialog(
+                    title: Text('Confirm'),
+                    content: Text('Do you want to Exit ?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: Text('Yes'),
+                      ),
+                    ],
+                  ),
+            );
+            if (shouldPop ?? false) {
+              Navigator.of(context).pop(false);
+              // context.go('/'); // Navigate back using GoRouter
+            }
+          },
+          child: FieldInvetigation(
+            proposalNumber: proposalnumber,
+          ),
+        );
+      }
+    ),
+    GoRoute(
       path: AppRouteConstants.NEWLEAD_PAGE['path']!,
       name: AppRouteConstants.NEWLEAD_PAGE['name'],
       builder: (context, state) {
@@ -143,6 +186,35 @@ final routes = GoRouter(
       name: AppRouteConstants.MASTERS_PAGE['name'],
       builder: (context, state) => MastersPage(),
     ),
+   GoRoute(
+  path: AppRouteConstants.POULTRY_DETAILS['path']!,
+  name: AppRouteConstants.POULTRY_DETAILS['name'],
+  builder: (context, state) => MultiBlocProvider(
+    providers: [
+      BlocProvider<PoultryBloc>(
+        create: (context) => PoultryBloc(),
+      ),
+      
+    ],
+    child: const PoultryDetailsPage(),
+  ),
+),
+   GoRoute(
+  path: AppRouteConstants.DAIRY_DETAILS['path']!,
+  name: AppRouteConstants.DAIRY_DETAILS['name'],
+  builder: (context, state) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<DairyDetailsBloc>(
+          create: (_) => DairyDetailsBloc(),
+        ),
+      
+      ],
+      child: DairyDetailsPage(),
+    );
+  },
+),
+ 
     GoRoute(
       path: AppRouteConstants.PROFILE_PAGE['path']!,
       name: AppRouteConstants.PROFILE_PAGE['name'],
@@ -207,6 +279,7 @@ final routes = GoRouter(
         );
       },
     ),
+    
     GoRoute(
       path: AppRouteConstants.DOCUMENT_PAGE['path']!,
       name: AppRouteConstants.DOCUMENT_PAGE['name'],

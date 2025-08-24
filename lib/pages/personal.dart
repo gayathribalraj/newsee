@@ -257,8 +257,8 @@ class Personal extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            final loanBloc = context.watch<LoanproductBloc>().state;
-            final loanTypeLabel = loanBloc.selectedProductScheme == null ? "SHG" : loanBloc.selectedProductScheme!.optionValue == "61" ? "SHG" : "JLG" ;
+            // final loanBloc = context.watch<LoanproductBloc>().state;
+            // final loanTypeLabel = loanBloc.selectedProductScheme == null ? "SHG" : loanBloc.selectedProductScheme!.optionValue == "61" ? "SHG" : "JLG" ;
             DedupeState? dedupeState;
             if (state.status == SaveStatus.init && state.aadhaarData != null) {
               mapAadhaarData(state.aadhaarData);
@@ -331,7 +331,9 @@ class Personal extends StatelessWidget {
                       CustomTextField(
                         fieldKey: _firstNameKey,
                         controlName: 'firstName',
-                        label: 'Name of the $loanTypeLabel',
+                        label: 'FistName',
+                        // label: 'Name of the $loanTypeLabel',
+
                         mantatory: true,
                       ),
                       SizedBox(
@@ -852,7 +854,8 @@ class Personal extends StatelessWidget {
                       SearchableDropdown<Lov>(
                         fieldKey: _genderKey,
                         controlName: 'gender',
-                        label: 'Whether classified as special $loanTypeLabel',
+                        // label: 'Whether classified as special $loanTypeLabel',
+                         label:   'Residential Status',
                         items:
                             state.lovList!
                                 .where((v) => v.Header == 'Gender')
