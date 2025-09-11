@@ -80,7 +80,7 @@ class IncomeandExpenses extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         IntegerTextField(
-          controlName: 'mediciineCost',
+          controlName: 'MedicineCost',
           label: 'Medicine Cost',
           mantatory: true,
           isRupeeFormat: true,

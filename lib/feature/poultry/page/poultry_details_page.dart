@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:newsee/feature/dairydetails/presentation/widgets/cost_calculator.dart';
-import 'package:newsee/feature/poultry/presentation/widgets/poultry_cost_calculator.dart';
+import 'package:newsee/feature/poultry/widgets/poultry_cost_calculator.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:newsee/AppData/app_forms.dart';
 import 'package:newsee/feature/poultry/presentation/bloc/poultry_details_bloc.dart';
 import 'package:newsee/feature/poultry/presentation/bloc/poultry_details_event.dart';
 import 'package:newsee/feature/poultry/presentation/bloc/poultry_details_state.dart';
-import 'package:newsee/feature/poultry/presentation/widgets/investment_form_widget.dart';
-import 'package:newsee/feature/poultry/presentation/widgets/purchase_form_widget.dart';
-import 'package:newsee/feature/poultry/presentation/widgets/maintenance_form_widget.dart';
+import 'package:newsee/feature/poultry/widgets/investment_form_widget.dart';
+import 'package:newsee/feature/poultry/widgets/purchase_form_widget.dart';
+import 'package:newsee/feature/poultry/widgets/maintenance_form_widget.dart';
 import 'package:newsee/widgets/cupertino_expansion_tile.dart';
 import 'package:newsee/widgets/expansion_controller.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 
 class PoultryDetailsPage extends StatelessWidget {
-  const PoultryDetailsPage({super.key});
+  final String leadId;
+  const PoultryDetailsPage({super.key, required this.leadId});
 
   @override
   Widget build(BuildContext context) {
     final investmentForm = AppForms.buildInvesmentDetailsForm();
     final purchaseForm = AppForms.buildPurchaseDetailsForm();
     final maintenanceForm = AppForms.buildMaintenanceDetailsForm();
+    // Expansion controller to manage opening/closing expansion tiles
+
     final controller = ExpansionController();
+    // Attach cost calculator logic to update fields automatically
 
     PoultryCostCalculator.attachListener(
       investment: investmentForm,
@@ -32,7 +35,7 @@ class PoultryDetailsPage extends StatelessWidget {
     );
 
     return BlocProvider(
-      create: (_) => PoultryBloc(),
+      create: (_) => PoultryBloc()..add(LoadPoultryDetails(leadId: leadId)),
       child: BlocBuilder<PoultryBloc, PoultryState>(
         builder: (context, state) {
           final bloc = context.read<PoultryBloc>();
@@ -89,7 +92,7 @@ class PoultryDetailsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 18),
 
-                  // Add Button
+                  //  Save All Forms Button
                   ElevatedButton(
                     style: const ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(
@@ -106,12 +109,29 @@ class PoultryDetailsPage extends StatelessWidget {
                           "purchase": purchaseForm.value,
                           "maintenance": maintenanceForm.value,
                         };
-                        bloc.add(AddPoultryDetails(details));
+                        //  BLoC for saving
+
+                        bloc.add(
+                          AddPoultryDetails(details: details, leadId: leadId),
+                        );
+                        // Reset forms after save
 
                         investmentForm.reset();
                         purchaseForm.reset();
                         maintenanceForm.reset();
+
+                        // Success alert
+                        showDialog(
+                          context: context,
+                          builder:
+                              (_) => SysmoAlert.success(
+                                message: 'All forms saved successfully!',
+                                onButtonPressed: () => context.pop(),
+                              ),
+                        );
                       } else {
+                        // Show warning if validation fails
+
                         showDialog(
                           context: context,
                           builder:
@@ -135,6 +155,7 @@ class PoultryDetailsPage extends StatelessWidget {
               ),
             ),
 
+            // Floating Action Button with Badge
             floatingActionButton: Stack(
               clipBehavior: Clip.none,
               children: [
@@ -143,6 +164,8 @@ class PoultryDetailsPage extends StatelessWidget {
                   child: const Icon(Icons.remove_red_eye, color: Colors.teal),
                   onPressed: () {
                     if (state.addedDetails.isNotEmpty) {
+                      // Show bottom sheet with saved records
+                      
                       showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
@@ -299,7 +322,10 @@ class PoultryDetailsPage extends StatelessWidget {
                                                                               );
                                                                               bloc.add(
                                                                                 RemovePoultryDetails(
-                                                                                  index,
+                                                                                  index:
+                                                                                      index,
+                                                                                  leadId:
+                                                                                      leadId,
                                                                                 ),
                                                                               );
                                                                             },
@@ -312,21 +338,21 @@ class PoultryDetailsPage extends StatelessWidget {
                                                             const SizedBox(
                                                               height: 8,
                                                             ),
-                                                            _buildTripleRow(
+                                                            buildTripleRow(
                                                               "Investment",
                                                               "Cost XY",
                                                               investment["costXY"]
                                                                       ?.toString() ??
                                                                   "-",
                                                             ),
-                                                            _buildTripleRow(
+                                                            buildTripleRow(
                                                               "Purchase",
                                                               "Cost AB",
                                                               purchase["costAB"]
                                                                       ?.toString() ??
                                                                   "-",
                                                             ),
-                                                            _buildTripleRow(
+                                                            buildTripleRow(
                                                               "Maintenance",
                                                               "Cost DE",
                                                               maintenance["costDE"]
@@ -377,7 +403,7 @@ class PoultryDetailsPage extends StatelessWidget {
   }
 }
 
-Widget _buildTripleRow(String title, String label, String value) {
+Widget buildTripleRow(String title, String label, String value) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 6),
     child: Row(

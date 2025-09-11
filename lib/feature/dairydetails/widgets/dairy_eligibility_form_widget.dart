@@ -122,6 +122,7 @@ class DairyEligibility extends StatelessWidget {
           controlName: 'installments',
           label: 'No of Installments',
           mantatory: true,
+          isRupeeFormat: true,
         ),
         const SizedBox(height: 12),
         IntegerTextField(

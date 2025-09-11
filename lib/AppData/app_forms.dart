@@ -140,7 +140,7 @@ class AppForms {
     'mannureIncome': FormControl<String>(validators: [Validators.required]),
     'totalIncome': FormControl<String>(validators: [Validators.required]),
     'feedingCost': FormControl<String>(validators: [Validators.required]),
-    'mediciineCost': FormControl<String>(validators: [Validators.required]),
+    'MedicineCost': FormControl<String>(validators: [Validators.required]),
     'power': FormControl<String>(validators: [Validators.required]),
     'salary': FormControl<String>(validators: [Validators.required]),
     'admin': FormControl<String>(validators: [Validators.required]),

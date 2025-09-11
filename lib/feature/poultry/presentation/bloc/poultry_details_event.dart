@@ -1,20 +1,24 @@
 
-import 'package:reactive_forms/reactive_forms.dart';
-
 abstract class PoultryEvent {}
+
+class LoadPoultryDetails extends PoultryEvent {
+    final String leadId;
+   LoadPoultryDetails({required this.leadId});
+
+}
 
 class AddPoultryDetails extends PoultryEvent {
   final Map<String, dynamic> details;
-  AddPoultryDetails(this.details);
+    final String leadId;
+
+  AddPoultryDetails({required this.details, required this.leadId,
+});
 }
 
 class RemovePoultryDetails extends PoultryEvent {
   final int index;
-  RemovePoultryDetails(this.index);
+  final String leadId;
+  RemovePoultryDetails({required this.index,required this.leadId,
+});
 }
 
-class PatchPoultryForm extends PoultryEvent {
-  final FormGroup form;
-  final Map<String, dynamic> details;
-  PatchPoultryForm({required this.form, required this.details});
-}

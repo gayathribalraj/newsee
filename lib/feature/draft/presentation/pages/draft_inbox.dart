@@ -1,11 +1,10 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:newsee/AppData/globalconfig.dart';
+import 'package:newsee/feature/cic_check/cic_check_page.dart';
 import 'package:newsee/feature/draft/domain/draft_lead_model.dart';
 import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/feature/draft/draft_event_notifier.dart';
-import 'package:newsee/feature/loanproductdetails/presentation/bloc/loanproduct_bloc.dart';
 import 'package:newsee/widgets/bottom_sheet.dart';
 import 'package:newsee/widgets/lead_tile_card.dart';
 import 'package:newsee/widgets/options_sheet.dart';
@@ -31,6 +30,7 @@ class DraftInboxState extends State<DraftInbox> {
     super.initState();
     loadDrafts();
 
+
     draftEventNotifier.addListener(_onDraftEvent);
   }
 
@@ -51,6 +51,10 @@ class DraftInboxState extends State<DraftInbox> {
       final draft = await draftService.getDraft(ref);
       if (draft != null) loaded.add(draft);
     }
+ 
+
+
+
     setState(() => allDrafts = loaded);
   }
 
@@ -111,13 +115,7 @@ class DraftInboxState extends State<DraftInbox> {
                               draft.personal['loanAmountRequested']
                                   ?.toString() ??
                               '',
-                          // onTap: () {
-                          //   context.pushNamed(
-                          //     'newlead',
-                          //     extra: {'leadData': draft, 'tabType': 'draft'},
-                          //   );
-
-                          // },
+                        
                           onTap: () {
                             openBottomSheet(context, 0.6, 0.4, 0.9, (
                               context,
@@ -128,9 +126,25 @@ class DraftInboxState extends State<DraftInbox> {
                                 child: Column(
                                   children: [
                                     const SizedBox(height: 12),
+                                     OptionsSheet(
+                                      icon: Icons.document_scanner,
+                                      title: "CIC Check",
+                                      subtitle: "View your CIC here",
+                                      status: 'pending',
+                                      onTap: () {
+                                        context.pop();
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => CicCheckPage(),
+                                                
+                                          ),
+                                        );
+                                      },
+                                    ),
 
-                                    // Only show Poultry option if product scheme is "129"
-                                    if (Globalconfig.isOffline &&
+                                    if (
                                         draft.loan['selectedProductScheme']?['optionValue'] ==
                                             "129")
                                       OptionsSheet(
@@ -140,12 +154,11 @@ class DraftInboxState extends State<DraftInbox> {
                                             "View your Poultry Details here",
                                         onTap: () {
                                           context.pop();
-                                          context.pushNamed('poultrydetails');
+                                             context.pushNamed('poultrydetails', extra: {'leadId': draft.leadref} );
                                         },
                                       ),
 
-                                    // Only show Dairy option if product scheme is "55"
-                                    if (Globalconfig.isOffline &&
+                                    if (
                                         draft.loan['selectedProductScheme']?['optionValue'] ==
                                             "55")
                                       OptionsSheet(
@@ -153,23 +166,74 @@ class DraftInboxState extends State<DraftInbox> {
                                         title: "Dairy Details",
                                         subtitle:
                                             "View your Dairy Details here",
-                                        onTap: () {
-                                          context.pop();
-                                          context.pushNamed('dairydetails');
+                                      onTap: () {
+                                          if (draft.leadref == null || draft.leadref.isEmpty) {
+                                            debugPrint(" LeadRef missing, cannot open DairyDetailsPage");
+                                            return;
+                                          }
+                                          context.pushNamed(
+                                            'dairydetails',
+                                            extra: {'leadId': draft.leadref},
+                                          );
                                         },
                                       ),
+                                      
 
-                                    // Always show document upload
+                                    if (draft.loan['selectedProductScheme']?['optionValue'] !=
+                                            "129" &&
+                                        draft.loan['selectedProductScheme']?['optionValue'] !=
+                                            "55") ...[
+                                               
+                                      OptionsSheet(
+                                        icon: Icons.landscape,
+                                        title: "Land Details",
+                                        subtitle: "View your Land Details here",
+                                        status: 'pending',
+                                        onTap: () {
+                                          context.pop();
+                                          context.pushNamed(
+                                            'landholdings',
+                                            extra: {
+                                              'applicantName': 'SaravanaKumar',
+                                              'proposalNumber': '1287654445569',
+                                            },
+                                          );
+                                        },
+                                      ),
+                                      OptionsSheet(
+                                        icon: Icons.grass,
+                                        title: "Crop Details",
+                                        subtitle: "View your Crop Details here",
+                                        status: 'pending',
+                                        onTap: () {
+                                          context.pop();
+                                          context.pushNamed(
+                                            'cropdetails',
+                                            extra: '1098776666667',
+                                          );
+                                        },
+                                      ),
+                                      
+                                  
+                                    ],
+
+                                    // Document upload
                                     OptionsSheet(
                                       icon: Icons.description,
                                       title: "Document Upload",
                                       subtitle:
                                           "Pre-Sanctioned Documents Upload",
-                                      status: 'Pending',
+                                      status: 'pending',
                                       onTap: () {
-                                        context.pushNamed('document');
+                                        context.pop();
+                                        context.pushNamed(
+                                          'document',
+                                          extra: '1034557766666',
+                                        );
                                       },
                                     ),
+
+                                    // Field Investigation
                                     OptionsSheet(
                                       icon: Icons.description,
                                       title: "Field Investigation",
@@ -186,6 +250,8 @@ class DraftInboxState extends State<DraftInbox> {
                                         );
                                       },
                                     ),
+
+                                    // Field Investigation Documents
                                     OptionsSheet(
                                       icon: Icons.description,
                                       title: "Field Investigation Documents",

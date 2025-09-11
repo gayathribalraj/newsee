@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:newsee/AppData/app_api_constants.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/app_route_constants.dart';
+import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/Model/address_data.dart';
 import 'package:newsee/Model/personal_data.dart';
 import 'package:newsee/Utils/proposal_utils.dart';
@@ -348,9 +349,8 @@ class LeadSubmitPage extends StatelessWidget {
               SysmoTitle(
                 icon: Icons.person,
                 label: "Type",
-                value:
-                    dedupeData.cifNumber != null ||
-                            dedupeData.cifNumber!.isNotEmpty
+                value: 
+                    dedupeData.cifNumber != null
                         ? "Applicant | Existing Customer"
                         : "Applicant | New Customer",
               ),
@@ -362,7 +362,7 @@ class LeadSubmitPage extends StatelessWidget {
               SysmoTitle(
                 icon: Icons.details,
                 label: "CIF ID",
-                value: dedupeData.cifNumber!,
+                value: dedupeData.cifNumber ?? "",
               ),
               SysmoTitle(
                 icon: Icons.currency_rupee,
@@ -372,7 +372,7 @@ class LeadSubmitPage extends StatelessWidget {
               SysmoTitle(
                 icon: Icons.location_on,
                 label: "Location",
-                value: addressData.cityDistrict!,
+                value: addressData.cityDistrict ?? '',
               ),
             ],
           ),
@@ -397,17 +397,8 @@ class LeadSubmitPage extends StatelessWidget {
           : Center(
             child: ElevatedButton.icon(
               onPressed: () {
-                // submitLead(
-                //   personlData: personalData,
-                //   addressData: addressData,
-                //   loanProduct: loanProduct,
-                //   loanType: loanType,
-                //   dedupeData: dedupeData,
-                //   coAppAndGurantorData: coguappData!,
-                //   isAddCoappGurantor: isAddCoappGurantor,
-                //   context: context,
-                // );
-                showSuccessBottomSheet(
+              Globalconfig.isOffline ?
+                 showSuccessBottomSheet(
               context: context,
               headerTxt: ApiConstants.api_response_success,
               lead: "Lead ID : LEAD/202526/00009014",
@@ -426,7 +417,19 @@ class LeadSubmitPage extends StatelessWidget {
                   Navigator.of(context).pop();
                 }
               }, // OnPressedRightButton,
-            );
+            ):
+
+                submitLead(
+                  personlData: personalData,
+                  addressData: addressData,
+                  loanProduct: loanProduct,
+                  loanType: loanType,
+                  dedupeData: dedupeData,
+                  coAppAndGurantorData: coguappData!,
+                  isAddCoappGurantor: isAddCoappGurantor,
+                  context: context,
+                );
+           
               },
               icon: Icon(Icons.send, color: Colors.white),
               label: RichText(

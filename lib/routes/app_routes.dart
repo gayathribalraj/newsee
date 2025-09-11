@@ -14,26 +14,20 @@ import 'package:newsee/feature/CropDetails/presentation/page/cropdetailspage.dar
 import 'package:newsee/feature/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:newsee/feature/auth/data/repository/auth_repository_impl.dart';
 import 'package:newsee/feature/auth/presentation/bloc/auth_bloc.dart';
-import 'package:newsee/feature/dairydetails/presentation/bloc/dairy_details_bloc.dart';
-import 'package:newsee/feature/dairydetails/presentation/page/dairy_details_page.dart';
+import 'package:newsee/feature/dairydetails/pages/dairy_details_page.dart';
 import 'package:newsee/feature/documentupload/presentation/bloc/document_bloc.dart';
 import 'package:newsee/feature/documentupload/presentation/pages/document_page.dart';
 import 'package:newsee/feature/documentupload/presentation/widget/image_view.dart';
 import 'package:newsee/feature/fieldinvestigation/presentation/page/field_invetigation.dart';
 import 'package:newsee/feature/landholding/presentation/page/land_holding_page.dart';
-import 'package:newsee/feature/leadInbox/domain/modal/get_lead_response.dart';
-import 'package:newsee/feature/masters/data/repository/master_repo_impl.dart';
-import 'package:newsee/feature/masters/domain/modal/master_version.dart';
-import 'package:newsee/feature/masters/domain/repository/master_repo.dart';
-import 'package:newsee/feature/masters/presentation/bloc/masters_bloc.dart';
 import 'package:newsee/feature/masters/presentation/page/masters_page.dart';
 import 'package:newsee/feature/cic_check/cic_check_page.dart';
-import 'package:newsee/feature/poultry/presentation/bloc/poultry_details_bloc.dart';
-import 'package:newsee/feature/poultry/presentation/page/poultry_details_page.dart';
+import 'package:newsee/feature/poultry/page/poultry_details_page.dart';
 import 'package:newsee/pages/home_page.dart';
 import 'package:newsee/pages/newlead_page.dart';
 import 'package:newsee/pages/not_found_error.page.dart';
 import 'package:newsee/pages/profile_page.dart';
+import 'package:path/path.dart';
 
 import '../feature/documentupload/presentation/bloc/document_event.dart';
 
@@ -189,29 +183,21 @@ final routes = GoRouter(
    GoRoute(
   path: AppRouteConstants.POULTRY_DETAILS['path']!,
   name: AppRouteConstants.POULTRY_DETAILS['name'],
-  builder: (context, state) => MultiBlocProvider(
-    providers: [
-      BlocProvider<PoultryBloc>(
-        create: (context) => PoultryBloc(),
-      ),
-      
-    ],
-    child: const PoultryDetailsPage(),
-  ),
+  builder: (context, state){
+    final extra = state.extra as Map<String,dynamic>?;
+    final leadId = extra?['leadId'].toString()??'';
+    return PoultryDetailsPage(leadId: leadId);
+
+  }
 ),
    GoRoute(
   path: AppRouteConstants.DAIRY_DETAILS['path']!,
   name: AppRouteConstants.DAIRY_DETAILS['name'],
   builder: (context, state) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<DairyDetailsBloc>(
-          create: (_) => DairyDetailsBloc(),
-        ),
-      
-      ],
-      child: DairyDetailsPage(),
-    );
+    final extra = state.extra as Map<String,dynamic>?;
+    final leadId = extra?['leadId'].toString()??'';
+   
+    return DairyDetailsPage(leadId: leadId);
   },
 ),
  

@@ -46,7 +46,7 @@ class _CoApplicantFormBottomSheetState
   void initState() {
     super.initState();
     coAppAndGurantorForm.reset();
-    title = widget.applicantType == 'C' ? 'Members' : 'Gurantor';
+    title = widget.applicantType == 'C' ? 'Co-Applicant' : 'Gurantor';
     if (widget.existingData != null) {
       coAppAndGurantorForm.patchValue(widget.existingData!.toMap());
       if (widget.existingData!.aadharRefNo != null) {
@@ -298,7 +298,7 @@ class _CoApplicantFormBottomSheetState
                               Expanded(
                                 child: IntegerTextField(
                                   controlName: 'cifNumber',
-                                  label: 'Member Identifier',
+                                  label: 'Co-Applicant Identifier',
                                   mantatory: true,
                                   maxlength: 12,
                                   minlength: 12,
@@ -345,7 +345,7 @@ class _CoApplicantFormBottomSheetState
 
                         SearchableDropdown(
                           controlName: 'title',
-                          label: 'Member Gender Type',
+                          label: 'Co-Applicant Gender Type',
                           items:
                               state.lovList!
                                   .where((v) => v.Header == 'Title')
@@ -387,12 +387,12 @@ class _CoApplicantFormBottomSheetState
                         ),
                         CustomTextField(
                           controlName: 'middleName',
-                          label: 'Member Name',
+                          label: 'Co-Applicant Name',
                           mantatory: true,
                         ),
                         CustomTextField(
                           controlName: 'lastName',
-                          label: 'Member Educational Qualification',
+                          label: 'Co-Applicant Educational Qualification',
                           mantatory: true,
                         ),
 
@@ -402,7 +402,7 @@ class _CoApplicantFormBottomSheetState
                           label:
                               dedupeState.constitution == 'NI'
                                   ? 'Relationship With Firm'
-                                  : 'Relationship With Member',
+                                  : 'Relationship With Co-Applicant',
                           items:
                               state.lovList!
                                   .where((v) => v.Header == 'CoAppRelationship')
@@ -468,7 +468,7 @@ class _CoApplicantFormBottomSheetState
 
                         IntegerTextField(
                           controlName: 'primaryMobileNumber',
-                          label: 'Member Telephone',
+                          label: 'Co-Applicant Telephone',
                           mantatory: true,
                           maxlength: 10,
                           minlength: 10,
@@ -594,7 +594,7 @@ class _CoApplicantFormBottomSheetState
                         ),
                         CustomTextField(
                           controlName: 'address3',
-                          label: 'Member Caste or Social Strata',
+                          label: 'Co-Applicant Caste or Social Strata',
                           mantatory: false,
                         ),
                         SizedBox(

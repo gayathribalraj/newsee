@@ -1,18 +1,30 @@
 import 'package:equatable/equatable.dart';
 
-enum DairyDetailsStatus { initial, loading, success, failure }
+enum DairyDetailsStatus {
+  init, 
+  loading,  
+  success,  
+  failure,  
+}
 
 class DairyDetailsState extends Equatable {
   final List<Map<String, dynamic>> addedDetails;
+
   final DairyDetailsStatus status;
+
   final String? error;
 
   const DairyDetailsState({
-    this.addedDetails = const [],
-    this.status = DairyDetailsStatus.initial,
+    required this.addedDetails,
+    this.status = DairyDetailsStatus.init,
     this.error,
   });
 
+  // Factory constructor for the initial state.
+  factory DairyDetailsState.initial() =>
+      const DairyDetailsState(addedDetails: []);
+
+  // Returns a new state with updated values.
   DairyDetailsState copyWith({
     List<Map<String, dynamic>>? addedDetails,
     DairyDetailsStatus? status,
