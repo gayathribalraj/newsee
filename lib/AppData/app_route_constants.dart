@@ -38,6 +38,10 @@ class AppRouteConstants {
     'name': 'poultrydetails',
     'path': '/poultrydetails',
   };
+  static const RouteProps ASSEMENT_DETAILS = {
+    'name': 'assmentdetails',
+    'path': '/assmentdetails',
+  };
   static const RouteProps DOCUMENT_PAGE = {
     'name': 'document',
     'path': '/document',

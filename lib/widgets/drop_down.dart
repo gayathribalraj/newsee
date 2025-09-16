@@ -35,7 +35,7 @@ Widget Dropdown({
         label: RichText(
           text: TextSpan(
             text: label,
-            style: TextStyle(color: Colors.black, fontSize: 16),
+            style: TextStyle(color: Colors.black, fontSize: 14),
             children: [
               TextSpan(
                 text: mantatory == null ? ' *' : '',
@@ -46,10 +46,13 @@ Widget Dropdown({
         ),
         hintText: '--Select--',
       ),
+      
       items:
-          items
-              .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
+          items 
+              .map((e) => DropdownMenuItem<String>(value: e, child: Text(e, style: TextStyle(fontSize: 12.6)
+              )))
               .toList(),
     ),
+    
   );
 }

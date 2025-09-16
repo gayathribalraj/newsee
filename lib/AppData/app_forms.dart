@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
+import 'package:newsee/feature/dynamic_form/form_mapper.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class AppForms {
@@ -49,6 +50,8 @@ class AppForms {
       'relationship2': FormControl<String>(validators: [Validators.required]),
     });
   }
+ 
+   
 
  static FormGroup buildInvesmentDetailsForm() {
     return FormGroup({

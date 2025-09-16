@@ -266,6 +266,22 @@ class DraftInboxState extends State<DraftInbox> {
                                         );
                                       },
                                     ),
+                                   OptionsSheet(
+                                        icon: Icons.assessment,
+                                        title: "Assesment Details",
+                                        subtitle:
+                                            "View your Assesment Details here",
+                                       onTap: () {
+                                          if (draft.leadref == null || draft.leadref.isEmpty) {
+                                            debugPrint(" LeadRef missing, cannot open Assesment Details");
+                                            return;
+                                          }
+                                          context.pushNamed(
+                                            'assmentdetails',
+                                            extra: {'leadId': draft.leadref},
+                                          );
+                                        },
+                                      ),
                                   ],
                                 ),
                               );

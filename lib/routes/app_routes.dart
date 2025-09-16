@@ -11,6 +11,7 @@ import 'package:newsee/blocs/camera/camera_bloc.dart';
 import 'package:newsee/blocs/camera/camera_event.dart';
 import 'package:newsee/core/api/api_client.dart';
 import 'package:newsee/feature/CropDetails/presentation/page/cropdetailspage.dart';
+import 'package:newsee/feature/assesment/assesment_page.dart';
 import 'package:newsee/feature/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:newsee/feature/auth/data/repository/auth_repository_impl.dart';
 import 'package:newsee/feature/auth/presentation/bloc/auth_bloc.dart';
@@ -199,6 +200,16 @@ final routes = GoRouter(
    
     return DairyDetailsPage(leadId: leadId);
   },
+),
+   GoRoute(
+  path: AppRouteConstants.ASSEMENT_DETAILS['path']!,
+  name: AppRouteConstants.ASSEMENT_DETAILS['name'],
+  builder: (context, state){
+    final extra = state.extra as Map<String,dynamic>?;
+    final leadId = extra?['leadId'].toString()??'';
+    return AssmentDetails(leadId: leadId);
+
+  }
 ),
  
     GoRoute(
