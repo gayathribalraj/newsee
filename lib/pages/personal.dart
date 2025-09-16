@@ -257,8 +257,8 @@ class Personal extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            // final loanBloc = context.watch<LoanproductBloc>().state;
-            // final loanTypeLabel = loanBloc.selectedProductScheme == null ? "SHG" : loanBloc.selectedProductScheme!.optionValue == "61" ? "SHG" : "JLG" ;
+            final loanBloc = context.watch<LoanproductBloc>().state;
+            final loanTypeLabel = loanBloc.selectedProductScheme == null ? "SHG" : loanBloc.selectedProductScheme!.optionValue == "61" ? "SHG" : "JLG" ;
             DedupeState? dedupeState;
             if (state.status == SaveStatus.init && state.aadhaarData != null) {
               mapAadhaarData(state.aadhaarData);
@@ -331,8 +331,7 @@ class Personal extends StatelessWidget {
                       CustomTextField(
                         fieldKey: _firstNameKey,
                         controlName: 'firstName',
-                        label: 'FistName',
-                        // label: 'Name of the $loanTypeLabel',
+                        label: 'Name of the $loanTypeLabel',
 
                         mantatory: true,
                       ),
@@ -854,11 +853,10 @@ class Personal extends StatelessWidget {
                       SearchableDropdown<Lov>(
                         fieldKey: _genderKey,
                         controlName: 'gender',
-                        // label: 'Whether classified as special $loanTypeLabel',
-                         label:   'Residential Status',
+                        label: 'Whether classified as special $loanTypeLabel',
                         items:
                             state.lovList!
-                                .where((v) => v.Header == 'Gender')
+                                .where((v) => v.Header == 'LandYes')
                                 .toList(),
                         onChangeListener: (Lov val) {
                           form.controls['gender']?.updateValue(val.optvalue);
@@ -869,12 +867,12 @@ class Personal extends StatelessWidget {
                             return null;
                           }
                           return state.lovList!
-                              .where((v) => v.Header == 'Gender')
+                              .where((v) => v.Header == 'LandYes')
                               .firstWhere(
                                 (lov) => lov.optvalue == value,
                                 orElse:
                                     () => Lov(
-                                      Header: 'Gender',
+                                      Header: 'LandYes',
                                       optvalue: '',
                                       optDesc: '',
                                       optCode: '',
