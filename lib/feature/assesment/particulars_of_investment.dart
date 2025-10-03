@@ -5,13 +5,14 @@ import 'package:reactive_forms/reactive_forms.dart';
 final List<FormMapper> particularsOfInvestmentFormMapper = [
   FormMapper(
     formName: "particulars",
-    formType: "Dropdown",
+    formType: "Dropdown",  
     label: "Particulars",
     options: [
       "Digging / Repair of well & Drilling bore / tube wells",
       "Purchase of Electric motor / pump set",
       "Laying of water pipelines and others",
       "Sprinkler / Drip Irrigation systems",
+
     ],
   ),
   FormMapper(
@@ -26,7 +27,7 @@ final List<FormMapper> particularsOfInvestmentFormMapper = [
   ),
   FormMapper(
     formName: "dateOfQuotation",
-    formType: "DatePicker",
+    formType: "DatePickerField",
     label: "Date of Quotation",
   ),
   FormMapper(
@@ -45,30 +46,24 @@ final List<FormMapper> particularsOfInvestmentFormMapper = [
     label: "No. of Unit / Quantity",
   ),
   FormMapper(
-    formName: "totalCost",
-    formType: "CustomTextField",
-    label: "Total Cost",
-  ),
+  formName: "totalCost",
+  formType: "CustomTextField",
+  label: "Total Cost",
+  readOnly: true,
+)
 ];
  void attachTotalCostListener(FormGroup form) {
-    form.valueChanges.listen((values) {
-      final formValues = values ?? {};
+  form.valueChanges.listen((values) {
+    
+    final unitCostStr = values?['unitCost']?.toString() ?? '';
+    final quantityStr = values?['quantity']?.toString() ?? '';
 
-      // Extract and sanitize unitCost
-      String? unitCostStr = formValues['unitCost']?.toString();
-      String? sanitizedUnitCost = unitCostStr?.replaceAll(RegExp(r'[^\d]'), '');
-      int unitCost = int.tryParse(sanitizedUnitCost ?? '0') ?? 0;
+    final unitCost = int.tryParse(unitCostStr.replaceAll(RegExp(r'[^\d]'), '')) ?? 0;
+    final quantity = int.tryParse(quantityStr.replaceAll(RegExp(r'[^\d]'), '')) ?? 0;
 
-      // Extract and sanitize quantity
-      String? quantityStr = formValues['quantity']?.toString();
-      String? sanitizedQty = quantityStr?.replaceAll(RegExp(r'[^\d]'), '');
-      int quantity = int.tryParse(sanitizedQty ?? '0') ?? 0;
+    final total = unitCost * quantity;
+    final formattedTotal = formatAmount(total.toString());
 
-      // Calculate total cost
-      final total = unitCost * quantity;
-      final formattedTotal = formatAmount(total.toString());
-
-      // Update totalCost control
-      form.control('totalCost').updateValue(formattedTotal);
-    });
-  }
+    form.control('totalCost').updateValue(formattedTotal);
+  });
+}

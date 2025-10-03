@@ -9,14 +9,11 @@ import 'package:newsee/feature/coapplicant/presentation/bloc/coapp_details_bloc.
 import 'package:newsee/feature/leadInbox/domain/modal/group_lead_inbox.dart';
 import 'package:newsee/feature/masters/domain/modal/geography_master.dart';
 import 'package:newsee/feature/proposal_inbox/domain/modal/group_proposal_inbox.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 
 String formatAmount(String amount) {
   try {
     final num value = num.parse(amount);
     final formatter = NumberFormat.decimalPattern('en_IN');
-    // return '₹${formatter.format(value)}';
-    // final formatter = NumberFormat.currency(locale: 'en_IN', symbol: '₹');
     return formatter.format(value);
   } catch (e) {
     return amount;

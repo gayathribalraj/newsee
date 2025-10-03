@@ -79,9 +79,9 @@ final List<FormMapper> diggingFormMapper = [
     label: "Others (Estimated Cost in Rs)",
   ),
   FormMapper(
-  formName: "size_of_well_label",
+  formName: "none",
   formType: "Label",
-  label: "Size of the proposed well",
+  label: "SIZE OF THE PROPOSED WELL",
 ),
 
   FormMapper(
@@ -97,7 +97,7 @@ final List<FormMapper> diggingFormMapper = [
   ),
   FormMapper(
     formName: "lifting_method",
-    formType: "AlphatextField",
+    formType: "AlphaTextField",
     label: "How water is proposed to be lifted from the proposed well",
   ),
   FormMapper(

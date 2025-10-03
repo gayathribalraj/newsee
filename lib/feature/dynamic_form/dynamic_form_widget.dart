@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsee/feature/dynamic_form/form_mapper.dart';
 import 'package:newsee/widgets/alpha_text_field.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
+import 'package:newsee/widgets/datepicker.dart';
 import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:newsee/widgets/searchable_drop_down.dart';
@@ -55,7 +56,8 @@ Widget buildField(
         mantatory: true,
       
       );
-      case "Label":
+
+    case "Label":
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 10),
         child: Text(
@@ -65,6 +67,12 @@ Widget buildField(
             fontWeight: FontWeight.bold,
           ),
         ),
+      );
+
+    case "DatePickerField":
+      return DatePickerField(
+        formControlName: field.formName,
+        label: field.label,
       );
 
     default:

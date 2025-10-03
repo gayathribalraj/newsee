@@ -15,7 +15,7 @@ final List<FormMapper> sprinklerFormMapper = [
   ),
   FormMapper(
     formName: "distance_nearest_well",
-    formType: "integerTextField",
+    formType: "IntegerTextField",
     label: "Distance of the proposed site/point from the nearest well (in metres)",
   ),
   FormMapper(
@@ -26,7 +26,7 @@ final List<FormMapper> sprinklerFormMapper = [
   ),
   FormMapper(
     formName: "area_commanded",
-    formType: "integerTextField",
+    formType: "IntegerTextField",
     label: "Area that could be commanded by the proposed well",
   ),
   FormMapper(
@@ -85,58 +85,53 @@ final List<FormMapper> sprinklerFormMapper = [
   ),
   FormMapper(
     formName: "pumproom_arrangement",
-    formType: "CutomtextField",
+    formType: "CustomTextField",
     label: "Arrangements for construction of pumproom",
   ),
   FormMapper(
     formName: "survey_number",
-    formType: "CutomtextField",
+    formType: "CustomTextField",
     label: "Survey / Khasara No",
   ),
-  FormMapper(
-    formName: "survey_number",
-    formType: "CutomtextField",
-    label: "Survey / Khasara No",
-  ),
-
+ 
   FormMapper(
     formName: "diameter",
-    formType: "integerTextField",
+    formType: "IntegerTextField",
     label: "Diameter",
   ),
   FormMapper(
     formName: "depth",
-    formType: "integerTextField",
+    formType: "IntegerTextField",
     label: "Depth",
   ),
   FormMapper(
     formName: "boring_pipe_size",
-    formType: "integerTextField",
+    formType: "IntegerTextField",
     label: "Size of boring pipe",
   ),
   FormMapper(
     formName: "delivery_pipe_size",
-    formType: "integerTextField",
+    formType: "IntegerTextField",
     label: "Size of delivery pipe (diameter)",
   ),
   FormMapper(
     formName: "motor_engine_hp",
-    formType: "integerTextField",
+    formType: "IntegerTextField",
     label: "Motor or Engine (HP)",
   ),
   FormMapper(
     formName: "pump_set_particulars",
-    formType: "textField",
+    formType: "CustomTextField",
     label: "Give particulars of pump set proposed to be purchased",
   ),
   FormMapper(
     formName: "water_source",
-    formType: "textField",
+    formType: "CustomTextField",
     label: "Indicate the source of water",
   ),
   FormMapper(
     formName: "area_benefited",
-    formType: "integerTextField",
+    formType: "IntegerTextField",
     label: "Area to be benefited (in acres)",
   ),
   FormMapper(
@@ -147,7 +142,7 @@ final List<FormMapper> sprinklerFormMapper = [
   ),
   FormMapper(
     formName: "estimated_cost",
-    formType: "integerTextField",
+    formType: "IntegerTextField",
     label: "Estimated Cost",
   ),
 ];

@@ -94,10 +94,13 @@ class DairyDetailsPage extends StatelessWidget {
 
                   //  Save All Forms Button 
                   ElevatedButton(
-                    style: const ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Colors.teal),
-                      foregroundColor: WidgetStatePropertyAll(Colors.white),
-                    ),
+                   style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                                Color.fromARGB(255, 2, 59, 105),
+                              ),
+                              foregroundColor:
+                                  MaterialStatePropertyAll(Colors.white),
+                            ),
                     onPressed: () {
                       // Validate all forms before saving
                       if (liveStockEligibilityForm.valid &&
@@ -147,7 +150,7 @@ class DairyDetailsPage extends StatelessWidget {
                         );
                       }
                     },
-                    child: const Text("All"),
+                    child: const Text("Add"),
                   ),
                   const SizedBox(height: 80),
                 ],

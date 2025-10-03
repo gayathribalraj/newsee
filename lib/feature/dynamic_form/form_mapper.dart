@@ -6,13 +6,14 @@ class FormMapper {
   final String formType;
   final String label;
   final List<dynamic>? options;
+  final bool readOnly;
 
   FormMapper({
     required this.formName,
     required this.formType,
     required this.label,
     this.options,
-  });
+    this.readOnly = true,});
 }
 
 final List<FormMapper> formMapper = [
