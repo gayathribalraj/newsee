@@ -137,46 +137,71 @@ final List<FormMapper> economicViabilityFormMapper = [
     label: "Proposed Repayment Schedule",
   ),
 ];
-void attachCropDetailsListeners(FormGroup form) {
+void attachEconomicTotalCostListener(FormGroup form) {
   form.valueChanges.listen((values) {
 
     //  Existing Crop
+
+  final areaExistingstr = values?['area_acres_existing']?.toString() ?? '';
+    final costCultivationExistingstr = values?['cost_cultivation_existing']?.toString() ?? '';
+    final yieldPerAcreExistingstr = values?['yield_per_acre_existing']?.toString() ?? '';
+    final pricePerQtlExistingstr = values?['price_per_qtl_existing']?.toString() ?? '';
    
-   final areaExisting = int.tryParse(values?['area_acres_existing']?.toString() ?? '') ?? 0;
-    final costCultivationExisting = int.tryParse(values?['cost_cultivation_existing']?.toString() ?? '') ?? 0;
-    final yieldPerAcreExisting = int.tryParse(values?['yield_per_acre_existing']?.toString() ?? '') ?? 0;
-    final pricePerQtlExisting = int.tryParse(values?['price_per_qtl_existing']?.toString() ?? '') ?? 0;
- 
+  final areaExisting = int.tryParse(areaExistingstr.replaceAll(RegExp(r'[^\d]'), ''))?? 0;
+    final costCultExisting = int.tryParse(costCultivationExistingstr.replaceAll(RegExp(r'[^\d]'), ''))?? 0;
+    final yieldPerAcreExisting = int.tryParse(yieldPerAcreExistingstr.replaceAll(RegExp(r'[^\d]'), ''))?? 0;
+    final pricePerQtlExisting = int.tryParse(pricePerQtlExistingstr.replaceAll(RegExp(r'[^\d]'), ''))?? 0;
+
+  
      
-    int totalCostExisting = areaExisting * costCultivationExisting;
+    int totalCostExisting = areaExisting * costCultExisting;
     int totalYieldExisting = areaExisting * yieldPerAcreExisting;
     int totalValueExisting = totalYieldExisting * pricePerQtlExisting;
     int grossSurplusExisting = totalValueExisting - totalCostExisting;
 
-    form.control('total_cost_existing').updateValue(totalCostExisting);
-    form.control('total_yield_existing').updateValue(totalYieldExisting);
-    form.control('total_value_existing').updateValue(totalValueExisting);
-    form.control('gross_surplus_existing').updateValue(grossSurplusExisting);
-    form.control('existing_crop_total_gross_surplus').updateValue(grossSurplusExisting); // if multiple rows -> sum
+  final formattedTotalExisting = formatAmount(totalCostExisting.toString());
+  final formattedYieldExisting = formatAmount(totalYieldExisting.toString());
+  final formattedTotalValueExisting = formatAmount(totalValueExisting.toString());
+  final formattedGrossSurplusExisting = formatAmount(grossSurplusExisting.toString());
 
-    // ---- Proposed Crop ----
+  form.control('total_cost_existing').updateValue(formattedTotalExisting);
+  form.control('total_yield_existing').updateValue(formattedYieldExisting);
+  form.control('total_value_existing').updateValue(formattedTotalValueExisting);
+  form.control('gross_surplus_existing').updateValue(formattedGrossSurplusExisting);
+  form.control('existing_crop_total_gross_surplus').updateValue(formattedGrossSurplusExisting); 
+
+    // Proposed Crop
+
+
+    final areaProposedstr = values?['area_acres_proposed']?.toString() ?? '';
+    final costCultivationProposedstr = values?['cost_cultivation_proposed']?.toString() ?? '';
+    final yieldPerAcreProposedstr = values?['yield_per_acre_proposed']?.toString() ?? '';
+    final pricePerQtlProposedstr = values?['price_per_qtl_proposed']?.toString() ?? '';
+   
+   
+   final areaProposed = int.tryParse(areaProposedstr.replaceAll(RegExp(r'[^\d]'), ''))?? 0;
+    final costCultivationProposed = int.tryParse(costCultivationProposedstr.replaceAll(RegExp(r'[^\d]'), ''))?? 0;
+    final yieldPerAcreProposed = int.tryParse(yieldPerAcreProposedstr.replaceAll(RegExp(r'[^\d]'), ''))?? 0;
+    final pricePerQtlProposed = int.tryParse(pricePerQtlProposedstr.replaceAll(RegExp(r'[^\d]'), ''))?? 0;
+   
+   
     
-   final areaProposed = int.tryParse(values?['area_acres_proposed']?.toString() ?? '') ?? 0;
-    final costCultivationProposed = int.tryParse(values?['cost_cultivation_proposed']?.toString() ?? '') ?? 0;
-    final yieldPerAcreProposed = int.tryParse(values?['yield_per_acre_proposed']?.toString() ?? '') ?? 0;
-    final pricePerQtlProposed = int.tryParse(values?['price_per_qtl_proposed']?.toString() ?? '') ?? 0;
 
-    
-    int totalCostProposed = areaProposed * costCultivationProposed;
-    int totalYieldProposed = areaProposed * yieldPerAcreProposed;
-    int totalValueProposed = totalYieldProposed * pricePerQtlProposed;
-    int grossSurplusProposed = totalValueProposed - totalCostProposed;
+  int totalCostProposed = areaProposed * costCultivationProposed;
+  int totalYieldProposed = areaProposed * yieldPerAcreProposed;
+  int totalValueProposed = totalYieldProposed * pricePerQtlProposed;
+  int grossSurplusProposed = totalValueProposed - totalCostProposed;
 
-    form.control('total_cost_proposed').updateValue(totalCostProposed);
-    form.control('total_yield_proposed').updateValue(totalYieldProposed);
-    form.control('total_value_proposed').updateValue(totalValueProposed);
-    form.control('gross_surplus_proposed').updateValue(grossSurplusProposed);
-    form.control('proposed_crop_total_gross_surplus').updateValue(grossSurplusProposed);
+  final formattedTotalProposed = formatAmount(totalCostProposed.toString());
+  final formattedYieldProposed = formatAmount(totalYieldProposed.toString());
+  final formattedTotalValueProposed = formatAmount(totalValueProposed.toString());
+  final formattedGrossSurplus = formatAmount(grossSurplusProposed.toString());
+
+
+  form.control('total_cost_proposed').updateValue(formattedTotalProposed);
+  form.control('total_yield_proposed').updateValue(formattedYieldProposed);
+  form.control('total_value_proposed').updateValue(formattedTotalValueProposed);
+  form.control('proposed_crop_total_gross_surplus').updateValue(formattedGrossSurplus);
 
     
   });

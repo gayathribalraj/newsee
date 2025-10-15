@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:newsee/AppData/DBConstants/table_key_geographymaster.dart';
 import 'package:newsee/AppData/app_forms.dart';
-import 'package:newsee/core/db/db_config.dart';
 import 'package:newsee/feature/fieldinvestigation/presentation/bloc/field_investigation_bloc.dart';
 import 'package:newsee/feature/masters/domain/modal/geography_master.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
-import 'package:newsee/feature/masters/domain/repository/geographymaster_crud_repo.dart';
 import 'package:newsee/widgets/cupertino_expansion_tile.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/drop_down.dart';
@@ -17,7 +14,6 @@ import 'package:newsee/widgets/reference_widget.dart';
 import 'package:newsee/widgets/searchable_drop_down.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:sqflite/sqflite.dart';
 
 class FieldInvetigation extends StatelessWidget {
   final String proposalNumber;

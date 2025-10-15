@@ -52,7 +52,7 @@ final List<FormMapper> particularsOfInvestmentFormMapper = [
   readOnly: true,
 )
 ];
- void attachTotalCostListener(FormGroup form) {
+ void attachParticularTotalCostListener(FormGroup form) {
   form.valueChanges.listen((values) {
     
     final unitCostStr = values?['unitCost']?.toString() ?? '';

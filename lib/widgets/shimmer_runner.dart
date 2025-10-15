@@ -22,8 +22,8 @@ class ShimmerRunner extends StatelessWidget {
       child:
           isIcon
               ? Container(
-                width: 16,
-                height: 16,
+                width: 25,
+                height: 24,
                 decoration: BoxDecoration(
                   color: Colors.grey,
                   borderRadius: BorderRadius.circular(10),

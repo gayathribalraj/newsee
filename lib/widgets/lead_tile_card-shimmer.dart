@@ -21,18 +21,18 @@ class LeadTileCardShimmer extends StatelessWidget {
   final String location;
   final String loanamount;
 
-  const LeadTileCardShimmer({
+  const  LeadTileCardShimmer({
     Key? key,
-    this.title = 'Loading...',
-    this.subtitle = 'Loading...',
+    this.title = '',
+    this.subtitle = '',
     required this.icon,
     this.color = Colors.teal,
-    this.type = 'Loading...',
-    this.product = 'Loading...',
-    this.phone = 'Loading...',
-    this.createdon = 'Loading...',
-    this.location = 'Loading...',
-    this.loanamount = 'Loading...',
+    this.type = '',
+    this.product = '',
+    this.phone = '',
+    this.createdon = '',
+    this.location = '',
+    this.loanamount = '',
   }) : super(key: key);
 
   @override
@@ -52,7 +52,7 @@ class LeadTileCardShimmer extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor: color.withOpacity(0.1),
                     child: ShimmerRunner(
-                      container: "sdfsdfsdfsdfsdf",
+                      container: "",
                       isIcon: true,
                     ),
                   ),
@@ -62,18 +62,21 @@ class LeadTileCardShimmer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ShimmerRunner(
-                          container: "sdfsdfsdfsdfsdf",
+                          container: "",
                           isIcon: false,
                         ),
+                        SizedBox(height: 10),
                         ShimmerRunner(
-                          container: "sdfsdfsdfsdfsdf",
+                          container: "",
                           isIcon: false,
                         ),
                       ],
                     ),
                   ),
+                                    const SizedBox(width: 12),
+
                   const ShimmerRunner(
-                    container: "sdfsdfsdfsdfsdf",
+                    container: "",
                     isIcon: true,
                   ),
                 ],
@@ -82,6 +85,7 @@ class LeadTileCardShimmer extends StatelessWidget {
               Row(
                 children: [
                   Expanded(child: iconWithLabel(Icons.person_2_outlined, type)),
+                  SizedBox(width: 10),
                   Expanded(child: iconWithLabel(Icons.badge_outlined, product)),
                 ],
               ),
@@ -106,6 +110,7 @@ class LeadTileCardShimmer extends StatelessWidget {
                       child: iconWithLabel(Icons.phone_outlined, phone),
                     ),
                   ),
+                  SizedBox(width: 10),
                   Expanded(
                     child: iconWithLabel(
                       Icons.calendar_month_outlined,
@@ -136,10 +141,10 @@ class LeadTileCardShimmer extends StatelessWidget {
   Widget iconWithLabel(IconData iconData, String label) {
     return Row(
       children: [
-        ShimmerRunner(container: 'sdfsdfsdfsdfsdf', isIcon: true),
-        const SizedBox(width: 6),
+        ShimmerRunner(container: '', isIcon: true),
+                  SizedBox(width: 10),
         Flexible(
-          child: ShimmerRunner(container: "sdfsdfsdfsdfsdf", isIcon: false),
+          child: ShimmerRunner(container: "", isIcon: false),
         ),
       ],
     );

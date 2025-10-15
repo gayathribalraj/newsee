@@ -79,8 +79,8 @@ class AssmentDetails extends StatelessWidget {
     });
 
     // Attach listeners if needed
-    attachTotalCostListener(particularsOfInvestmentForm);
-    attachCropDetailsListeners(economicViabilityForm);
+    attachParticularTotalCostListener(particularsOfInvestmentForm);
+    attachEconomicTotalCostListener(economicViabilityForm);
 
     final controller = ExpansionController();
 
@@ -96,6 +96,8 @@ class AssmentDetails extends StatelessWidget {
             const totalSection = 4;
 
       particularsOfInvestmentForm.patchValue(state.particularsData);
+      economicViabilityForm.patchValue(state.economicData);
+      
       
   if(state.selectedParticular == "Digging / Repair of well & Drilling bore / tube wells"){
     diggingForm.patchValue(state.technicalData);
@@ -113,29 +115,12 @@ class AssmentDetails extends StatelessWidget {
     sprinklerForm.patchValue(state.technicalData);
 
   }
-  else{
+  else if(state.selectedParticular.isEmpty ){
+
     diggingForm.patchValue(state.technicalData);
 
   }
 
-
-
-      // switch(state.selectedParticular){
-      //  case "Digging / Repair of well & Drilling bore / tube wells":
-      //  diggingForm.patchValue(state.technicalData);
-      //  break;
-      //  case "Laying of water pipelines and others":
-      //  layingForm.patchValue(state.technicalData);
-      //  break;
-      //  case "purchase of Electric motor / pump set":
-      //  pumpSetForm.patchValue(state.technicalData);
-      //  break;
-      //  case "Sprinkler / Drip Irrigation systems":
-      //  sprinklerForm.patchValue(state.technicalData);
-      //  default:
-      //  diggingForm.patchValue(state.technicalData);
-
-      // }
       economicViabilityForm.patchValue(state.economicData);
       incomeExpenseForm.patchValue(state.incomeExpenseData);
 
