@@ -57,9 +57,8 @@ class CompletedLeads extends StatelessWidget {
               onPressedRightButton: () {
                 context.pop();
                 final tabController = DefaultTabController.of(context);
-                if (tabController.index < tabController.length - 1) {
-                  tabController.animateTo(tabController.index + 1);
-                }
+                final int applicationsIndex = tabController.length - 1;
+                tabController.animateTo(applicationsIndex);
               },
               leftButtonLabel: 'Cancel',
               rightButtonLabel: 'Go To Application',

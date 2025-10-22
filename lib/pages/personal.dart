@@ -104,7 +104,9 @@ class Personal extends StatelessWidget {
       form.control('middleName').updateValue(val.lleadmidname!);
       form.control('lastName').updateValue(val.lleadlastname!);
       form.control('dob').updateValue(getDateFormat(val.lleaddob!));
-      form.control('primaryMobileNumber').updateValue(val.lleadmobno!);
+      form
+          .control('primaryMobileNumber')
+          .updateValue(removeMobileSymble(val.lleadmobno));
       form.control('email').updateValue(val.lleademailid!);
       form.control('panNumber').updateValue(val.lleadpanno!);
       form.control('aadharRefNo').updateValue(val.lleadadharno!);
@@ -113,6 +115,20 @@ class Personal extends StatelessWidget {
       }
     } catch (error) {
       print("autoPopulateData-catch-error $error");
+    }
+  }
+
+  String? removeMobileSymble(dynamic input) {
+    try {
+      if (input == null) return null;
+      final storeString = input.toString();
+      final digit = storeString.replaceAll(RegExp(r"[^0-9]"), '');
+      if (digit.isEmpty) return null;
+      if (digit.length > 10) return digit.substring(digit.length - 10);
+      return digit;
+    } catch (e) {
+      print('removeMobileSymble error: $e');
+      return null;
     }
   }
 
@@ -126,10 +142,10 @@ class Personal extends StatelessWidget {
       form.control('residentialStatus').updateValue(val['residentialStatus']);
       form
           .control('primaryMobileNumber')
-          .updateValue(val['primaryMobileNumber']);
+          .updateValue(removeMobileSymble(val['primaryMobileNumber']));
       form
           .control('secondaryMobileNumber')
-          .updateValue(val['secondaryMobileNumber']);
+          .updateValue(removeMobileSymble(val['secondaryMobileNumber']));
       form.control('email').updateValue(val['email']);
       form.control('panNumber').updateValue(val['panNumber']);
       form.control('aadharRefNo').updateValue(val['aadharRefNo']);
@@ -156,7 +172,7 @@ class Personal extends StatelessWidget {
       print("mapPersonalData-catch-error $error");
     }
   }
-  
+
   /* 
     @author : karthick.d  
     @desc   : scroll to error field which identified first in the widget tree
