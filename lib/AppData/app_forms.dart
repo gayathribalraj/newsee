@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
@@ -55,6 +56,14 @@ class AppForms {
   static FormGroup CUSTOMER_TYPE_FORM = FormGroup({
     'constitution': FormControl<String>(validators: [Validators.required]),
     'isNewCustomer': FormControl<bool>(validators: [Validators.required]),
+  });
+
+  static FormGroup AUDIT_LOG_FORM() => FormGroup({
+    'todayAndThisweek': FormControl<String>(value: ''),
+    'startDate': FormControl<String>(value: null),
+    'endDate': FormControl<String>(value: null),
+    'startTime': FormControl<TimeOfDay>(value: null),
+    'endTime': FormControl<TimeOfDay>(value: null),
   });
 
   static FormGroup GET_PERSONAL_DETAILS_FORM() => FormGroup({
@@ -126,9 +135,7 @@ class AppForms {
     'primaryMobileNumber': FormControl<String>(
       validators: [Validators.minLength(10)],
     ),
-    'secondaryMobileNumber': FormControl<String>(
-      validators: [],
-    ),
+    'secondaryMobileNumber': FormControl<String>(validators: []),
     'email': FormControl<String>(validators: [Validators.email]),
     'aadhaar': FormControl<String>(),
     'panNumber': FormControl<String>(
@@ -149,12 +156,8 @@ class AppForms {
     'state': FormControl<String>(validators: []),
     'cityDistrict': FormControl<String>(validators: []),
     'pincode': FormControl<String>(validators: []),
-    'loanLiabilityCount': FormControl<String>(
-      validators: [],
-    ),
-    'loanLiabilityAmount': FormControl<String>(
-      validators: [],
-    ),
+    'loanLiabilityCount': FormControl<String>(validators: []),
+    'loanLiabilityAmount': FormControl<String>(validators: []),
     'depositCount': FormControl<String>(validators: []),
     'depositAmount': FormControl<String>(validators: []),
   });
