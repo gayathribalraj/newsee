@@ -167,22 +167,28 @@ class LoginpageView extends StatelessWidget {
                                   SizedBox(height: screenHeight * 0.03),
 
                                   //Login using fingerprint (biometric authentication)
-                                  IconButton(
-                                    onPressed: () {
-                                      fingerPrintScanner(context);
-                                    },
-                                    icon: Icon(Icons.fingerprint),
-                                    iconSize: screenWidth * 0.18,
-                                    color: const Color.fromARGB(255, 3, 9, 110),
+                                  // IconButton(
+                                  //   onPressed: () {
+                                  //     fingerPrintScanner(context);
+                                  //   },
+                                  //   icon: Icon(Icons.fingerprint),
+                                  //   iconSize: screenWidth * 0.18,
+                                  //   color: const Color.fromARGB(255, 3, 9, 110),
+                                  // ),
+                                   Image.asset(
+                                    'assets/dlb_logo/bank-login-logo.png', 
+                                    width: screenWidth * 0.40,
+                                    height: screenWidth * 0.22,
+                                    fit: BoxFit.contain,
                                   ),
 
-                                  Text(
-                                    "Login with Fingerprint",
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 0.045,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                                  // Text(
+                                  //   "Login with Fingerprint",
+                                  //   style: TextStyle(
+                                  //     fontSize: screenWidth * 0.045,
+                                  //     fontWeight: FontWeight.bold,
+                                  //   ),
+                                  // ),
                                   SizedBox(height: screenHeight * 0.03),
                                   // users multiple ways to authenticate and access frequently used features
                                   Text(

@@ -1,0 +1,7 @@
+Key Store File Details
+
+Alias_Name: dlb_shg_uat
+
+Enter KeyStore Password: Sysarc@2025
+
+Enter Key Password: Sysarc@2025
