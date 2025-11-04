@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kyc_validation/kyc_validation.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/pages/home_page.dart';
@@ -73,9 +74,13 @@ class Sidenavigationbar extends StatelessWidget {
             icon: Icons.mail_rounded,
             title: "Field Visit Inbox",
             onTap: () {
+              // Navigator.push(
+              //   sidemenucontext,
+              //   MaterialPageRoute(builder: (context) => HomePage(tabdata: 1)),
+              // );
               Navigator.push(
                 sidemenucontext,
-                MaterialPageRoute(builder: (context) => HomePage(tabdata: 1)),
+                MaterialPageRoute(builder: (context) => VoterValidation()),
               );
             },
           ),

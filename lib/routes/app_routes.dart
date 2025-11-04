@@ -29,6 +29,7 @@ import 'package:newsee/pages/home_page.dart';
 import 'package:newsee/pages/newlead_page.dart';
 import 'package:newsee/pages/not_found_error.page.dart';
 import 'package:newsee/pages/profile_page.dart';
+import 'package:newsee/pages/voterid_validation.dart';
 
 import '../feature/documentupload/presentation/bloc/document_event.dart';
 
@@ -119,7 +120,7 @@ final routes = GoRouter(
           child: Scaffold(
             body: BlocProvider(
               create: (_) => AuthBloc(authRepository: AuthRepository),
-              child: tabdata == null ? HomePage() : HomePage(tabdata: tabdata),
+              child: tabdata == null ? HomePage() : VoteridValidation(),
             ),
           ),
         );

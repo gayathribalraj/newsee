@@ -11,7 +11,10 @@ void main() {
   //runApp(LoginApp()); // Login Form App
   dependencyInjection();
   // setupLocator();
-  runApp(RouterApp()); // GoRouter Sample App
+  // runApp(RouterApp()); // GoRouter Sample App
+    runApp(RouterApp()); // GoRouter Sample App
+
+
 }
 
 // git checkout -b karthicktechie-login_progressIndicator download-progress-indicator
