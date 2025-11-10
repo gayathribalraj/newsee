@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.newsee"
+    namespace = "com.ubi.agri"
     compileSdk = 35
     ndkVersion = flutter.ndkVersion
 

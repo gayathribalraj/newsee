@@ -84,7 +84,7 @@ class LoginpageView extends StatelessWidget {
               } else {
                 context.read<GlobalConfigBloc>().add(
                   NetworkChangedEvent(
-                    Globalconfig.fromValue(network: OperationNetwork.online),
+                    Globalconfig.fromValue(network: OperationNetwork.offline),
                   ),
                 );
               }

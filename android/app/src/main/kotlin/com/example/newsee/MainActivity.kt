@@ -1,4 +1,4 @@
-package com.example.newsee
+package com.ubi.agri
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

@@ -270,12 +270,14 @@ class LoginpageWithAC extends StatelessWidget {
                                     ? null
                                     : () {
                                       print('network => $network');
-                                      switch (network) {
-                                        case OperationNetwork.offline:
-                                          offlineLogin();
-                                        case OperationNetwork.online:
-                                          login(state);
-                                      }
+                                      offlineLogin();
+                                      // switch (network) {
+                                      //   case OperationNetwork.offline:
+                                      //     offlineLogin();
+                                      //   case OperationNetwork.online:
+                                      //     //login(state);
+                                      //     offlineLogin();
+                                      // }
                                     },
                             child:
                                 isLoading
