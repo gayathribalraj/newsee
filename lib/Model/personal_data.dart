@@ -11,8 +11,9 @@ class PersonalData {
   final String? primaryMobileNumber;
   final String? secondaryMobileNumber;
   final String? email;
-  final String? panNumber;
-  final String? aadharRefNo;
+  final String? pan;
+  final String? aadhaar;
+  // final String? aadharRefNo;
   final String? passportNumber;
   final String? loanAmountRequested;
   final String? natureOfActivity;
@@ -26,6 +27,8 @@ class PersonalData {
   final String? sourceid;
   final String? sourcename;
   final String? subActivity;
+  final String? voterid;
+
   PersonalData({
     this.title,
     this.firstName,
@@ -36,8 +39,8 @@ class PersonalData {
     this.primaryMobileNumber,
     this.secondaryMobileNumber,
     this.email,
-    this.panNumber,
-    this.aadharRefNo,
+    this.pan,
+    // this.aadharRefNo,
     this.passportNumber,
     this.loanAmountRequested,
     this.natureOfActivity,
@@ -51,6 +54,8 @@ class PersonalData {
     this.sourceid,
     this.sourcename,
     this.subActivity,
+    this.voterid,
+    this.aadhaar,
   });
 
   PersonalData copyWith({
@@ -63,8 +68,10 @@ class PersonalData {
     String? primaryMobileNumber,
     String? secondaryMobileNumber,
     String? email,
-    String? panNumber,
-    String? aadharRefNo,
+    String? pan,
+    String? aadhaar,
+
+    // String? aadharRefNo,
     String? passportNumber,
     String? loanAmountRequested,
     String? natureOfActivity,
@@ -79,6 +86,7 @@ class PersonalData {
     String? sourceid,
     String? sourcename,
     String? subActivity,
+    String? voterid,
   }) {
     return PersonalData(
       title: title ?? this.title,
@@ -91,8 +99,10 @@ class PersonalData {
       secondaryMobileNumber:
           secondaryMobileNumber ?? this.secondaryMobileNumber,
       email: email ?? this.email,
-      panNumber: panNumber ?? this.panNumber,
-      aadharRefNo: aadharRefNo ?? this.aadharRefNo,
+      pan: pan ?? this.pan,
+      aadhaar: aadhaar ?? this.aadhaar,
+
+      // aadharRefNo: aadharRefNo ?? this.aadharRefNo,
       passportNumber: passportNumber ?? this.passportNumber,
       loanAmountRequested: loanAmountRequested ?? this.loanAmountRequested,
       natureOfActivity: natureOfActivity ?? this.natureOfActivity,
@@ -106,6 +116,7 @@ class PersonalData {
       sourceid: sourceid ?? this.sourceid,
       sourcename: sourcename ?? this.sourcename,
       subActivity: subActivity ?? this.subActivity,
+      voterid: voterid ?? this.voterid,
     );
   }
 
@@ -120,8 +131,10 @@ class PersonalData {
       'primaryMobileNumber': primaryMobileNumber,
       'secondaryMobileNumber': secondaryMobileNumber,
       'email': email,
-      'panNumber': panNumber,
-      'aadharRefNo': aadharRefNo,
+      'pan': pan,
+      'aadhaar': aadhaar,
+
+      // 'aadharRefNo': aadharRefNo,
       'passportNumber': passportNumber,
       'loanAmountRequested': loanAmountRequested,
       'natureOfActivity': natureOfActivity,
@@ -135,6 +148,7 @@ class PersonalData {
       'sourceid': sourceid,
       'sourcename': sourcename,
       'subActivity': subActivity,
+      'voterid': voterid,
     };
   }
 
@@ -159,9 +173,9 @@ class PersonalData {
               ? map['secondaryMobileNumber'] as String
               : null,
       email: map['email'] != null ? map['email'] as String : null,
-      panNumber: map['panNumber'] != null ? map['panNumber'] as String : null,
-      aadharRefNo:
-          map['aadharRefNo'] != null ? map['aadharRefNo'] as String : null,
+      pan: map['pan'] != null ? map['pan'] as String : null,
+      // aadharRefNo:
+      //     map['aadharRefNo'] != null ? map['aadharRefNo'] as String : null,
       passportNumber:
           map['passportNumber'] != null
               ? map['passportNumber'] as String
@@ -196,6 +210,8 @@ class PersonalData {
           map['sourcename'] != null ? map['sourcename'] as String : null,
       subActivity:
           map['subActivity'] != null ? map['subActivity'] as String : null,
+      voterid: map['voterid'] != null ? map['voterid'] as String : null,
+      aadhaar: map['aadhaar'] != null ? map['aadhaar'] as String : null,
     );
   }
 
@@ -206,7 +222,7 @@ class PersonalData {
 
   @override
   String toString() {
-    return 'PersonalData(title: $title, firstName: $firstName, middleName: $middleName, lastName: $lastName, dob: $dob, residentialStatus: $residentialStatus, primaryMobileNumber: $primaryMobileNumber, secondaryMobileNumber: $secondaryMobileNumber, email: $email, panNumber: $panNumber, aadharRefNo: $aadharRefNo, passportNumber: $passportNumber, loanAmountRequested: $loanAmountRequested, natureOfActivity: $natureOfActivity, occupationType: $occupationType, agriculturistType: $agriculturistType, farmerCategory: $farmerCategory, farmerType: $farmerType, religion: $religion, caste: $caste, sourceid: $sourceid, sourcename: $sourcename, subActivity: $subActivity)';
+    return 'PersonalData(title: $title, firstName: $firstName, middleName: $middleName, lastName: $lastName, dob: $dob, residentialStatus: $residentialStatus, primaryMobileNumber: $primaryMobileNumber, secondaryMobileNumber: $secondaryMobileNumber, email: $email, passportNumber: $passportNumber, loanAmountRequested: $loanAmountRequested, natureOfActivity: $natureOfActivity, occupationType: $occupationType, agriculturistType: $agriculturistType, farmerCategory: $farmerCategory, farmerType: $farmerType, religion: $religion, caste: $caste, sourceid: $sourceid, sourcename: $sourcename, subActivity: $subActivity,  aadhaar: $aadhaar)';
   }
 
   @override
@@ -222,8 +238,8 @@ class PersonalData {
         other.primaryMobileNumber == primaryMobileNumber &&
         other.secondaryMobileNumber == secondaryMobileNumber &&
         other.email == email &&
-        other.panNumber == panNumber &&
-        other.aadharRefNo == aadharRefNo &&
+        other.pan == pan &&
+        // other.aadharRefNo == aadharRefNo &&
         other.passportNumber == passportNumber &&
         other.loanAmountRequested == loanAmountRequested &&
         other.natureOfActivity == natureOfActivity &&
@@ -236,7 +252,9 @@ class PersonalData {
         other.gender == gender &&
         other.sourceid == sourceid &&
         other.sourcename == sourcename &&
-        other.subActivity == subActivity;
+        other.subActivity == subActivity &&
+        other.aadhaar == aadhaar &&
+        other.voterid == voterid;
   }
 
   @override
@@ -250,8 +268,8 @@ class PersonalData {
         primaryMobileNumber.hashCode ^
         secondaryMobileNumber.hashCode ^
         email.hashCode ^
-        panNumber.hashCode ^
-        aadharRefNo.hashCode ^
+        pan.hashCode ^
+        // aadharRefNo.hashCode ^
         passportNumber.hashCode ^
         loanAmountRequested.hashCode ^
         natureOfActivity.hashCode ^
@@ -264,6 +282,8 @@ class PersonalData {
         gender.hashCode ^
         sourceid.hashCode ^
         sourcename.hashCode ^
-        subActivity.hashCode;
+        subActivity.hashCode ^
+        voterid.hashCode ^
+        aadhaar.hashCode;
   }
 }

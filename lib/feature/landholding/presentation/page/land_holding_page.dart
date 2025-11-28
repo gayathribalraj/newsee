@@ -39,7 +39,7 @@ class LandHoldingPage extends StatelessWidget {
     required this.applicantName,
     required this.proposalNumber,
   });
-
+  
   void handleSubmit(BuildContext context, LandHoldingState state) async {
     if (form.valid) {
       // final globalLoadingBloc = context.read<GlobalLoadingBloc>();

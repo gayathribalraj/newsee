@@ -183,10 +183,12 @@ class DedupeSearch extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Dropdown(
-                          controlName: 'title',
-                          label: 'Title',
-                          items: ['Mr', 'Mrs', 'Miss', 'Others'],
+                        SizedBox(
+                          child: Dropdown(
+                            controlName: 'title',
+                            label: 'Title',
+                            items: ['Mr', 'Mrs', 'Miss', 'Others'],
+                          ),
                         ),
                         CustomTextField(
                           controlName: 'firstname',

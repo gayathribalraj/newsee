@@ -1,0 +1,10 @@
+{
+    "passportResp": {
+        "success": true,
+        "responseData": {
+            "status_code": "101",
+            "passport": "{\"requestId\":\"03071003-c211-4fda-a2aa-e556f56fb875\",\"result\":{\"name\":{\"nameFromPassport\":\"OMKARMILIND\",\"surnameFromPassport\":\"SHIRHATTI\",\"nameMatch\":true,\"nameScore\":1},\"passportNumber\":{\"passportNumberFromSource\":\"S3733862\",\"passportNumberMatch\":true},\"dateOfIssue\":{\"dispatchedOnFromSource\":\"14/05/2018\",\"dateOfIssueMatch\":true},\"typeOfApplication\":\"Tatkaal\",\"applicationDate\":\"14/05/2018\"},\"statusCode\":101}"
+        },
+        "token": ""
+    }
+}

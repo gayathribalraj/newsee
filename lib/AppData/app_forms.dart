@@ -21,6 +21,8 @@ class AppForms {
     'productinterest': FormControl<String>(validators: [Validators.required]),
   });
 
+
+
   static FormGroup DEDUPE_DETAILS_FORM = FormGroup({
     'title': FormControl<String>(validators: [Validators.required]),
     'firstname': FormControl<String>(validators: [Validators.required]),
@@ -58,7 +60,9 @@ class AppForms {
   });
 
   static FormGroup GET_PERSONAL_DETAILS_FORM() => FormGroup({
-    'title': FormControl<String>(validators: [Validators.required]),
+    'title': FormControl<String>(validators: [
+      // Validators.required
+      ]),
     'firstName': FormControl<String>(validators: [Validators.required]),
     'middleName': FormControl<String>(validators: []),
     'lastName': FormControl<String>(validators: []),
@@ -71,19 +75,30 @@ class AppForms {
       validators: [Validators.required, Validators.minLength(10)],
     ),
     'email': FormControl<String>(validators: [Validators.email]),
-    'aadhaar': FormControl<String>(validators: []),
-    'panNumber': FormControl<String>(
-      validators: [
-        Validators.pattern(AppConstants.PAN_PATTERN),
-        Validators.minLength(10),
-      ],
-    ),
-    'aadharRefNo': FormControl<String>(
-      validators: [
-        Validators.pattern(AppConstants.AADHAAR_PATTERN),
-        Validators.minLength(10),
-      ],
-    ),
+    'aadhaar': FormControl<String>(validators: [
+      Validators.pattern(AppConstants.AADHAAR_PATTERN),
+        Validators.maxLength(12),
+        Validators.required
+
+    ]),
+     'pan': FormControl<String>(validators: [
+        Validators.required,Validators.pattern(AppConstants.PAN_PATTERN),
+      ],),
+       'gst': FormControl<String>(validators: [
+        Validators.required,Validators.pattern(AppConstants.GST_PATTERN),
+      ],),
+      'passport': FormControl<String>(validators: [
+        Validators.required,Validators.pattern(AppConstants.PASSPORT_PATTERN),
+      ],),
+      
+    // 'aadharRefNo': FormControl<String>(
+    //   validators: [
+    //     Validators.pattern(AppConstants.AADHAAR_PATTERN),
+    //     Validators.maxLength(12),
+    //   ],
+    // ),
+  
+
     'loanAmountRequested': FormControl<String>(
       validators: [Validators.required],
       asyncValidators: [
@@ -111,6 +126,10 @@ class AppForms {
     'caste': FormControl<String>(validators: []),
     'gender': FormControl<String>(validators: []),
     'subActivity': FormControl<String>(validators: []),
+    'voterid': FormControl<String>(validators: [
+      
+        Validators.required,Validators.pattern(AppConstants.VOTER_PATTERN),
+      ],),
   });
 
   static final FormGroup COAPPLICANT_DETAILS_FORM = FormGroup({
@@ -126,9 +145,7 @@ class AppForms {
     'primaryMobileNumber': FormControl<String>(
       validators: [Validators.minLength(10)],
     ),
-    'secondaryMobileNumber': FormControl<String>(
-      validators: [],
-    ),
+    'secondaryMobileNumber': FormControl<String>(validators: []),
     'email': FormControl<String>(validators: [Validators.email]),
     'aadhaar': FormControl<String>(),
     'panNumber': FormControl<String>(
@@ -149,12 +166,8 @@ class AppForms {
     'state': FormControl<String>(validators: []),
     'cityDistrict': FormControl<String>(validators: []),
     'pincode': FormControl<String>(validators: []),
-    'loanLiabilityCount': FormControl<String>(
-      validators: [],
-    ),
-    'loanLiabilityAmount': FormControl<String>(
-      validators: [],
-    ),
+    'loanLiabilityCount': FormControl<String>(validators: []),
+    'loanLiabilityAmount': FormControl<String>(validators: []),
     'depositCount': FormControl<String>(validators: []),
     'depositAmount': FormControl<String>(validators: []),
   });

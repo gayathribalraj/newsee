@@ -2,17 +2,22 @@
 
 create a package
 
-1. flutter create --template=package kyc_validation.dart
-2.  export package name kyc_validation.dart
+1. flutter create --template=package your_package_name
+2.  export package name your_package
 example : library;
 
-export 'src/voter_validation_page.dart';
+export 'your widget';
 
 3. Use in main app
 dependencies:
-  kyc_validation:
-    path: D:/kycPackage/kyc_validation
+  package_name:
+    path: package path
 
-# First ui creation
+4. use ui page 
+import filepath 
+use class name;    
 
-create textfields verify button is clik
+
+
+
+

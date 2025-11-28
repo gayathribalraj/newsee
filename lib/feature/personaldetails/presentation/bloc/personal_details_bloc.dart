@@ -149,8 +149,8 @@ final class PersonalDetailsBloc
                 primaryMobileNumber: event.leadDetails!['lleadmobno'],
                 secondaryMobileNumber: event.leadDetails!['lleadSecMobNo'],
                 email: event.leadDetails!['lleademailid'],
-                panNumber: event.leadDetails!['lleadpanno'],
-                aadharRefNo: event.leadDetails!['lleadadharno'],
+                // pan: event.leadDetails!['lleadpanno'],
+                // aadharRefNo: event.leadDetails!['lleadadharno'],
                 passportNumber: event.leadDetails![''],
                 loanAmountRequested:
                     event.leadDetails!['lldLoanamtRequested'].toString(),

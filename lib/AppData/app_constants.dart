@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 // ignore: constant_identifier_names
 
 class AppConstants {
   static final RegExp PATTERN_SPECIALCHAR = RegExp(
     r'[\*\%!$\^.,;:{}\(\)\-_+=\[\]]',
   );
+  static final RegExp VOTER_PATTERN = RegExp(r'^[A-Z]{3}\d{7}$');
 
   static final RegExp PAN_PATTERN = RegExp(r'^[A-Z]{5}[0-9]{4}[A-Z]$');
 
   static final RegExp AADHAAR_PATTERN = RegExp('[0-9]{12}');
+  static final RegExp GST_PATTERN = RegExp(
+    r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$',
+  );
+
+  static final RegExp PASSPORT_PATTERN = RegExp(r'^[A-Z][1-9][0-9]{6}$');
 
   static final RegExp PATTER_ONLYALPHABET = RegExp(r'(\w+)');
 
@@ -45,7 +50,8 @@ class AppConstants {
   static const String mpinLoginSuccess = 'MPIN Login Successfull';
   static const String mpinLoginFailure = 'MPIN Login Failed';
   static const String offlineDatasourceRootPath = 'assets/data/';
-  static const String aadhaarResponse = 'assets/data/aadhaar_response.json';
+  static const String aadhaarResponse = 'assets/data/aadhaarvalidation.json';
+  static const String otpvalidation = 'assets/data/otpvalidation.json';
   static const String cifResponsonse = 'assets/data/cif.json';
   static const String cityListResponse = 'assets/data/citylist.json';
   static const String dedupeResponse = 'assets/data/dedupe.json';
@@ -55,6 +61,10 @@ class AppConstants {
   static const String productSchemaResponse = 'assets/data/productschema.json';
   static const String statecityResponse = 'assets/data/statecity.json';
   static const String documentsResponse = 'assets/data/documents.json';
+  static const String voterResponse = 'assets/data/votervalidation.json';
+  static const String panResponse = 'assets/data/panvalidation.json';
+  static const String gstResponse = 'assets/data/gstvalidation.json';
+  static const String passportResponse = 'assets/data/passportvalidation.json';
 }
 
 class BioMetricResult {

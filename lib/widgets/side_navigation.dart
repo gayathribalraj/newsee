@@ -6,10 +6,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kyc_validation/kyc_validation.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/pages/home_page.dart';
+
 
 class Sidenavigationbar extends StatelessWidget {
   final Function(int)? onTabSelected;
@@ -78,10 +78,10 @@ class Sidenavigationbar extends StatelessWidget {
               //   sidemenucontext,
               //   MaterialPageRoute(builder: (context) => HomePage(tabdata: 1)),
               // );
-              Navigator.push(
-                sidemenucontext,
-                MaterialPageRoute(builder: (context) => VoterValidation()),
-              );
+              // Navigator.push(
+              //   sidemenucontext,
+              //   MaterialPageRoute(builder: (context) =>ConsentForm())
+              // );
             },
           ),
           buildGradientTile(

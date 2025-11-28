@@ -1,0 +1,24 @@
+{
+    "PanValidation": {
+        "pantitle": "Shri",
+        "panfirstname": "VIMAL",
+        "success": true,
+        "panMiddleName": "A",
+        "panLastName": "NAGAPPAN",
+        "aadhaarSeedingStatus": "Y",
+        "responseData": {
+            "ErrorStatus": "PAN is Listed in CFR. We will not able to onboard the case.",
+            "ErrorCode": "000"
+        },
+        "ErrorCode": "000",
+        "pannumber": "FSYPK8980E",
+        "panlastupdatedt": "2017-07-02",
+        "token": ""
+    },
+    "ErrorMessage": "Pancard API triggered Successfully",
+    "Success": true
+    
+}
+
+
+  

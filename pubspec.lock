@@ -422,6 +422,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.1.1"
+  flutter_dotenv:
+    dependency: transitive
+    description:
+      name: flutter_dotenv
+      sha256: b7c7be5cd9f6ef7a78429cabd2774d3c4af50e79cb2b7593e3d5d763ef95c61b
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -435,6 +443,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_otp_text_field:
+    dependency: "direct main"
+    description:
+      name: flutter_otp_text_field
+      sha256: e7e589dc51cde120d63da6db55f3cef618f5d013d12adba76137ca1a51ce1390
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.1+1"
   flutter_pdfview:
     dependency: "direct main"
     description:
@@ -813,13 +829,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.0"
-  kyc_validation:
-    dependency: "direct main"
-    description:
-      path: "D:\\kycPackage\\kyc_validation"
-      relative: false
-    source: path
-    version: "0.0.1"
   leak_tracker:
     dependency: transitive
     description:
@@ -1465,6 +1474,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
+  sysmo_verification:
+    dependency: "direct main"
+    description:
+      path: "D:\\sysmo_verification"
+      relative: false
+    source: path
+    version: "0.0.2"
   term_glyph:
     dependency: transitive
     description:
