@@ -1,0 +1,135 @@
+/*
+ @author     : Gayathri B
+   @date       : 28/11/2025
+   @desc       : Query Inbox page displaying user queries using OptionsSheet widget.
+                Shows a list of queries with recipient name, query type, and date.
+              Each query item is displayed as an OptionsSheet with action capability.
+ */
+
+import 'package:flutter/material.dart';
+import 'package:newsee/feature/queryinbox/query_inbox_details.dart';
+import 'package:newsee/widgets/options_sheet.dart';
+import 'package:newsee/widgets/side_navigation.dart';
+
+class QueryInbox extends StatefulWidget {
+  int? tabdata;
+
+  QueryInbox({Key? key, this.tabdata}) : super(key: key);
+
+  @override
+  State<QueryInbox> createState() => QueryInboxState();
+}
+
+class QueryInboxState extends State<QueryInbox> {
+  int selectedIndex = 0;
+  String searchQuery = "";
+  bool loading = false;
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // appBar: AppBar(
+      //   title: Center(
+      //     child: Text('QueryInbox', style: TextStyle(fontSize: 25)),
+      //   ),
+      // ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text('QueryInbox', style: TextStyle(fontSize: 25)),
+              const SizedBox(height: 10),
+
+              OptionsSheet(
+                icon: Icons.message,
+                title: 'John Doe',
+                subtitle: 'Loan application status',
+                status: 'pending',
+                details: ['2023-10-01'],
+                detailsName: ['Date'],
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ChatScreen(userName: 'Fsss',)),
+                  );
+                },
+              ),
+              OptionsSheet(
+                icon: Icons.message,
+                title: 'Jane Smith',
+                subtitle: 'Interest rate query',
+                status: 'completed',
+                details: ['2023-10-03'],
+                detailsName: ['Date'],
+                onTap: () {
+                  //  Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (_) => QueryInboxDetails(title: 'Query Inbox Details',)),
+                  // );
+                },
+              ),
+              OptionsSheet(
+                icon: Icons.message,
+                title: 'Jane Smith',
+                subtitle: 'Interest rate query',
+                status: '[pending]',
+                details: ['2023-10-03'],
+                detailsName: ['Date'],
+                onTap: () {
+                  //  Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (_) => QueryInboxDetails(title: 'Query Inbox Details',)),
+                  // );
+                },
+              ),
+              OptionsSheet(
+                icon: Icons.message,
+                title: 'Jane Smith',
+                subtitle: 'Interest rate query',
+                status: 'completed',
+                details: ['2023-10-03'],
+                detailsName: ['Date'],
+                onTap: () {
+                  //  Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (_) => QueryInboxDetails(title: 'Query Inbox Details',)),
+                  // );
+                },
+              ),
+                OptionsSheet(
+                icon: Icons.message,
+                title: 'Jane Smith',
+                subtitle: 'Interest rate query',
+                status: '[pending]',
+                details: ['2023-10-03'],
+                detailsName: ['Date'],
+                onTap: () {
+                  //  Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (_) => QueryInboxDetails(title: 'Query Inbox Details',)),
+                  // );
+                },
+              ),
+               OptionsSheet(
+                icon: Icons.message,
+                title: 'Jane Smith',
+                subtitle: 'Interest rate query',
+                status: 'completed',
+                details: ['2023-10-03'],
+                detailsName: ['Date'],
+                onTap: () {
+                  //  Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (_) => QueryInboxDetails(title: 'Query Inbox Details',)),
+                  // );
+                },
+              ),
+              
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

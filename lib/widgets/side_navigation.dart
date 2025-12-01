@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
+import 'package:newsee/feature/queryinbox/query_inbox.dart';
+import 'package:newsee/feature/queryinbox/query_inbox.dart';
 import 'package:newsee/pages/home_page.dart';
 
 class Sidenavigationbar extends StatelessWidget {
@@ -79,14 +81,15 @@ class Sidenavigationbar extends StatelessWidget {
               );
             },
           ),
-          buildGradientTile(
+         buildGradientTile(
             context: sidemenucontext,
             icon: Icons.message_rounded,
             title: "Query Inbox",
-            onTap: () {
+             onTap: () {
+              onTabSelected?.call(1);
               Navigator.push(
                 sidemenucontext,
-                MaterialPageRoute(builder: (context) => HomePage(tabdata: 2)),
+                MaterialPageRoute(builder: (context) => QueryInbox()),
               );
             },
           ),
