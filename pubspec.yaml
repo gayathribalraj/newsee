@@ -84,6 +84,7 @@ dependencies:
   sysmo_verification:
     path: D:\sysmo_verification
   flutter_otp_text_field: ^1.5.1+1
+  syncfusion_flutter_chat: ^31.1.19
 
  
 

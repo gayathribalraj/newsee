@@ -7,11 +7,13 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/feature/masterupdate/presentation/page/master_update.dart';
+import 'package:newsee/pages/query_inbox';
 import '../widgets/side_navigation.dart';
 import '../widgets/bottom_navigation.dart';
 import '../widgets/floating_action.dart';
 import '../widgets/lead_tab_bar.dart';
 import '../widgets/search_bar.dart';
+
 
 class HomePage extends StatefulWidget {
   int? tabdata;
@@ -55,9 +57,7 @@ class HomePageState extends State<HomePage> {
           child: Text("Field Visit Inbox", style: TextStyle(fontSize: 24)),
         );
       case 2:
-        return Center(
-          child: Text("Query Inbox", style: TextStyle(fontSize: 24)),
-        );
+        return QueryInbox();
       case 3:
       default:
         return Center(child: MasterUpdate());
