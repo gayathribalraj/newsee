@@ -19,7 +19,8 @@ class OptionsSheet extends StatelessWidget {
   final String? subtitle;
   final String? status;
   final List<String>? details;
-  final List<String>? detailsName;
+  final List<dynamic>? detailsName;
+
 
   const OptionsSheet({
     super.key,
@@ -101,7 +102,7 @@ class OptionsSheet extends StatelessWidget {
                     ),
                   if (details != null &&
                       details!.isNotEmpty &&
-                      detailsName != null) ...[
+                      detailsName   != null) ...[
                     const SizedBox(height: 6),
                     ...List.generate(details!.length, (index) {
                       final label =
@@ -109,27 +110,41 @@ class OptionsSheet extends StatelessWidget {
                               ? detailsName![index]
                               : '';
                       final detail = details![index];
-                      return Padding(
+                   return Padding(
                         padding: const EdgeInsets.only(top: 2),
-                        child: RichText(
-                          text: TextSpan(
-                            text: label.isNotEmpty ? '$label: ' : '',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: detail,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black54,
-                                  fontWeight: FontWeight.normal,
+                        child: Row(
+                          children: [
+                            // If IconData 
+                            if (label is IconData)
+                              Padding(
+                                padding: const EdgeInsets.only(right: 6),
+                                child: Icon(label, size: 16, color: Colors.pink),
+                              )
+
+                            // If String 
+                            else if (label is String && label.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(right: 6),
+                                child: Text(
+                                  "$label:",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
+
+                            // Detail text
+                            Text(
+                              detail,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     }),

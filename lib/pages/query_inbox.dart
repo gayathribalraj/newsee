@@ -13,21 +13,22 @@ import 'package:newsee/pages/query_details.dart';
 
 class QueryInbox extends StatefulWidget {
   int? tabdata;
+  final String? title;
+final String? body;
 
-  QueryInbox({Key? key, this.tabdata}) : super(key: key);
+
+ QueryInbox({Key? key, required this.title, required this.body}) : super(key: key);
+
 
   @override
   State<QueryInbox> createState() => QueryInboxState();
 }
 
 class QueryInboxState extends State<QueryInbox> {
-  int selectedIndex = 0;
-  String searchQuery = "";
-  bool loading = false;
-  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    print(widget.body??'no body bro');
     return Scaffold(
       // appBar: AppBar(
       //   title: Center(
@@ -43,17 +44,17 @@ class QueryInboxState extends State<QueryInbox> {
 
               OptionsSheet(
                 icon: Icons.message,
-                title: 'John Doe',
+                title: 'Gayathri',
                 subtitle: 'Loan application status',
-                status: 'pending',
-                details: ['2023-10-01'],
-                detailsName: ['Date'],
+                status: 'Done',
+                details: ['2025-12-01'],
+                detailsName:  [Icons.calendar_month],
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => QueryDetails(
-                        userName: 'John Doe',
+                        userName: 'Gayathri',
                         queryType: 'Loan application status',
                       ),
                     ),
@@ -62,17 +63,17 @@ class QueryInboxState extends State<QueryInbox> {
               ),
               OptionsSheet(
                 icon: Icons.message,
-                title: 'Jane Smith',
+                title: 'Siva',
                 subtitle: 'Interest rate query',
                 status: 'completed',
-                details: ['2023-10-03'],
-                detailsName: ['Date'],
+                details: ['2025-12-03'],
+                detailsName:  [Icons.calendar_month],
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => QueryDetails(
-                        userName: 'Jane Smith',
+                        userName: 'Siva',
                         queryType: 'Interest rate query',
                       ),
                     ),
@@ -81,75 +82,38 @@ class QueryInboxState extends State<QueryInbox> {
               ),
               OptionsSheet(
                 icon: Icons.message,
-                title: 'Jane Smith',
-                subtitle: 'Interest rate query',
-                status: '[pending]',
-                details: ['2023-10-03'],
-                detailsName: ['Date'],
+                title: 'Ramesh',
+                subtitle: 'Loan application status',
+                status: 'pending',
+                details: ['2025-10-03'],
+                detailsName:  [Icons.calendar_month],
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => QueryDetails(
-                        userName: 'Jane Smith',
-                        queryType: 'Interest rate query',
+                        userName: 'Ramesh',
+                        queryType: 'Loan application status',
                       ),
                     ),
                   );
                 },
               ),
-              OptionsSheet(
+              
+             widget!.title==""?SizedBox(): OptionsSheet(
                 icon: Icons.message,
-                title: 'Jane Smith',
-                subtitle: 'Interest rate query',
-                status: 'completed',
-                details: ['2023-10-03'],
+                title: 'Karthick',
+                subtitle: widget.body ?? 'Test',
+                status: 'pending',
+                details: [DateTime.now().toString().split(' ')[0]],
                 detailsName: ['Date'],
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => QueryDetails(
-                        userName: 'Jane Smith',
-                        queryType: 'Interest rate query',
-                      ),
-                    ),
-                  );
-                },
-              ),
-                OptionsSheet(
-                icon: Icons.message,
-                title: 'Jane Smith',
-                subtitle: 'Interest rate query',
-                status: '[pending]',
-                details: ['2023-10-03'],
-                detailsName: ['Date'],
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => QueryDetails(
-                        userName: 'Jane Smith',
-                        queryType: 'Interest rate query',
-                      ),
-                    ),
-                  );
-                },
-              ),
-               OptionsSheet(
-                icon: Icons.message,
-                title: 'Jane Smith',
-                subtitle: 'Interest rate query',
-                status: 'completed',
-                details: ['2023-10-03'],
-                detailsName: ['Date'],
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => QueryDetails(
-                        userName: 'Jane Smith',
-                        queryType: 'Interest rate query',
+                        userName: 'Karthick',
+                        queryType: widget.body ?? 'Test',
                       ),
                     ),
                   );

@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/pages/home_page.dart';
-import 'package:newsee/pages/query_inbox';
+import 'package:newsee/pages/query_inbox.dart';
 
 
 class Sidenavigationbar extends StatelessWidget {
@@ -63,6 +63,7 @@ class Sidenavigationbar extends StatelessWidget {
             icon: Icons.dashboard_rounded,
             title: "Dashboard",
             onTap: () {
+             Navigator.pop(sidemenucontext);  
               onTabSelected?.call(0);
               Navigator.push(
                 sidemenucontext,
@@ -75,14 +76,12 @@ class Sidenavigationbar extends StatelessWidget {
             icon: Icons.mail_rounded,
             title: "Field Visit Inbox",
             onTap: () {
-              // Navigator.push(
-              //   sidemenucontext,
-              //   MaterialPageRoute(builder: (context) => HomePage(tabdata: 1)),
-              // );
-              // Navigator.push(
-              //   sidemenucontext,
-              //   MaterialPageRoute(builder: (context) =>ConsentForm())
-              // );
+              Navigator.pop(sidemenucontext); 
+              Navigator.push(
+                sidemenucontext,
+                MaterialPageRoute(builder: (context) => HomePage(tabdata: 1)),
+              );
+             
             },
           ),
         buildGradientTile(
@@ -90,10 +89,11 @@ class Sidenavigationbar extends StatelessWidget {
             icon: Icons.message_rounded,
             title: "Query Inbox",
              onTap: () {
+              Navigator.pop(sidemenucontext); 
               onTabSelected?.call(1);
               Navigator.push(
                 sidemenucontext,
-                MaterialPageRoute(builder: (context) => QueryInbox()),
+                MaterialPageRoute(builder: (context) => QueryInbox(title: '',body: '',)),
               );
             },
           ),
@@ -102,6 +102,7 @@ class Sidenavigationbar extends StatelessWidget {
             icon: Icons.update_rounded,
             title: "Masters Update",
             onTap: () {
+              Navigator.pop(sidemenucontext); 
               Navigator.push(
                 sidemenucontext,
                 MaterialPageRoute(builder: (context) => HomePage(tabdata: 3)),
@@ -113,6 +114,7 @@ class Sidenavigationbar extends StatelessWidget {
             icon: Icons.logout_rounded,
             title: "Logout",
             onTap: () async {
+
               final shouldLogout = await showDialog<bool>(
                 context: sidemenucontext,
                 builder:
