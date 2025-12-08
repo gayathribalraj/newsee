@@ -298,7 +298,8 @@ class LoginpageView extends StatelessWidget {
                                           "Comming Soon....",
                                           "We are Working to improve Your experence with our new mobile app.",
                                           Icons.person,
-                                          "okay",
+                                          // "okay",
+                                          "Capture Video"
                                         );
                                       },
                                       icon: Icon(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/AppSamples/RouterApp/routerapp.dart';
 import 'package:newsee/Utils/injectiondependency.dart';
+import 'package:newsee/blocs/camera/camera.dart';
 import 'package:newsee/core/db/db_config.dart';
 
-void main() {
+
+void main() {  
   // runApp(MyApp()) // Default MyApp()
   // runApp(Counter()); // load CounterApp
   // runApp(App()); // timerApp

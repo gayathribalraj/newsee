@@ -9,10 +9,12 @@ import 'package:go_router/go_router.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/pages/home_page.dart';
+import 'package:newsee/widgets/video_capture.dart';
 
 class Sidenavigationbar extends StatelessWidget {
   final Function(int)? onTabSelected;
   final BuildContext? pageContext;
+  
 
   const Sidenavigationbar({this.onTabSelected, this.pageContext, super.key});
 
@@ -79,14 +81,15 @@ class Sidenavigationbar extends StatelessWidget {
               );
             },
           ),
+        
           buildGradientTile(
             context: sidemenucontext,
             icon: Icons.message_rounded,
-            title: "Query Inbox",
+            title: "VideoCapture",
             onTap: () {
               Navigator.push(
                 sidemenucontext,
-                MaterialPageRoute(builder: (context) => HomePage(tabdata: 2)),
+                MaterialPageRoute(builder: (context) => const VideoCapture()),
               );
             },
           ),

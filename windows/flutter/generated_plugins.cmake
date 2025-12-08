@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   file_selector_windows
+  gal
   geolocator_windows
   local_auth_windows
   pdfx
