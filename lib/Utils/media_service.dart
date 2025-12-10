@@ -21,6 +21,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:newsee/Model/loader.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:geocoding/geocoding.dart';
 
 class LocationResponse {
   final Position? position;
@@ -205,6 +206,15 @@ class MediaService {
     final path = '${dir.path}/$filename';
     final file = File(path);
     return await file.writeAsBytes(bytes);
+  }
+
+  Future<List<Placemark>> getLocationDetails(lat, long) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+      return placemarks;
+    } catch (error) {
+      return [];
+    }
   }
 }
 

@@ -14,7 +14,6 @@ import 'package:newsee/widgets/video_capture.dart';
 class Sidenavigationbar extends StatelessWidget {
   final Function(int)? onTabSelected;
   final BuildContext? pageContext;
-  
 
   const Sidenavigationbar({this.onTabSelected, this.pageContext, super.key});
 
@@ -63,6 +62,7 @@ class Sidenavigationbar extends StatelessWidget {
             icon: Icons.dashboard_rounded,
             title: "Dashboard",
             onTap: () {
+              Navigator.pop(sidemenucontext);
               onTabSelected?.call(0);
               Navigator.push(
                 sidemenucontext,
@@ -75,21 +75,25 @@ class Sidenavigationbar extends StatelessWidget {
             icon: Icons.mail_rounded,
             title: "Field Visit Inbox",
             onTap: () {
+              Navigator.pop(sidemenucontext);
+
               Navigator.push(
                 sidemenucontext,
                 MaterialPageRoute(builder: (context) => HomePage(tabdata: 1)),
               );
             },
           ),
-        
+
           buildGradientTile(
             context: sidemenucontext,
             icon: Icons.message_rounded,
             title: "VideoCapture",
             onTap: () {
+              Navigator.pop(sidemenucontext);
+
               Navigator.push(
                 sidemenucontext,
-                MaterialPageRoute(builder: (context) => const VideoCapture()),
+                MaterialPageRoute(builder: (context) =>  VideoCapture( capturedDate: '', capturedTime: '', finalData: '',)),
               );
             },
           ),
@@ -98,6 +102,8 @@ class Sidenavigationbar extends StatelessWidget {
             icon: Icons.update_rounded,
             title: "Masters Update",
             onTap: () {
+              Navigator.pop(sidemenucontext);
+
               Navigator.push(
                 sidemenucontext,
                 MaterialPageRoute(builder: (context) => HomePage(tabdata: 3)),
