@@ -5,6 +5,7 @@ import 'package:newsee/feature/documentupload/presentation/bloc/document_bloc.da
 import 'package:newsee/feature/documentupload/presentation/bloc/document_state.dart';
 import 'package:newsee/feature/documentupload/presentation/widget/show_file_sourece_selector.dart';
 import 'package:newsee/feature/documentupload/presentation/widget/show_files_viewer.dart';
+import 'package:newsee/feature/videocapturing/video_capture.dart';
 
 class DocumentList extends StatelessWidget {
   const DocumentList({super.key});
@@ -35,14 +36,20 @@ class DocumentList extends StatelessWidget {
           child: Container(
             color: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: state.documentsList.length,
-              itemBuilder: (context, index) {
-                final doc = state.documentsList[index];
-                return DocumentItem(doc: doc, index: index);
-              },
+            child: Column(
+              children: [
+                 ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: state.documentsList.length,
+                itemBuilder: (context, index) {
+                  final doc = state.documentsList[index];
+                  return DocumentItem(doc: doc, index: index);
+                },
+              ),
+              VideoItem()
+              ],
+             
             ),
           ),
         );
@@ -118,6 +125,71 @@ class DocumentItem extends StatelessWidget {
                     ),
                 ],
               ),
+            ],
+          ),
+        ),
+        Divider(height: 1, thickness: 1, color: Colors.grey[200]),
+      ],
+    );
+  }
+}
+
+captureVideo(context) {
+  try {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (_) => VideoCapture(
+              finalData: '', 
+              capturedDate: '', 
+              capturedTime: '', 
+              videoFile: ''
+            )
+      ),
+    );
+  } catch(error) {
+    print("cpatureVideo-error $error");
+  }
+}
+
+class VideoItem extends StatelessWidget {
+  const VideoItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // final bool hasImages = doc.imgs.isNotEmpty;
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: Text(
+                  'Capture Video',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.video_call_sharp, color: Colors.black),
+                onPressed:
+                    () =>
+                        captureVideo(context),
+              ),
+              // Stack(
+              //   clipBehavior: Clip.none,
+              //   children: [
+              //     IconButton(
+              //       icon: const Icon(Icons.remove_red_eye),
+              //       onPressed: () async {
+              //         captureVideo(context);
+              //       },
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),

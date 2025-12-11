@@ -1,6 +1,7 @@
 class ApiConfig {
-  static const String BASE_URL = "http://192.168.0.19:19084/lendperfect/";
-
+  // static const String BASE_URL = "http://192.168.0.19:19084/lendperfect/";
+  static const String BASE_URL = "http://192.168.0.19:19085/lendmobility/";
+  static const String UPLOAD_VIDEO  = "MobileService/getVideoUpload";
   static const String AUTH_TOKEN =
       'U2FsdGVkX1/Wa6+JeCIOVLl8LTr8WUocMz8kIGXVbEI9Q32v7zRLrnnvAIeJIVV3';
   static const String DEVICE_ID =

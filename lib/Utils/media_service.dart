@@ -15,11 +15,10 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:newsee/Model/loader.dart';
 import 'package:path_provider/path_provider.dart';
 
 class LocationResponse {
@@ -126,6 +125,16 @@ class MediaService {
     }
   }
 
+  Future<List<Placemark>> getLocationDetails(lat, long) async {
+  try {
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    return placemarks;
+  } catch (error) {
+    return [];
+  }
+}
+
+
   /* 
   @author         :   ganeshkumar.b    14/05/2025
   @description    :   Cropper function used to crop the image pick from camera or gallery.
@@ -207,6 +216,7 @@ class MediaService {
     return await file.writeAsBytes(bytes);
   }
 }
+
 
 class CropAspectRatioPresetCustom implements CropAspectRatioPresetData {
   @override
