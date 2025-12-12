@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-void openBottomSheet(
+Future<void> openBottomSheet(
   BuildContext context,
   double initialChildSize,
   double minChildSize,
   double maxChildSize,
   Widget Function(BuildContext context, ScrollController ctrl) renderWidget,
-) {
+) async {
   try {
-    showModalBottomSheet(
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: true,
       builder:
           (context) => DraggableScrollableSheet(
             expand: false,

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/app_forms.dart';
-import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/Model/personal_data.dart';
 import 'package:newsee/Utils/qr_nav_utils.dart';
 import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/feature/aadharvalidation/domain/modal/aadharvalidate_request.dart';
+import 'package:newsee/feature/cif/domain/model/user/cif_response.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
 import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/feature/draft/presentation/pages/draft_inbox.dart';
-import 'package:newsee/feature/loanproductdetails/presentation/bloc/loanproduct_bloc.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
 import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
 import 'package:newsee/widgets/SearchableMultiSelectDropdown.dart';
@@ -23,11 +23,25 @@ import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:newsee/widgets/searchable_drop_down.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class Personal extends StatelessWidget {
+// Kyc verification Plugin Imports
+import 'package:kyc_verification/kyc_validation.dart';
+import 'package:kyc_verification/src/widget/uiwidgetprops/button_props.dart';
+import 'package:kyc_verification/src/widget/uiwidgetprops/form_props.dart';
+import 'package:kyc_verification/src/widget/uiwidgetprops/style_props.dart';
+
+class Personal extends StatefulWidget {
   final String title;
   // scrollcontroller is required to scroll to errorformfield
-  final _scrollController = ScrollController();
+
   Personal({required this.title, super.key});
+
+  @override
+  State<Personal> createState() => _PersonalState();
+}
+
+class _PersonalState extends State<Personal> {
+  Uint8List? cropedFace;
+  final _scrollController = ScrollController();
 
   final FormGroup form = AppForms.GET_PERSONAL_DETAILS_FORM();
   final _titleKey = GlobalKey();
@@ -41,7 +55,7 @@ class Personal extends StatelessWidget {
   final _emailKey = GlobalKey();
   final _aadhaarKey = GlobalKey();
   final _panNumberKey = GlobalKey();
-  final _aadharRefNoKey = GlobalKey();
+  // final _aadharRefNoKey = GlobalKey();
   final _loanAmountRequestedKey = GlobalKey();
   final _natureOfActivityKey = GlobalKey();
   final _occupationTypeKey = GlobalKey();
@@ -55,73 +69,135 @@ class Personal extends StatelessWidget {
   bool refAadhaar = true;
 
   /* 
-    @author     : ganeshkumar.b  13/06/2025
-    @desc       : map Aadhaar response in personal form
+    @author     : latha  3/11/2025
+    @desc       : map Aadhaar response in personal form and disabled fields if value is not null
     @param      : {AadharvalidateResponse val} - aadhaar response
   */
   mapAadhaarData(val) {
     try {
       if (val != null) {
-        form.control('aadharRefNo').updateValue(val?.referenceId);
+        // form.control('aadharRefNo').updateValue(val?.referenceId);
+        form.control('aadhaar').updateValue(val?.referenceId);
         refAadhaar = true;
-        if (val.name != null) {
-          String fullname = val?.name;
-          List getNameArray = fullname.split(' ');
-          if (getNameArray.length > 2) {
-            String fullname = getNameArray.sublist(2).join();
-            form.control('firstName').updateValue(getNameArray[0]);
-            form.control('middleName').updateValue(getNameArray[1]);
-            form.control('lastName').updateValue(fullname);
-          } else if (getNameArray.length == 2) {
-            form.control('firstName').updateValue(getNameArray[0]);
-            form.control('lastName').updateValue(getNameArray[1]);
-          } else if (getNameArray.length == 1) {
-            form.control('firstName').updateValue(getNameArray[0]);
-          }
-        }
-        final formattedDate = getDateFormatedByProvided(
-          val?.dateOfBirth!,
-          from: AppConstants.Format_dd_MM_yyyy,
-          to: AppConstants.Format_yyyy_MM_dd,
-        );
-        print('formattedDate in personal page => $formattedDate');
+        nameSeperate(val.name);
 
-        form.control('dob').updateValue(formattedDate);
-        form.control('email').updateValue(val?.email!);
+        setControl('primaryMobileNumber', val?.mobile);
+        final formattedDate =
+            val.dateOfBirth != null
+                ? getCorrectDateFormat(val.dateOfBirth!)
+                : null;
+
+        print('formattedDate in personal page => $formattedDate');
+        setControl('dob', formattedDate);
+        setControl('email', val?.email);
+        setControl('residentialStatus', '1');
       }
     } catch (error) {
       print("autoPopulateData-catch-error $error");
+    }
+  }
+
+  // If the first name is null, extract the name from the 'name' property of the Aadhar
+  //or CIF response.
+  void nameSeperate(val) {
+    print('nameapp: $val');
+    if (val != null) {
+      String fullname = val;
+      List getNameArray = fullname.split(' ');
+      if (getNameArray.length > 2) {
+        String fullname = getNameArray.sublist(2).join();
+        setControl('firstName', getNameArray[0]);
+        setControl('middleName', getNameArray[1]);
+        setControl('lastName', fullname);
+      } else if (getNameArray.length == 2) {
+        setControl('firstName', getNameArray[0]);
+        setControl('lastName', getNameArray[1]);
+      } else if (getNameArray.length == 1) {
+        setControl('firstName', getNameArray[0]);
+      }
+    }
+  }
+
+  void setControl(String controlName, dynamic value) {
+    final control = form.control(controlName);
+    if (value != null && value.toString().trim().isNotEmpty) {
+      control.updateValue(value);
+      control.markAsDisabled();
+    } else {
+      control.markAsEnabled();
     }
   }
 
   /* 
-    @author     : ganeshkumar.b  13/06/2025
-    @desc       : map cif response in personal form
+    @author     : lathamani.m  30/11/2025
+    @desc       : map cif response in personal form and diabled field if value not null
     @param      : {CifResponse val} - cifresponse
   */
-  mapCifDate(val) {
-    datamapperCif(val);
+  mapCifDate(val, lovList) {
+    datamapperCif(val, lovList);
   }
 
-  void datamapperCif(val) {
+  void datamapperCif(CifResponse val, List<Lov>? lovList) {
     try {
-      form.control('firstName').updateValue(val.lleadfrstname!);
-      form.control('middleName').updateValue(val.lleadmidname!);
-      form.control('lastName').updateValue(val.lleadlastname!);
-      form.control('dob').updateValue(getDateFormat(val.lleaddob!));
-      form.control('primaryMobileNumber').updateValue(val.lleadmobno!);
-      form.control('email').updateValue(val.lleademailid!);
-      form.control('panNumber').updateValue(val.lleadpanno!);
-      form.control('aadharRefNo').updateValue(val.lleadadharno!);
-      if (val.lleadadharno != null) {
-        refAadhaar = true;
+      String? formatMobile(String? phoneNum) {
+        if (phoneNum == null || phoneNum.isEmpty) return null;
+        return (phoneNum.length == 12 && phoneNum.startsWith("91"))
+            ? phoneNum.substring(2)
+            : phoneNum;
       }
-    } catch (error) {
-      print("autoPopulateData-catch-error $error");
+
+      Lov? findLov(String header, String? target) {
+        if (lovList == null || target == null || target.isEmpty) return null;
+        return lovList.firstWhere(
+          (lov) =>
+              lov.Header == header &&
+              (lov.optvalue.toUpperCase() == target.toUpperCase() ||
+                  lov.optDesc.toUpperCase() == target.toUpperCase() ||
+                  lov.optCode.toUpperCase() == target.toUpperCase()),
+          orElse:
+              () => Lov(Header: header, optvalue: '', optDesc: '', optCode: ''),
+        );
+      }
+
+      final mobile = formatMobile(val.lleadmobno);
+      // get find values from list
+      final religionLov = findLov('Religion', val.lldReligion);
+      final casteLov = findLov('Caste', val.lldCaste);
+      final genderLov = findLov('Gender', val.lldGender);
+
+      // set values to form controls
+      if (val.lleadfrstname != null && val.lleadfrstname!.isNotEmpty) {
+        setControl('firstName', val.lleadfrstname);
+        setControl('middleName', val.lleadmidname);
+        setControl('lastName', val.lleadlastname);
+      } else {
+        nameSeperate(val.lleadfrstname);
+      }
+
+      setControl(
+        'dob',
+        val.lleaddob != null ? getDateFormat(val.lleaddob!) : null,
+      );
+      setControl('primaryMobileNumber', mobile);
+      setControl('email', val.lleademailid);
+      setControl('panNumber', val.lleadpanno);
+      // setControl('aadharRefNo', val.aadharNum);
+      setControl('aadhaar', val.lleadadharno);
+      setControl('religion', religionLov?.optvalue);
+      setControl('caste', casteLov?.optvalue);
+      setControl('gender', genderLov?.optvalue);
+      setControl('residentialStatus', '1');
+
+      // aadhaar flag
+      refAadhaar = val.lleadadharno?.isNotEmpty == true;
+    } catch (error, stack) {
+      print("autoPopulateData-catch-error: $error");
+      print(stack);
     }
   }
 
-  mapPersonalData(val) {
+  mapPersonalData(val, [String? type]) {
+    print('mapPersonalData $type, $val');
     try {
       form.control('title').updateValue(val['title']);
       form.control('firstName').updateValue(val['firstName']);
@@ -137,13 +213,14 @@ class Personal extends StatelessWidget {
           .updateValue(val['secondaryMobileNumber']);
       form.control('email').updateValue(val['email']);
       form.control('panNumber').updateValue(val['panNumber']);
-      form.control('aadharRefNo').updateValue(val['aadharRefNo']);
+      // form.control('aadharRefNo').updateValue(val['aadharRefNo']);
+      form.control('aadhaar').updateValue(val['aadharRefNo']);
       form
           .control('secondaryMobileNumber')
           .updateValue(val['secondaryMobileNumber']);
       form
           .control('loanAmountRequested')
-          .updateValue(val['loanAmountRequested']);
+          .updateValue(formatAmount(val['loanAmountRequested'], 'currency'));
       form.control('natureOfActivity').updateValue(val['natureOfActivity']);
       form.control('occupationType').updateValue(val['occupationType']);
       form.control('agriculturistType').updateValue(val['agriculturistType']);
@@ -154,14 +231,18 @@ class Personal extends StatelessWidget {
       form.control('gender').updateValue(val['gender']);
       form.control('subActivity').updateValue(val['subActivity']);
       final leadref = DraftService().getCurrentLeadRef();
-      if (leadref == '' && leadref.isEmpty) {
+      print('leadrefDraft: $leadref');
+      // if (leadref == '' && leadref.isEmpty) {
+      if (type == 'draft') {
+        form.markAsEnabled();
+      } else {
         form.markAsDisabled();
       }
     } catch (error) {
       print("mapPersonalData-catch-error $error");
     }
   }
-  
+
   /* 
     @author : karthick.d  
     @desc   : scroll to error field which identified first in the widget tree
@@ -183,7 +264,7 @@ class Personal extends StatelessWidget {
       {'key': _emailKey, 'controlName': 'email'},
       {'key': _panNumberKey, 'controlName': 'panNumber'},
       {'key': _aadhaarKey, 'controlName': 'aadhaar'},
-      {'key': _aadharRefNoKey, 'controlName': 'aadharRefNo'},
+      // {'key': _aadharRefNoKey, 'controlName': 'aadharRefNo'},
       {'key': _loanAmountRequestedKey, 'controlName': 'loanAmountRequested'},
       {'key': _residentialStatusKey, 'controlName': 'residentialStatus'},
       {'key': _natureOfActivityKey, 'controlName': 'natureOfActivity'},
@@ -224,11 +305,46 @@ class Personal extends StatelessWidget {
         appBar: AppBar(
           title: Text("Personal Details"),
           automaticallyImplyLeading: false,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => FaceDetectionPage(
+                            onVerifed: (imageArray) {
+                              cropedFace = imageArray;
+                              setState(() {});
+                            },
+                          ),
+                      // (context)=>RegistrationScreen()
+                    ),
+                  );
+                },
+                child: CircleAvatar(
+                  radius: 50,
+                  child:
+                      cropedFace != null
+                          ? Image.memory(
+                            cropedFace!,
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.fill,
+                          )
+                          : Image.asset('assets/logo.jpg'),
+                ),
+              ),
+            ),
+          ],
         ),
+
         body: BlocConsumer<PersonalDetailsBloc, PersonalDetailsState>(
           listener: (context, state) {
             print(
-              'personaldetail::BlocConsumer:listen => ${state.lovList} ${state.personalData} ${state.status?.name}',
+              'personaldetail::BlocConsumer:listen => ${state.personalData} ${state.status}',
             );
             if (state.status == SaveStatus.success &&
                 (state.getLead == false || state.getLead == null)) {
@@ -260,6 +376,9 @@ class Personal extends StatelessWidget {
             final loanBloc = context.watch<LoanproductBloc>().state;
             final loanTypeLabel = loanBloc.selectedProductScheme == null ? "SHG" : loanBloc.selectedProductScheme!.optionValue == "61" ? "SHG" : "JLG" ;
             DedupeState? dedupeState;
+            print(
+              'state.status: ${state.status}, ${state.personalData}, ${state.getLead}',
+            );
             if (state.status == SaveStatus.init && state.aadhaarData != null) {
               mapAadhaarData(state.aadhaarData);
             } else if (state.status == SaveStatus.init) {
@@ -269,7 +388,7 @@ class Personal extends StatelessWidget {
                   'cif response title => ${dedupeState.cifResponse?.lleadtitle}',
                 );
                 print('state.lovList =>${state.lovList}');
-                mapCifDate(dedupeState.cifResponse);
+                mapCifDate(dedupeState.cifResponse, state.lovList);
               } else if (dedupeState.aadharvalidateResponse != null) {
                 mapAadhaarData(dedupeState.aadharvalidateResponse);
               }
@@ -278,7 +397,7 @@ class Personal extends StatelessWidget {
               print('saved personal data =>${state.personalData}');
               Map<String, dynamic> personalDetails =
                   state.personalData!.toMap();
-              mapPersonalData(personalDetails);
+              mapPersonalData(personalDetails, 'draft');
             } else if (state.status == SaveStatus.success &&
                 state.getLead == true) {
               Map<String, dynamic> personalDetails =
@@ -306,8 +425,19 @@ class Personal extends StatelessWidget {
                             Lov? lov = state.lovList?.firstWhere(
                               (lov) =>
                                   lov.Header == 'Title' &&
-                                  lov.optvalue ==
-                                      dedupeState?.cifResponse?.lleadtitle,
+                                  (lov.optvalue.toUpperCase() ==
+                                          dedupeState?.cifResponse?.lleadtitle
+                                              ?.toUpperCase() ||
+                                      lov.optDesc.toUpperCase() ==
+                                          dedupeState?.cifResponse?.lleadtitle
+                                              ?.toUpperCase()),
+                              orElse:
+                                  () => Lov(
+                                    Header: 'Title',
+                                    optvalue: '',
+                                    optDesc: '',
+                                    optCode: '',
+                                  ),
                             );
                             form.controls['title']?.updateValue(lov?.optvalue);
                             return lov;
@@ -316,6 +446,13 @@ class Personal extends StatelessWidget {
                               (lov) =>
                                   lov.Header == 'Title' &&
                                   lov.optvalue == state.personalData?.title,
+                              orElse:
+                                  () => Lov(
+                                    Header: 'Title',
+                                    optvalue: '',
+                                    optDesc: '',
+                                    optCode: '',
+                                  ),
                             );
                             form.controls['title']?.updateValue(lov?.optvalue);
                             return lov;
@@ -333,30 +470,23 @@ class Personal extends StatelessWidget {
                         controlName: 'firstName',
                         label: 'Name of the $loanTypeLabel',
                         mantatory: true,
-                      ),
-                      SizedBox(
-                        height: 1,
-                        child: Opacity(
-                          opacity: 0,
-                          child: CustomTextField(
-                            fieldKey: _middleNameKey,
-                            controlName: 'middleName',
-                            label: 'Middle Name',
-                            mantatory: false,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            AppConstants.NameInputFormatter,
                           ),
-                        ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 1,
-                        child: Opacity(
-                          opacity: 0,
-                          child: CustomTextField(
-                            fieldKey: _lastNameKey,
-                            controlName: 'lastName',
-                            label: 'Last Name',
-                            mantatory: true,
-                          ),
-                        ),
+                      CustomTextField(
+                        fieldKey: _middleNameKey,
+                        controlName: 'middleName',
+                        label: 'Middle Name',
+                        mantatory: true,
+                      ),
+                      CustomTextField(
+                        fieldKey: _lastNameKey,
+                        controlName: 'lastName',
+                        label: 'Last Name',
+                        mantatory: true,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(12.0),
@@ -369,7 +499,7 @@ class Personal extends StatelessWidget {
                           },
                           readOnly: true,
                           decoration: InputDecoration(
-                            labelText: 'Date of Formation',
+                            labelText: 'Date Of Birth',
                             suffixIcon: Icon(Icons.calendar_today),
                           ),
                           onTap: (control) async {
@@ -391,6 +521,7 @@ class Personal extends StatelessWidget {
                           },
                         ),
                       ),
+
                       IntegerTextField(
                         fieldKey: _primaryMobileNumberKey,
                         controlName: 'primaryMobileNumber',
@@ -403,152 +534,133 @@ class Personal extends StatelessWidget {
                         fieldKey: _secondaryMobileNumberKey,
                         controlName: 'secondaryMobileNumber',
                         label: 'Secondary Mobile Number',
-                        mantatory: true,
+                        mantatory: false,
                         maxlength: 10,
                         minlength: 10,
                       ),
                       CustomTextField(
                         fieldKey: _emailKey,
                         controlName: 'email',
-                        label: 'Email Id',
+                        label: 'Email ID',
+                        mantatory: false,
+                      ),
+                      CustomTextField(
+                        fieldKey: _panNumberKey,
+                        controlName: 'panNumber',
+                        label: 'Pan No',
                         mantatory: true,
+                        autoCapitalize: true,
+                        maxlength: 10,
                       ),
-                      SizedBox(
-                        height: 1,
-                        child: Opacity(
-                          opacity: 0,
-                          child: CustomTextField(
-                            fieldKey: _panNumberKey,
-                            controlName: 'panNumber',
-                            label: 'Pan No',
-                            mantatory: true,
-                            autoCapitalize: true,
-                            maxlength: 10,
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(
-                        height: 1,
-                        child: Opacity(
-                          opacity: 0,
-                          child: refAadhaar
-                              ? Row(
-                                children: [
-                                  Expanded(
-                                    child: IntegerTextField(
-                                      fieldKey: _aadharRefNoKey,
-                                      controlName: 'aadharRefNo',
-                                      label: 'Aadhaar No',
-                                      mantatory: true,
-                                      maxlength: 12,
-                                      minlength: 12,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  ElevatedButton.icon(
-                                    icon: Icon(Icons.qr_code_scanner),
-                                    label: Text('Scan'),
-                                    onPressed: () => showScannerOptions(context),
-                                  ),
-                                ],
-                              )
-                              : Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: IntegerTextField(
-                                      fieldKey: _aadhaarKey,
-                                      controlName: 'aadhaar',
-                                      label: 'Aadhaar Number',
-                                      mantatory: true,
-                                      maxlength: 12,
-                                      minlength: 12,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color.fromARGB(
-                                        255,
-                                        3,
-                                        9,
-                                        110,
-                                      ),
-                                      foregroundColor: Colors.white,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 10,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      final AadharvalidateRequest
-                                      aadharvalidateRequest = AadharvalidateRequest(
-                                        aadhaarNumber:
-                                            form.control('aadhaar').value,
-                                      );
-                                      context.read<PersonalDetailsBloc>().add(
-                                        AadhaarValidateEvent(
-                                          request: aadharvalidateRequest,
-                                        ),
-                                      );
-                                    },
-                                    child:
-                                        state.status == SaveStatus.loading
-                                            ? CircularProgressIndicator()
-                                            : const Text("Validate"),
-                                  ),
-                                ],
+                      refAadhaar
+                          ? Row(
+                            children: [
+                              Expanded(
+                                child: IntegerTextField(
+                                  fieldKey: _aadharRefNoKey,
+                                  controlName: 'aadharRefNo',
+                                  label: 'Aadhaar No',
+                                  mantatory: true,
+                                  maxlength: 12,
+                                  minlength: 12,
+                                ),
                               ),
-                        ),
-                      ),
+                              const SizedBox(width: 8),
+                              ElevatedButton.icon(
+                                icon: Icon(Icons.qr_code_scanner),
+                                label: Text('Scan'),
+                                onPressed: () => showScannerOptions(context),
+                              ),
+                            ],
+                          )
+                          : Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: IntegerTextField(
+                                  fieldKey: _aadhaarKey,
+                                  controlName: 'aadhaar',
+                                  label: 'Aadhaar Number',
+                                  mantatory: true,
+                                  maxlength: 12,
+                                  minlength: 12,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    3,
+                                    9,
+                                    110,
+                                  ),
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 10,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  final AadharvalidateRequest
+                                  aadharvalidateRequest = AadharvalidateRequest(
+                                    aadhaarNumber:
+                                        form.control('aadhaar').value,
+                                  );
+                                  context.read<PersonalDetailsBloc>().add(
+                                    AadhaarValidateEvent(
+                                      request: aadharvalidateRequest,
+                                    ),
+                                  );
+                                },
+                                child:
+                                    state.status == SaveStatus.loading
+                                        ? CircularProgressIndicator()
+                                        : const Text("Validate"),
+                              ),
+                            ],
+                          ),
                       IntegerTextField(
                         fieldKey: _loanAmountRequestedKey,
                         controlName: 'loanAmountRequested',
-                        label: 'Loan Amount Required',
+                        label: 'Loan Amount Required (₹)',
                         mantatory: true,
                         isRupeeFormat: true,
                       ),
-                      SizedBox(
-                         height: 1,
-                        child: Opacity(
-                          opacity: 0,
-                          child: SearchableDropdown<Lov>(
-                            fieldKey: _residentialStatusKey,
-                            controlName: 'residentialStatus',
-                            label: 'Residential Status',
-                            items:
-                                state.lovList!
-                                    .where((v) => v.Header == 'ResidentialStatus')
-                                    .toList(),
-                            onChangeListener: (Lov val) {
-                              form.controls['residentialStatus']?.updateValue(
-                                val.optvalue,
+                      SearchableDropdown<Lov>(
+                        fieldKey: _residentialStatusKey,
+                        controlName: 'residentialStatus',
+                        label: 'Residential Status',
+                        items:
+                            state.lovList!
+                                .where((v) => v.Header == 'ResidentialStatus')
+                                .toList(),
+                        onChangeListener: (Lov val) {
+                          form.controls['residentialStatus']?.updateValue(
+                            val.optvalue,
+                          );
+                        },
+                        selItem: () {
+                          final value = form.control('residentialStatus').value;
+                          if (value == null || value.toString().isEmpty) {
+                            return null;
+                          }
+                          return state.lovList!
+                              .where((v) => v.Header == 'ResidentialStatus')
+                              .firstWhere(
+                                (lov) => lov.optvalue == value,
+                                orElse:
+                                    () => Lov(
+                                      Header: 'ResidentialStatus',
+                                      optvalue: '',
+                                      optDesc: '',
+                                      optCode: '',
+                                    ),
                               );
-                            },
-                            selItem: () {
-                              final value = form.control('residentialStatus').value;
-                              if (value == null || value.toString().isEmpty) {
-                                return null;
-                              }
-                              return state.lovList!
-                                  .where((v) => v.Header == 'ResidentialStatus')
-                                  .firstWhere(
-                                    (lov) => lov.optvalue == value,
-                                    orElse:
-                                        () => Lov(
-                                          Header: 'ResidentialStatus',
-                                          optvalue: '',
-                                          optDesc: '',
-                                          optCode: '',
-                                        ),
-                                  );
-                            },
-                          ),
-                        ),
+                        },
                       ),
 
                       SearchableDropdown<Lov>(
@@ -880,44 +992,37 @@ class Personal extends StatelessWidget {
                         },
                       
                       ),
-                      SizedBox(
-                        height: 1,
-                        child: Opacity(
-                          opacity:0 ,
-                          child: SearchableMultiSelectDropdown<Lov>(
-                            fieldKey: _subActivityKey,
-                            controlName: 'subActivity',
-                            label: 'Sub Activity',
-                            items:
-                                state.lovList!
-                                    .where((v) => v.Header == 'SubActivity')
-                                    .toList(),
-                            selItems: () {
-                              final currentValues =
-                                  form.control('subActivity').value;
-                              if (currentValues == null || currentValues.isEmpty) {
-                                return <Lov>[];
-                              }
-                              return state.lovList!
-                                  .where(
-                                    (v) =>
-                                        v.Header == 'SubActivity' &&
-                                        currentValues.contains(v.optvalue),
-                                  )
-                                  .toList();
-                            },
-                            
-                            onChangeListener: (List<Lov>? selectedItems) {
-                              final selectedValues =
-                                  selectedItems?.map((e) => e.optvalue).toList() ??
-                                  [];
-                              String subactivities = selectedValues.join(',');
-                              form.controls['subActivity']?.updateValue(
-                                subactivities,
-                              );
-                            },
-                          ),
-                        ),
+                      SearchableMultiSelectDropdown<Lov>(
+                        fieldKey: _subActivityKey,
+                        controlName: 'subActivity',
+                        label: 'Sub Activity',
+                        items:
+                            state.lovList!
+                                .where((v) => v.Header == 'SubActivity')
+                                .toList(),
+                        selItems: () {
+                          final currentValues =
+                              form.control('subActivity').value;
+                          if (currentValues == null || currentValues.isEmpty) {
+                            return <Lov>[];
+                          }
+                          return state.lovList!
+                              .where(
+                                (v) =>
+                                    v.Header == 'SubActivity' &&
+                                    currentValues.contains(v.optvalue),
+                              )
+                              .toList();
+                        },
+                        onChangeListener: (List<Lov>? selectedItems) {
+                          final selectedValues =
+                              selectedItems?.map((e) => e.optvalue).toList() ??
+                              [];
+                          String subactivities = selectedValues.join(',');
+                          form.controls['subActivity']?.updateValue(
+                            subactivities,
+                          );
+                        },
                       ),
                       SizedBox(height: 20),
 
@@ -938,14 +1043,24 @@ class Personal extends StatelessWidget {
                             if (state.getLead == null ||
                                 state.getLead == false) {
                               if (form.valid) {
+                                final aadhaarNumber =
+                                    form.control('aadhaar').value;
+                                form
+                                    .control('aadharRefNo')
+                                    .updateValue(aadhaarNumber);
                                 PersonalData personalData =
-                                    PersonalData.fromMap(form.value);
+                                    PersonalData.fromMap(form.rawValue);
                                 PersonalData personalDataFormatted =
                                     personalData.copyWith(
                                       dob: getDateFormatedByProvided(
                                         personalData.dob,
                                         from: AppConstants.Format_dd_MM_yyyy,
                                         to: AppConstants.Format_yyyy_MM_dd,
+                                      ),
+                                      borrowerLivelinessDet: LiveLinessDetails(
+                                        verifyFlag: false,
+                                        livelinessDoc: "",
+                                        livelinessKycDoc: "",
                                       ),
                                     );
 

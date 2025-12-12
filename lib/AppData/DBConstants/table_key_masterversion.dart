@@ -9,8 +9,6 @@
                                  - 'failure' : download failed.S
 */
 
-import 'package:flutter/material.dart';
-
 class TableKeyMasterversion {
   TableKeyMasterversion._();
 

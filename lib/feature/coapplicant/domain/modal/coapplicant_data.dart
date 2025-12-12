@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:newsee/Model/liveliness_details.dart';
+
 enum ApplicantType { coapplicant, guarantor }
 
 class CoapplicantData {
@@ -20,6 +22,7 @@ class CoapplicantData {
   final String? secondaryMobileNumber;
   final String? panNumber;
   final String? aadharRefNo;
+  final String? gender;
   final String? address1;
   final String? address2;
   final String? address3;
@@ -30,6 +33,7 @@ class CoapplicantData {
   final String? loanLiabilityAmount;
   final String? depositCount;
   final String? depositAmount;
+  final LiveLinessDetails? livelinessDetails;
   CoapplicantData({
     this.applicantType,
     this.customertype,
@@ -46,7 +50,9 @@ class CoapplicantData {
     this.primaryMobileNumber,
     this.secondaryMobileNumber,
     this.panNumber,
-    this.aadharRefNo='909890900909',
+    // this.aadharRefNo='909890900909',
+    this.aadharRefNo,
+    this.gender,
     this.address1,
     this.address2,
     this.address3,
@@ -57,6 +63,7 @@ class CoapplicantData {
     this.loanLiabilityAmount,
     this.depositCount,
     this.depositAmount,
+    this.livelinessDetails,
   });
 
   CoapplicantData copyWith({
@@ -76,6 +83,7 @@ class CoapplicantData {
     String? secondaryMobileNumber,
     String? panNumber,
     String? aadharRefNo,
+    String? gender,
     String? address1,
     String? address2,
     String? address3,
@@ -86,6 +94,7 @@ class CoapplicantData {
     String? loanLiabilityAmount,
     String? depositCount,
     String? depositAmount,
+    LiveLinessDetails? livelinessDetails,
   }) {
     return CoapplicantData(
       applicantType: applicantType ?? this.applicantType,
@@ -105,6 +114,7 @@ class CoapplicantData {
           secondaryMobileNumber ?? this.secondaryMobileNumber,
       panNumber: panNumber ?? this.panNumber,
       aadharRefNo: aadharRefNo ?? this.aadharRefNo,
+      gender: gender ?? this.gender,
       address1: address1 ?? this.address1,
       address2: address2 ?? this.address2,
       address3: address3 ?? this.address3,
@@ -115,6 +125,7 @@ class CoapplicantData {
       loanLiabilityAmount: loanLiabilityAmount ?? this.loanLiabilityAmount,
       depositCount: depositCount ?? this.depositCount,
       depositAmount: depositAmount ?? this.depositAmount,
+      livelinessDetails: livelinessDetails ?? this.livelinessDetails,
     );
   }
 
@@ -136,6 +147,7 @@ class CoapplicantData {
       'secondaryMobileNumber': secondaryMobileNumber,
       'panNumber': panNumber,
       'aadharRefNo': aadharRefNo,
+      'gender': gender,
       'address1': address1,
       'address2': address2,
       'address3': address3,
@@ -146,6 +158,7 @@ class CoapplicantData {
       'loanLiabilityAmount': loanLiabilityAmount,
       'depositCount': depositCount,
       'depositAmount': depositAmount,
+      'livelinessDetails': livelinessDetails?.toMap(),
     };
   }
 
@@ -184,6 +197,7 @@ class CoapplicantData {
       panNumber: map['panNumber'] != null ? map['panNumber'] as String : null,
       aadharRefNo:
           map['aadharRefNo'] != null ? map['aadharRefNo'] as String : null,
+      gender: map['gender'] != null ? map['gender'] as String : null,
       address1: map['address1'] != null ? map['address1'] as String : null,
       address2: map['address2'] != null ? map['address2'] as String : null,
       address3: map['address3'] != null ? map['address3'] as String : null,
@@ -203,6 +217,10 @@ class CoapplicantData {
           map['depositCount'] != null ? map['depositCount'] as String : null,
       depositAmount:
           map['depositAmount'] != null ? map['depositAmount'] as String : null,
+      livelinessDetails:
+          map['livelinessDetails'] != null
+              ? LiveLinessDetails.fromMap(map['livelinessDetails'])
+              : null,
     );
   }
 
@@ -213,7 +231,7 @@ class CoapplicantData {
 
   @override
   String toString() {
-    return 'CoapplicantData(customertype: $customertype, cifNumber: $cifNumber, constitution: $constitution, title: $title, firstName: $firstName, middleName: $middleName, lastName: $lastName, dob: $dob, relationshipFirm: $relationshipFirm, residentialStatus: $residentialStatus, email: $email, primaryMobileNumber: $primaryMobileNumber, secondaryMobileNumber: $secondaryMobileNumber, panNumber: $panNumber, aadharRefNo: $aadharRefNo, address1: $address1, address2: $address2, address3: $address3, state: $state, cityDistrict: $cityDistrict, pincode: $pincode, loanLiabilityCount: $loanLiabilityCount, loanLiabilityAmount: $loanLiabilityAmount, depositCount: $depositCount, depositAmount: $depositAmount)';
+    return 'CoapplicantData(customertype: $customertype, cifNumber: $cifNumber, constitution: $constitution, title: $title, firstName: $firstName, middleName: $middleName, lastName: $lastName, dob: $dob, relationshipFirm: $relationshipFirm, residentialStatus: $residentialStatus, email: $email, primaryMobileNumber: $primaryMobileNumber, secondaryMobileNumber: $secondaryMobileNumber, panNumber: $panNumber, aadharRefNo: $aadharRefNo, gender: $gender, address1: $address1, address2: $address2, address3: $address3, state: $state, cityDistrict: $cityDistrict, pincode: $pincode, loanLiabilityCount: $loanLiabilityCount, loanLiabilityAmount: $loanLiabilityAmount, depositCount: $depositCount, depositAmount: $depositAmount, livelinessDetails: $livelinessDetails)';
   }
 
   @override
@@ -236,6 +254,7 @@ class CoapplicantData {
         other.secondaryMobileNumber == secondaryMobileNumber &&
         other.panNumber == panNumber &&
         other.aadharRefNo == aadharRefNo &&
+        other.gender == gender &&
         other.address1 == address1 &&
         other.address2 == address2 &&
         other.address3 == address3 &&
@@ -245,7 +264,8 @@ class CoapplicantData {
         other.loanLiabilityCount == loanLiabilityCount &&
         other.loanLiabilityAmount == loanLiabilityAmount &&
         other.depositCount == depositCount &&
-        other.depositAmount == depositAmount;
+        other.depositAmount == depositAmount &&
+        other.livelinessDetails == livelinessDetails;
   }
 
   @override
@@ -266,6 +286,7 @@ class CoapplicantData {
         secondaryMobileNumber.hashCode ^
         panNumber.hashCode ^
         aadharRefNo.hashCode ^
+        gender.hashCode ^
         address1.hashCode ^
         address2.hashCode ^
         address3.hashCode ^
@@ -275,6 +296,7 @@ class CoapplicantData {
         loanLiabilityCount.hashCode ^
         loanLiabilityAmount.hashCode ^
         depositCount.hashCode ^
-        depositAmount.hashCode;
+        depositAmount.hashCode ^
+        livelinessDetails.hashCode;
   }
 }

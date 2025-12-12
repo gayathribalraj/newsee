@@ -37,7 +37,7 @@ class DocumentImage {
   factory DocumentImage.fromMap(Map<String, dynamic> map) {
     return DocumentImage(
       fileName: map['fileName'],
-      fileLocation: map['fileLocation'],
+      fileLocation: map['fileLocation'] as String? ?? '',
       docId: (map['docId']),
       rowId: map['rowId'],
       imgStatus: UploadStatus.values.firstWhere(

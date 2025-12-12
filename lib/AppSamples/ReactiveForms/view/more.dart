@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:newsee/pages/rbih_land_crop.dart';
 
 /*
 
@@ -65,13 +66,27 @@ void moreActionSheet(BuildContext context, String action) {
                       'assets/Agri_Loan.svg',
                       onTap: () {},
                     ),
+                    // LoanOption(
+                    //   context,
+                    //   screenWidth,
+                    //   screenHeight,
+                    //   'MSME Loan',
+                    //   'assets/MSME.svg',
+                    //   onTap: () {},
+                    // ),
                     LoanOption(
                       context,
                       screenWidth,
                       screenHeight,
                       'MSME Loan',
                       'assets/MSME.svg',
-                      onTap: () {},
+                      onTap: () {
+                        // context.goNamed('landownerdetails');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => RbIHLandCrop()),
+                        );
+                      },
                     ),
                     LoanOption(
                       context,

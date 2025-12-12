@@ -165,7 +165,6 @@ class LoginpageWithAC extends StatelessWidget {
               SnackBar(content: Text(state.errorMessage ?? 'Login Failed...')),
             );
         }
-        ;
       },
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {

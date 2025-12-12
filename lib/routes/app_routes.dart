@@ -10,6 +10,7 @@ import 'package:newsee/Utils/media_service.dart';
 import 'package:newsee/blocs/camera/camera_bloc.dart';
 import 'package:newsee/blocs/camera/camera_event.dart';
 import 'package:newsee/core/api/api_client.dart';
+import 'package:newsee/feature/CropDetails/presentation/bloc/cropyieldpage_bloc.dart';
 import 'package:newsee/feature/CropDetails/presentation/page/cropdetailspage.dart';
 import 'package:newsee/feature/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:newsee/feature/auth/data/repository/auth_repository_impl.dart';
@@ -17,20 +18,16 @@ import 'package:newsee/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:newsee/feature/documentupload/presentation/bloc/document_bloc.dart';
 import 'package:newsee/feature/documentupload/presentation/pages/document_page.dart';
 import 'package:newsee/feature/documentupload/presentation/widget/image_view.dart';
+import 'package:newsee/feature/landholding/presentation/bloc/land_holding_bloc.dart';
 import 'package:newsee/feature/landholding/presentation/page/land_holding_page.dart';
-import 'package:newsee/feature/leadInbox/domain/modal/get_lead_response.dart';
-import 'package:newsee/feature/masters/data/repository/master_repo_impl.dart';
-import 'package:newsee/feature/masters/domain/modal/master_version.dart';
-import 'package:newsee/feature/masters/domain/repository/master_repo.dart';
-import 'package:newsee/feature/masters/presentation/bloc/masters_bloc.dart';
 import 'package:newsee/feature/masters/presentation/page/masters_page.dart';
-import 'package:newsee/feature/cic_check/cic_check_page.dart';
+import 'package:newsee/feature/cic_check/presentation/cic_check_page.dart';
+import 'package:newsee/feature/queryInbox/presentation/page/chat_widget.dart';
+import 'package:newsee/feature/queryInbox/presentation/page/query_inbox.dart';
 import 'package:newsee/pages/home_page.dart';
 import 'package:newsee/pages/newlead_page.dart';
 import 'package:newsee/pages/not_found_error.page.dart';
 import 'package:newsee/pages/profile_page.dart';
-
-import '../feature/documentupload/presentation/bloc/document_event.dart';
 
 final AuthRemoteDatasource _authRemoteDatasource = AuthRemoteDatasource(
   dio: ApiClient().getDio(),
@@ -52,6 +49,7 @@ final routes = GoRouter(
           (context, state) => PopScope(
             canPop: false,
             onPopInvokedWithResult: (didpop, data) async {
+              if (didpop) return;
               final shouldPop = await showDialog<bool>(
                 context: context,
                 builder:
@@ -92,6 +90,7 @@ final routes = GoRouter(
         return PopScope(
           canPop: false,
           onPopInvokedWithResult: (didPop, result) async {
+            if (didPop) return;
             final shouldPop = await showDialog<bool>(
               context: context,
               builder:
@@ -133,7 +132,7 @@ final routes = GoRouter(
         final data = (state.extra as Map<String, dynamic>?) ?? {};
 
         return NewLeadPage(
-          fullLeadData: data['leadData'] != null ? data['leadData'] : null,
+          fullLeadData: data['leadData'],
           tabType: data['tabType'] != null ? data['tabType'] as String : null,
         );
       },
@@ -152,6 +151,40 @@ final routes = GoRouter(
       path: AppRouteConstants.CIC_CHECK_PAGE['path']!,
       name: AppRouteConstants.CIC_CHECK_PAGE['name'],
       builder: (context, state) => CicCheckPage(),
+    ),
+    GoRoute(
+      path: AppRouteConstants.QUERY_INBOX_PAGE['path']!,
+      name: AppRouteConstants.QUERY_INBOX_PAGE['name'],
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>?;
+        print('here....$data...${state.extra}');
+        final title = data?['title'] ?? "No Title";
+        final body = data?['body'] ?? "No Body";
+
+        return QueryInbox(title: title, body: body);
+      },
+    ),
+    GoRoute(
+      path: AppRouteConstants.ChatWindow['path']!,
+      name: AppRouteConstants.ChatWindow['name'],
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>?;
+        print('here....$data...${state.extra}');
+        final title = data?['title'] ?? "No Title";
+        final body = data?['body'] ?? "No Body";
+        final queryId = data?['queryId'] ?? "";
+        final proposalNo = num.tryParse("${data?['proposalNo']}") ?? 0;
+        final queryType = data?['queryType'] ?? "";
+        final userName = data?['userName'] ?? "";
+
+        return ChatWidget(
+          queryId: queryId,
+          status: 'Open',
+          proposalNo: proposalNo,
+          queryType: body,
+          userName: userName,
+        );
+      },
     ),
     GoRoute(
       path: AppRouteConstants.CAMERA_PAGE['path']!,
@@ -173,115 +206,146 @@ final routes = GoRouter(
             (state.extra as Map<String, dynamic>?)?['proposalNumber'] as String;
         final applicantname =
             (state.extra as Map<String, dynamic>?)?['applicantName'] as String;
-        return PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (didpop, data) async {
-            final shouldPop = await showDialog<bool>(
-              context: context,
-              builder:
-                  (context) => AlertDialog(
-                    title: Text('Confirm'),
-                    content: Text('Do you want to Exit ?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(true),
-                        child: Text('Yes'),
-                      ),
-                    ],
+        final custId =
+            (state.extra as Map<String, dynamic>?)?['custId'] as String;
+        final isCompleted =
+            (state.extra as Map<String, dynamic>?)?['isCompleted'] as bool;
+        return BlocProvider(
+          create:
+              (_) =>
+                  LandHoldingBloc()..add(
+                    LandHoldingInitEvent(
+                      proposalNumber: proposalnumber,
+                      custId: custId,
+                    ),
                   ),
-            );
-            if (shouldPop ?? false) {
-              Navigator.of(context).pop(false);
-              // context.go('/'); // Navigate back using GoRouter
-            }
-          },
-          child: LandHoldingPage(
-            title: 'Land Holding Details',
-            proposalNumber: proposalnumber,
-            applicantName: applicantname,
+          child: PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didpop, data) async {
+              if (didpop) return;
+              final shouldPop = await showDialog<bool>(
+                context: context,
+                builder:
+                    (context) => AlertDialog(
+                      title: Text('Confirm'),
+                      content: Text('Do you want to Exit ?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: Text('Yes'),
+                        ),
+                      ],
+                    ),
+              );
+              if (shouldPop ?? false) {
+                Navigator.of(context).pop(false);
+                // context.go('/'); // Navigate back using GoRouter
+              }
+            },
+            child: LandHoldingPage(
+              title: 'Land Holding Details',
+              proposalNumber: proposalnumber,
+              custId: custId,
+              applicantName: applicantname,
+              isCompleted: isCompleted,
+            ),
           ),
         );
       },
     ),
+
     GoRoute(
       path: AppRouteConstants.DOCUMENT_PAGE['path']!,
       name: AppRouteConstants.DOCUMENT_PAGE['name'],
-
       builder: (context, state) {
         final extra = state.extra as String?;
         final proposalNumber = extra ?? '';
+
         return PopScope(
           canPop: false,
-          onPopInvokedWithResult: (didpop, data) async {
+          onPopInvokedWithResult: (didPop, result) async {
+            // Prevent multiple dialogs
+            if (didPop) return;
+
             final shouldPop = await showDialog<bool>(
               context: context,
               builder:
                   (context) => AlertDialog(
-                    title: Text('Confirm'),
-                    content: Text('Do you want to Exit ?'),
+                    title: const Text('Confirm'),
+                    content: const Text('Do you want to exit?'),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: Text('Cancel'),
+                        child: const Text('Cancel'),
                       ),
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(true),
-                        child: Text('Yes'),
+                        child: const Text('Yes'),
                       ),
                     ],
                   ),
             );
+
             if (shouldPop ?? false) {
-              Navigator.of(context).pop(false);
+              Navigator.of(context).pop(); // exit the page
             }
           },
           child: BlocProvider(
-            create:
-                (_) => DocumentBloc(mediaService: MediaService())
-                  ..add(FetchDocumentsEvent(proposalNumber: proposalNumber)),
-            lazy: false,
+            create: (_) => DocumentBloc(mediaService: MediaService()),
             child: DocumentPage(proposalnumber: proposalNumber),
           ),
         );
       },
     ),
+
     GoRoute(
       path: AppRouteConstants.CROP_DETAILS_PAGE['path']!,
       name: AppRouteConstants.CROP_DETAILS_PAGE['name'],
       builder: (context, state) {
-        final proposalNumber = state.extra as String;
-        return PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (didpop, data) async {
-            final shouldPop = await showDialog<bool>(
-              context: context,
-              builder:
-                  (context) => AlertDialog(
-                    title: Text('Confirm'),
-                    content: Text('Do you want to Exit ?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(true),
-                        child: Text('Yes'),
-                      ),
-                    ],
-                  ),
-            );
-            if (shouldPop ?? false) {
-              Navigator.of(context).pop(false);
-            }
-          },
-          child: CropDetailsPage(
-            title: 'Crop Details',
-            proposalnumber: proposalNumber,
+        final proposalNumber =
+            (state.extra as Map<String, dynamic>?)?['proposal'] as String;
+        final isCompleted =
+            (state.extra as Map<String, dynamic>?)?['isCompleted'] as bool;
+        return BlocProvider(
+          create:
+              (_) =>
+                  CropyieldpageBloc()
+                    ..add(CropPageInitialEvent(proposalNumber: proposalNumber)),
+          child: PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didpop, data) async {
+              if (didpop) return;
+              final shouldPop = await showDialog<bool>(
+                context: context,
+                builder:
+                    (context) => AlertDialog(
+                      title: Text('Confirm'),
+                      content: Text('Do you want to Exit ?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: Text('Yes'),
+                        ),
+                      ],
+                    ),
+              );
+              if (shouldPop ?? false) {
+                Navigator.of(context).pop(false);
+              }
+            },
+            child: CropDetailsPage(
+              title: 'Crop Details',
+              proposalnumber: proposalNumber,
+              isCompleted: isCompleted,
+            ),
           ),
         );
       },

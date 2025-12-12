@@ -24,6 +24,7 @@ class LandHoldingRequest {
   String? LandAgriculturellyActive;
   int? rowId;
   String? token;
+  List<Map<String, dynamic>>? polygonDetails;
 
   LandHoldingRequest({
     required this.proposalNumber,
@@ -47,6 +48,7 @@ class LandHoldingRequest {
     this.LandAgriculturellyActive,
     this.rowId,
     this.token,
+    this.polygonDetails,
   });
 
   // Convert the object into a map for API serialization.
@@ -73,6 +75,7 @@ class LandHoldingRequest {
       'LandAgriculturellyActive': LandAgriculturellyActive,
       'rowId': rowId,
       'token': token,
+      'polygonDetails': polygonDetails,
     };
   }
 
@@ -133,6 +136,14 @@ class LandHoldingRequest {
               : null,
       rowId: map['rowId'] != null ? map['rowId'] as int : null,
       token: map['token'] != null ? map['token'] as String : null,
+      polygonDetails:
+          map['polygonDetails'] != null
+              ? List<Map<String, dynamic>>.from(
+                (map['polygonDetails'] as List).map(
+                  (e) => Map<String, dynamic>.from(e),
+                ),
+              )
+              : null,
     );
   }
 
@@ -163,6 +174,7 @@ class LandHoldingRequest {
     String? LandAgriculturellyActive,
     int? rowId,
     String? token,
+    List<Map<String, dynamic>>? polygonDetails,
   }) {
     return LandHoldingRequest(
       proposalNumber: proposalNumber ?? this.proposalNumber,
@@ -190,12 +202,13 @@ class LandHoldingRequest {
           LandAgriculturellyActive ?? this.LandAgriculturellyActive,
       rowId: rowId ?? this.rowId,
       token: token ?? this.token,
+      polygonDetails: polygonDetails ?? this.polygonDetails,
     );
   }
 
   @override
   String toString() {
-    return 'LandHoldingRequest(proposalNumber: $proposalNumber, applicantName: $applicantName, LandOwnedByApplicant: $LandOwnedByApplicant, LocationOfFarm: $LocationOfFarm, DistanceFromBranch: $DistanceFromBranch, State: $State, District: $District, Taluk: $Taluk, Village: $Village, Firka: $Firka, SurveyNo: $SurveyNo, TotalAcreage: $TotalAcreage, NatureOfRight: $NatureOfRight, OutOfTotalAcreage: $OutOfTotalAcreage, NatureOfIrrigation: $NatureOfIrrigation, LandsSituatedCompactBlocks: $LandsSituatedCompactBlocks, landCeilingEnactments: $landCeilingEnactments, villageOfficersCertificate: $villageOfficersCertificate, LandAgriculturellyActive: $LandAgriculturellyActive, token: $token)';
+    return 'LandHoldingRequest(proposalNumber: $proposalNumber, applicantName: $applicantName, LandOwnedByApplicant: $LandOwnedByApplicant, LocationOfFarm: $LocationOfFarm, DistanceFromBranch: $DistanceFromBranch, State: $State, District: $District, Taluk: $Taluk, Village: $Village, Firka: $Firka, SurveyNo: $SurveyNo, TotalAcreage: $TotalAcreage, NatureOfRight: $NatureOfRight, OutOfTotalAcreage: $OutOfTotalAcreage, NatureOfIrrigation: $NatureOfIrrigation, LandsSituatedCompactBlocks: $LandsSituatedCompactBlocks, landCeilingEnactments: $landCeilingEnactments, villageOfficersCertificate: $villageOfficersCertificate, LandAgriculturellyActive: $LandAgriculturellyActive, token: $token, polygonDetails:$polygonDetails)';
   }
 
   @override
@@ -222,7 +235,8 @@ class LandHoldingRequest {
         other.villageOfficersCertificate == villageOfficersCertificate &&
         other.LandAgriculturellyActive == LandAgriculturellyActive &&
         other.rowId == rowId &&
-        other.token == token;
+        other.token == token &&
+        other.polygonDetails == polygonDetails;
   }
 
   @override
@@ -247,6 +261,7 @@ class LandHoldingRequest {
         villageOfficersCertificate.hashCode ^
         LandAgriculturellyActive.hashCode ^
         rowId.hashCode ^
-        token.hashCode;
+        token.hashCode ^
+        polygonDetails.hashCode;
   }
 }

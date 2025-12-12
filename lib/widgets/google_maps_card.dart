@@ -5,8 +5,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GoogleMapsCard extends StatefulWidget {
   final LatLng location;
+  Set<Polygon>? polygons = {};
+  final Function(LatLng)? onMapTap;
 
-  const GoogleMapsCard({super.key, required this.location});
+  GoogleMapsCard({
+    super.key,
+    required this.location,
+    this.polygons,
+    this.onMapTap,
+  });
 
   @override
   State<GoogleMapsCard> createState() => _GoogleMapsCardState();
@@ -14,6 +21,7 @@ class GoogleMapsCard extends StatefulWidget {
 
 class _GoogleMapsCardState extends State<GoogleMapsCard> {
   final Completer<GoogleMapController> _controller = Completer();
+  final PolygonId _polygonId = const PolygonId('userPolygon');
 
   @override
   void initState() {
@@ -26,6 +34,24 @@ class _GoogleMapsCardState extends State<GoogleMapsCard> {
         ),
       );
     });
+  }
+
+  LatLngBounds boundsFromLatLngList(List<LatLng> list) {
+    assert(list.isNotEmpty);
+
+    double x0 = list.first.latitude;
+    double x1 = list.first.latitude;
+    double y0 = list.first.longitude;
+    double y1 = list.first.longitude;
+
+    for (LatLng latLng in list) {
+      if (latLng.latitude < x0) x0 = latLng.latitude;
+      if (latLng.latitude > x1) x1 = latLng.latitude;
+      if (latLng.longitude < y0) y0 = latLng.longitude;
+      if (latLng.longitude > y1) y1 = latLng.longitude;
+    }
+
+    return LatLngBounds(southwest: LatLng(x0, y0), northeast: LatLng(x1, y1));
   }
 
   @override
@@ -113,6 +139,8 @@ class _GoogleMapsCardState extends State<GoogleMapsCard> {
                           ),
                         ),
                       },
+                      onTap: widget.onMapTap,
+                      polygons: widget.polygons ?? {},
                       zoomControlsEnabled: true,
                       myLocationButtonEnabled: false,
                       liteModeEnabled: false,

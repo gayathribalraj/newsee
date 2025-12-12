@@ -3,9 +3,17 @@ import 'package:equatable/equatable.dart';
 import 'package:newsee/AppData/DBConstants/table_key_geographymaster.dart';
 import 'package:newsee/AppData/app_api_constants.dart';
 import 'package:newsee/AppData/app_constants.dart';
+import 'package:newsee/AppData/globalconfig.dart';
+import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/Utils/geographymaster_response_mapper.dart';
+import 'package:newsee/Utils/offline_data_provider.dart';
+import 'package:newsee/Utils/utils.dart';
+import 'package:newsee/Utils/offline_data_provider.dart';
+import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/core/db/db_config.dart';
+import 'package:newsee/feature/CropDetails/domain/modal/cropdetailsmodal.dart';
+import 'package:newsee/feature/CropDetails/domain/modal/cropdetailsmodal.dart';
 import 'package:newsee/feature/addressdetails/data/repository/citylist_repo_impl.dart';
 import 'package:newsee/feature/addressdetails/domain/model/citydistrictrequest.dart';
 import 'package:newsee/feature/addressdetails/domain/repository/cityrepository.dart';
@@ -31,16 +39,17 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
     on<LandDetailsLoadEvent>(_onLoad);
     on<OnStateCityChangeEvent>(getCityListBasedOnState);
     on<LandDetailsDeleteEvent>(_onDelete);
+    on<RBIHDetailsLoadEvent>(loadRBIHData);
   }
 
   Future initLandHoldingDetails(
     LandHoldingInitEvent event,
     Emitter emit,
   ) async {
-    Database _db = await DBConfig().database;
-    List<Lov> listOfLov = await LovCrudRepo(_db).getAll();
+    Database db = await DBConfig().database;
+    List<Lov> listOfLov = await LovCrudRepo(db).getAll();
     List<GeographyMaster> stateCityMaster = await GeographymasterCrudRepo(
-      _db,
+      db,
     ).getByColumnNames(
       columnNames: [
         TableKeysGeographyMaster.stateId,
@@ -50,25 +59,28 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
     );
 
     final LandHoldingRepository landHoldingRepository =
-          LandHoldingRespositoryImpl();
+        LandHoldingRespositoryImpl();
 
-    final response = await landHoldingRepository.getLandholding(event.proposalNumber);
-    
-    if(response.isRight()) {
-      List<LandData> landData =
-          response.right.agriLandHoldingsList
-              .map((e) => LandData.fromMap(e))
-              .toList();
+    final response = await landHoldingRepository.getLandholding({
+      'proposalNumber': event.proposalNumber,
+      'custId': event.custId,
+    });
+
+    if (response.isRight()) {
+      List<LandData> landData = response.right.agriLandHoldingsList;
+      // .map((e) => LandData.fromMap(e))
+      // .toList();
       print("LandData from response at get=> $landData");
 
       List<GeographyMaster>? cityMaster = [];
 
-      for(var i=0; i < landData.length; i++) {
-        List<GeographyMaster>? coappCityList = await getCityMaster(landData[i].lslLandState, null);
+      for (var i = 0; i < landData.length; i++) {
+        List<GeographyMaster>? coappCityList = await getCityMaster(
+          landData[i].lslLandState,
+          null,
+        );
         cityMaster.addAll(coappCityList ?? []);
       }
-
-      
 
       emit(
         state.copyWith(
@@ -88,7 +100,6 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
         ),
       );
     }
-    
   }
 
   // Save new land data
@@ -100,14 +111,37 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
       emit(state.copyWith(status: SaveStatus.loading));
       // final newList = [...?state.landData, event.landData as LandData];
       print("event.landData not a map => ${event.landData}");
-      final landdata = event.landData;
-      final proposalNo = event.proposalNumber;
-      print("event.landData => $landdata");
+
+      // LandHoldingRequest req = LandHoldingRequest(
+      //   proposalNumber: event.proposalNumber,
+      //   state: event.landData['state'] ?? '',
+      //   district: event.landData['district'] ?? '',
+      //   taluk: event.landData['taluk'] ?? '',
+      //   village: event.landData['village'] ?? '',
+      //   surveyNo: event.landData['surveyNo'] ?? '',
+      //   khasraNo: event.landData['khasraNo'] ?? '',
+      //   uccCode: event.landData['uccCode'] ?? '',
+      //   totAcre: event.landData['totAcre'] ?? '',
+      //   landType: event.landData['landType'] ?? '',
+      //   particulars: event.landData['particulars'] ?? '',
+      //   sourceofIrrigation: event.landData['sourceofIrrig'] ?? '',
+      //   farmDistance: event.landData['farmDistance'] ?? '',
+      //   otherbanks: event.landData['otherbanks'] ? 'Y' : 'N',
+      //   farmercategory: event.landData['farmercategory'] ?? '',
+      //   primaryoccupation: event.landData['primaryoccupation'] ?? '',
+      //   sumOfTotalAcreage: event.landData['sumOfTotalAcreage'] ?? '',
+      //   rowId: event.landData['rowId'],
+      //   // event.landData['rowId'] != null
+      //   //     ? int.parse(event.landData['rowId'])
+      //   //     : null,
+      //   token: ApiConstants.api_qa_token,
+      // );
 
       LandHoldingRequest req = LandHoldingRequest(
         proposalNumber: event.proposalNumber,
-        applicantName: event.landData['applicantName'] ?? '',
-        LandOwnedByApplicant: event.landData['landOwnedByApplicant'] ? 'Y' : 'N',
+        applicantName: event.custId,
+        LandOwnedByApplicant:
+            event.landData['landOwnedByApplicant'] ? 'Y' : 'N',
         LocationOfFarm: event.landData['locationOfFarm'] ?? '',
         DistanceFromBranch: event.landData['distanceFromBranch'] ?? '',
         State: event.landData['state'] ?? '',
@@ -122,9 +156,15 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
         NatureOfIrrigation: event.landData['irrigationFacilities'] ?? '',
         LandsSituatedCompactBlocks: event.landData['compactBlocks'] ? '1' : '2',
         landCeilingEnactments: event.landData['affectedByCeiling'] ? '1' : '2',
-        villageOfficersCertificate: event.landData['villageOfficerCertified'] ? '1' : '2',
+        villageOfficersCertificate:
+            event.landData['villageOfficerCertified'] ? '1' : '2',
         LandAgriculturellyActive: event.landData['landAgriActive'] ? '1' : '2',
-        rowId: event.landData['lslLandRowid'] != null ? int.parse(event.landData['lslLandRowid']) : null,
+        rowId: int.tryParse(event.landData['lslLandRowid']?.toString() ?? ''),
+        polygonDetails: event.polygonData,
+        // rowId:
+        //     event.landData['lslLandRowid'] != null
+        //         ? int.parse(event.landData['lslLandRowid'])
+        //         : null,
         token: ApiConstants.api_qa_token,
       );
 
@@ -136,10 +176,9 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
       final response = await landHoldingRepository.submitLandHolding(landReq);
 
       if (response.isRight()) {
-        List<LandData> landData =
-          response.right.agriLandHoldingsList
-              .map((e) => LandData.fromMap(e))
-              .toList();
+        List<LandData> landData = response.right.agriLandHoldingsList;
+        // .map((e) => LandData.fromMap(e))
+        // .toList();
 
         print("LandData from response => $landData");
         emit(
@@ -147,18 +186,17 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
             status: SaveStatus.success,
             landData: landData,
             selectedLandData: null,
-            errorMessage: null
+            errorMessage: null,
           ),
         );
       } else {
         emit(
           state.copyWith(
             status: SaveStatus.failure,
-            errorMessage: response.left.message
+            errorMessage: response.left.message,
           ),
         );
       }
-      
     } catch (e) {
       print("Error in LandDetailsSaveEvent: $e");
       emit(
@@ -174,7 +212,7 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
       state.copyWith(
         status: SaveStatus.update,
         selectedLandData: event.landData,
-        errorMessage: null
+        errorMessage: null,
       ),
     );
   }
@@ -184,38 +222,40 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
       emit(state.copyWith(status: SaveStatus.loading));
       final LandHoldingDeleteRequest landDeleteReq = LandHoldingDeleteRequest(
         proposalNumber: event.landData.lslPropNo.toString(),
-        rowId: event.landData.lslLandRowid.toString(), 
+        custId: event.custId,
+        rowId: event.landData.lslLandRowid.toString(),
         token: ApiConstants.api_qa_token,
       );
 
       final LandHoldingRepository landHoldingRepository =
           LandHoldingRespositoryImpl();
-      final response = await landHoldingRepository.deleteLandHoldingData(landDeleteReq);
+      final response = await landHoldingRepository.deleteLandHoldingData(
+        landDeleteReq,
+      );
       if (response.isRight()) {
         List<LandData> landDetailsList = state.landData!;
         landDetailsList.removeAt(event.index);
         print("final landDetailsList $landDetailsList");
         emit(
           state.copyWith(
-            status: SaveStatus.delete, 
+            status: SaveStatus.delete,
             errorMessage: response.right,
-            landData: landDetailsList
+            landData: landDetailsList,
           ),
         );
       } else {
         emit(
           state.copyWith(
-            status: SaveStatus.failure, 
-            errorMessage: response.left.message
+            status: SaveStatus.failure,
+            errorMessage: response.left.message,
           ),
         );
       }
-
-    } catch(error) {
+    } catch (error) {
       emit(
         state.copyWith(
-          status: SaveStatus.failure, 
-          errorMessage: error.toString()
+          status: SaveStatus.failure,
+          errorMessage: error.toString(),
         ),
       );
       print("LandDetailsDeleteEvent-error $error");
@@ -241,27 +281,32 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
                               citydistrictrequest,
                           );
     */
-
-    emit(state.copyWith(status: SaveStatus.loading));
-    final CityDistrictRequest citydistrictrequest = CityDistrictRequest(
-      stateCode: event.stateCode,
-      cityCode: event.cityCode,
-    );
-    Cityrepository cityrepository = CitylistRepoImpl();
-    AsyncResponseHandler response = await cityrepository.fetchCityList(
-      citydistrictrequest,
-    );
-    GeographymasterResponseMapper landHoldingState =
-        GeographymasterResponseMapper(state).mapResponse(response);
-    LandHoldingState _landHoldingState =
-        landHoldingState.state as LandHoldingState;
-    emit(
-      state.copyWith(
-        status: _landHoldingState.status,
-        cityMaster: _landHoldingState.cityMaster,
-        districtMaster: _landHoldingState.districtMaster,
-      ),
-    );
+    try {
+      emit(state.copyWith(status: SaveStatus.loading));
+      final CityDistrictRequest citydistrictrequest = CityDistrictRequest(
+        stateCode: event.stateCode,
+        cityCode: event.cityCode,
+      );
+      Cityrepository cityrepository = CitylistRepoImpl();
+      AsyncResponseHandler response = await cityrepository.fetchCityList(
+        citydistrictrequest,
+      );
+      print('responsecity: $response');
+      GeographymasterResponseMapper landHoldingState =
+          GeographymasterResponseMapper(state).mapResponse(response);
+      LandHoldingState landHoldingState0 =
+          landHoldingState.state as LandHoldingState;
+      emit(
+        state.copyWith(
+          status: landHoldingState0.status,
+          cityMaster: landHoldingState0.cityMaster,
+          districtMaster: landHoldingState0.districtMaster,
+        ),
+      );
+    } catch (e) {
+      print('getcitymasterLans: $e');
+      emit(state.copyWith(status: SaveStatus.failure));
+    }
   }
 
   Future<List<GeographyMaster>?> getCityMaster(stateCode, cityCode) async {
@@ -275,18 +320,18 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
         citydistrictrequest,
       );
 
-      Map<String, dynamic> _resp = response.right as Map<String, dynamic>;
+      Map<String, dynamic> resp = response.right as Map<String, dynamic>;
 
       List<GeographyMaster> cityMaster =
-        _resp['cityMaster'] != null && _resp['cityMaster'].isNotEmpty
-            ? _resp['cityMaster'] as List<GeographyMaster>
-            : [];
-    List<GeographyMaster> districtMaster =
-        _resp['districtMaster'] != null && _resp['districtMaster'].isNotEmpty
-            ? _resp['districtMaster'] as List<GeographyMaster>
-            : [];
-      
-      if(cityCode == null) {
+          resp['cityMaster'] != null && resp['cityMaster'].isNotEmpty
+              ? resp['cityMaster'] as List<GeographyMaster>
+              : [];
+      List<GeographyMaster> districtMaster =
+          resp['districtMaster'] != null && resp['districtMaster'].isNotEmpty
+              ? resp['districtMaster'] as List<GeographyMaster>
+              : [];
+
+      if (cityCode == null) {
         return cityMaster;
       } else {
         return districtMaster;
@@ -294,6 +339,93 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
     } catch (error) {
       print("mapGaurantor-error => $error");
       return null;
+    }
+  }
+
+  Future<void> loadRBIHData(RBIHDetailsLoadEvent event, Emitter emit) async {
+    try {
+      final response = await offlineDataProvider(
+        path: AppConstants.rhIHLandCropResponse,
+      );
+      final jsonData = response.data;
+      final data = jsonData['data']['data'] as Map<String, dynamic>;
+
+      print("_loadData response $response");
+      // Assuming the JSON structure has these keys
+
+      final List<dynamic> landOwnerDetails =
+          response.data['data']['data']['landOwnerDetails'];
+
+      final ownerData =
+          (landOwnerDetails as List<dynamic>?)
+              ?.map((item) => item as Map<String, dynamic>)
+              .toList() ??
+          [];
+      List<LandData> landDataList =
+          ownerData!.map((ownerDetail) {
+            int tot = parseToInt(ownerDetail['landParcel']['totarea']);
+            String formerCat;
+            if (tot < 5) {
+              formerCat = '1';
+            } else if (tot > 5 && tot < 10) {
+              formerCat = '2';
+            } else {
+              formerCat = '3';
+            }
+
+            print("totarea raw value: ${ownerDetail['landParcel']['totarea']}");
+            return LandData(
+              lslLandFirka: ownerDetail['landParcel']['khasrano'].toString(),
+              lslLandSurveyNo:
+                  ownerDetail['landParcel']['surveynoarea']
+                          .toString()
+                          .isNotEmpty
+                      ? ownerDetail['landParcel']['surveynoarea'].toString()
+                      : '223',
+              lslLandTaluk:
+                  ownerDetail['landParcel']['talukcode'].toString().isNotEmpty
+                      ? ownerDetail['landParcel']['talukcode'].toString()
+                      : '1294',
+              // lslLandTotAcre: ownerDetail['landParcel']['totarea'],
+              lslLandTotAcre: 4,
+              lslLandIrriLand: 3,
+              lslLandVillage: 'Kolathur',
+
+              lslLandApplicantName: ownerDetail['owner']['fullname'],
+              // lslLandFarmLoc: ownerDetail['landParcel']['geocoordinates'],
+              // lslLandFarmLoc: "80.2546, 12.9483",
+              // lslLandFarmDistance: 1,
+              // lklParticulars: '1',
+              // lklUccCode: landOwnerDetails.length.toString(),
+              lslLandNature: '1',
+              lslLandIrriFaci: '1',
+              lslLandDistrict: '0001',
+              lslLandState: '38',
+              // lklfarmercategory: formerCat,
+              // lklsumOfTotalAcreage: ownerDetail['landParcel']['totarea'],
+            );
+          }).toList();
+      print(landOwnerDetails);
+
+      final List<dynamic> cryieldDetails =
+          response.data['data']['data']['cropYieldDetails']['cropDetail'];
+
+      final cropYieldDetailsList =
+          (cryieldDetails as List<dynamic>?)
+              ?.map((item) => item as Map<String, dynamic>)
+              .toList() ??
+          [];
+      Globalconfig.RBIHCropDataList = cropYieldDetailsList;
+
+      emit(state.copyWith(status: SaveStatus.init, landData: landDataList));
+    } catch (e) {
+      print('Error loading data: $e');
+      emit(
+        state.copyWith(status: SaveStatus.failure, errorMessage: e.toString()),
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Error loading data: $e')),
+      // );
     }
   }
 }

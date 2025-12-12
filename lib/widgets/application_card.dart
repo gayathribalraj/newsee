@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:newsee/AppData/app_constants.dart';
-import 'package:newsee/feature/landholding/presentation/page/land_holding_page.dart';
 
 class ApplicationCard extends StatelessWidget {
   final String leadId;
@@ -19,10 +17,10 @@ class ApplicationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     const listItems = [
+      {"title": "CIC", "icon": Icons.account_balance_wallet},
       {"title": "Landholding Details", "icon": Icons.landscape},
       {"title": "Crop Details", "icon": Icons.grass},
       {"title": "PreSanction Documents", "icon": Icons.description},
-      {"title": "Income Details", "icon": Icons.account_balance_wallet},
     ];
 
     return Card(
@@ -45,7 +43,7 @@ class ApplicationCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  'Lead Id - $leadId ',
+                  'Lead ID - $leadId ',
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.teal[800],

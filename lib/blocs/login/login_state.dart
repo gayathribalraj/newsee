@@ -44,9 +44,9 @@ final class LoginState extends Equatable {
     bool? isPasswordShown,
   }) {
     return LoginState(
-      loginStatus: status ?? this.loginStatus,
-      loginResponse: response ?? this.loginResponse,
-      isPasswordHidden: isPasswordShown ?? this.isPasswordHidden,
+      loginStatus: status ?? loginStatus,
+      loginResponse: response ?? loginResponse,
+      isPasswordHidden: isPasswordShown ?? isPasswordHidden,
     );
   }
 

@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
 import 'package:newsee/AppData/DBConstants/table_key_geographymaster.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
@@ -17,7 +14,6 @@ import 'package:newsee/feature/addressdetails/data/datasource/city_datasource.da
 import 'package:newsee/feature/addressdetails/domain/model/citydistrictrequest.dart';
 import 'package:newsee/feature/addressdetails/domain/repository/cityrepository.dart';
 import 'package:newsee/feature/masters/domain/modal/geography_master.dart';
-import 'package:newsee/feature/masters/domain/modal/statecitymaster.dart';
 import 'package:newsee/feature/masters/domain/repository/geographymaster_crud_repo.dart';
 import 'package:sqflite/sqlite_api.dart';
 

@@ -31,7 +31,7 @@ class LeadState extends Equatable {
     this.proposalNo,
     this.proposalSubmitStatus,
     this.getLeaStatus,
-    this.getleadData
+    this.getleadData,
   });
 
   factory LeadState.init() => const LeadState();
@@ -45,7 +45,7 @@ class LeadState extends Equatable {
     String? proposalNo,
     SaveStatus? proposalSubmitStatus,
     SaveStatus? getLeaStatus,
-    GetLeadResponse? getleadData
+    GetLeadResponse? getleadData,
   }) {
     return LeadState(
       status: status ?? this.status,
@@ -56,10 +56,11 @@ class LeadState extends Equatable {
       proposalNo: proposalNo ?? this.proposalNo,
       proposalSubmitStatus: proposalSubmitStatus ?? this.proposalSubmitStatus,
       getLeaStatus: getLeaStatus ?? this.getLeaStatus,
-      getleadData: getleadData ?? this.getleadData
+      getleadData: getleadData ?? this.getleadData,
     );
   }
 
+  @override
   List<Object?> get props => [
     status,
     leadResponseModel,
@@ -69,6 +70,6 @@ class LeadState extends Equatable {
     proposalNo,
     proposalSubmitStatus,
     getLeaStatus,
-    getleadData
+    getleadData,
   ];
 }

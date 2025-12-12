@@ -7,6 +7,9 @@ import 'package:newsee/feature/landholding/domain/modal/land_Holding_responce_mo
 abstract class LandHoldingRepository {
   Future<AsyncResponseHandler<Failure, LandHoldingResponceModel>>
   submitLandHolding(LandHoldingRequest request);
-  Future<AsyncResponseHandler<Failure, LandHoldingResponceModel>> getLandholding(String proposalNumber);
-  Future<AsyncResponseHandler<Failure, String>> deleteLandHoldingData(LandHoldingDeleteRequest req);
+  Future<AsyncResponseHandler<Failure, LandHoldingResponceModel>>
+  getLandholding(Map<String, dynamic> reqData);
+  Future<AsyncResponseHandler<Failure, String>> deleteLandHoldingData(
+    LandHoldingDeleteRequest req,
+  );
 }

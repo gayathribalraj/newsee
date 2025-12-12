@@ -42,10 +42,10 @@ final class AddressDetailsBloc
     AddressDetailsInitEvent event,
     Emitter emit,
   ) async {
-    Database _db = await DBConfig().database;
-    List<Lov> listOfLov = await LovCrudRepo(_db).getAll();
+    Database db = await DBConfig().database;
+    List<Lov> listOfLov = await LovCrudRepo(db).getAll();
     List<GeographyMaster> stateCityMaster = await GeographymasterCrudRepo(
-      _db,
+      db,
     ).getByColumnNames(
       columnNames: [
         TableKeysGeographyMaster.stateId,
@@ -235,10 +235,10 @@ First, it attempts to fetch the data from the local database.If no matching data
     Emitter emit,
   ) async {
     try {
-      Database _db = await DBConfig().database;
-      List<Lov> listOfLov = await LovCrudRepo(_db).getAll();
+      Database db = await DBConfig().database;
+      List<Lov> listOfLov = await LovCrudRepo(db).getAll();
       List<GeographyMaster> stateCityMaster = await GeographymasterCrudRepo(
-        _db,
+        db,
       ).getByColumnNames(
         columnNames: [
           TableKeysGeographyMaster.stateId,

@@ -8,7 +8,7 @@
 
 part of 'dedupe_bloc.dart';
 
-enum DedupeFetchStatus { init, loading, change, success, failure }
+enum DedupeFetchStatus { init, loading, change, success, failure, scan }
 
 class DedupeState extends Equatable {
   final DedupeFetchStatus? status;
@@ -20,6 +20,7 @@ class DedupeState extends Equatable {
   final String? constitution;
   final bool? dismissModal;
   final bool isAadhaarValidated;
+  final int? changeTrigger;
 
   DedupeState({
     this.status,
@@ -31,6 +32,7 @@ class DedupeState extends Equatable {
     this.constitution,
     this.dismissModal,
     this.isAadhaarValidated = false,
+    this.changeTrigger,
   });
 
   DedupeState copyWith({
@@ -43,6 +45,7 @@ class DedupeState extends Equatable {
     String? constitution,
     bool? dismissModal,
     bool? isAadhaarValidated,
+    int? changeTrigger,
   }) {
     return DedupeState(
       status: status ?? this.status,
@@ -55,6 +58,7 @@ class DedupeState extends Equatable {
       constitution: constitution ?? this.constitution,
       dismissModal: dismissModal ?? this.dismissModal,
       isAadhaarValidated: isAadhaarValidated ?? this.isAadhaarValidated,
+      changeTrigger: changeTrigger ?? this.changeTrigger,
     );
   }
 
@@ -72,5 +76,6 @@ class DedupeState extends Equatable {
     constitution,
     dismissModal,
     isAadhaarValidated,
+    changeTrigger,
   ];
 }

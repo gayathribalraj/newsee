@@ -18,16 +18,16 @@ class GeographymasterResponseMapper<S> {
     List<GeographyMaster>? districtMaster = [];
     GeographymasterResponseMapper responseMapper =
         GeographymasterResponseMapper.initial();
-    Map<String, dynamic> _resp = response.right as Map<String, dynamic>;
+    Map<String, dynamic> resp = response.right as Map<String, dynamic>;
     // map for LandHoldingState
     if (state is LandHoldingState) {
       cityMaster =
-          _resp['cityMaster'] != null && _resp['cityMaster'].isNotEmpty
-              ? _resp['cityMaster'] as List<GeographyMaster>
+          resp['cityMaster'] != null && resp['cityMaster'].isNotEmpty
+              ? resp['cityMaster'] as List<GeographyMaster>
               : (state as LandHoldingState).cityMaster;
       districtMaster =
-          _resp['districtMaster'] != null && _resp['districtMaster'].isNotEmpty
-              ? _resp['districtMaster'] as List<GeographyMaster>
+          resp['districtMaster'] != null && resp['districtMaster'].isNotEmpty
+              ? resp['districtMaster'] as List<GeographyMaster>
               : (state as LandHoldingState).districtMaster;
       responseMapper = GeographymasterResponseMapper(
         LandHoldingState(
@@ -43,15 +43,15 @@ class GeographymasterResponseMapper<S> {
       );
     } else if (state is AddressDetailsState) {
       // map for AddressDetailsState
-      Map<String, dynamic> _resp = response.right as Map<String, dynamic>;
+      Map<String, dynamic> resp = response.right as Map<String, dynamic>;
 
       List<GeographyMaster>? cityMaster =
-          _resp['cityMaster'] != null && _resp['cityMaster'].isNotEmpty
-              ? _resp['cityMaster'] as List<GeographyMaster>
+          resp['cityMaster'] != null && resp['cityMaster'].isNotEmpty
+              ? resp['cityMaster'] as List<GeographyMaster>
               : (state as AddressDetailsState).cityMaster;
       List<GeographyMaster>? districtMaster =
-          _resp['districtMaster'] != null && _resp['districtMaster'].isNotEmpty
-              ? _resp['districtMaster'] as List<GeographyMaster>
+          resp['districtMaster'] != null && resp['districtMaster'].isNotEmpty
+              ? resp['districtMaster'] as List<GeographyMaster>
               : (state as AddressDetailsState).districtMaster;
       // map
       responseMapper = GeographymasterResponseMapper(
@@ -65,15 +65,15 @@ class GeographymasterResponseMapper<S> {
         ),
       );
     } else if (state is CoappDetailsState) {
-      Map<String, dynamic> _resp = response.right as Map<String, dynamic>;
+      Map<String, dynamic> resp = response.right as Map<String, dynamic>;
 
       List<GeographyMaster>? cityMaster =
-          _resp['cityMaster'] != null && _resp['cityMaster'].isNotEmpty
-              ? _resp['cityMaster'] as List<GeographyMaster>
+          resp['cityMaster'] != null && resp['cityMaster'].isNotEmpty
+              ? resp['cityMaster'] as List<GeographyMaster>
               : (state as CoappDetailsState).cityMaster;
       List<GeographyMaster>? districtMaster =
-          _resp['districtMaster'] != null && _resp['districtMaster'].isNotEmpty
-              ? _resp['districtMaster'] as List<GeographyMaster>
+          resp['districtMaster'] != null && resp['districtMaster'].isNotEmpty
+              ? resp['districtMaster'] as List<GeographyMaster>
               : (state as CoappDetailsState).districtMaster;
       // map
       responseMapper = GeographymasterResponseMapper(

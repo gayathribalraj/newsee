@@ -7,7 +7,9 @@ import 'package:newsee/feature/qrscanner/presentation/page/qr_scanner_page.dart'
 import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:xml2json/xml2json.dart';
 
-void showScannerOptions(BuildContext context) {
+import '../feature/dedupe/presentation/bloc/dedupe_bloc.dart';
+
+void showScannerOptions(BuildContext context, type) {
   BuildContext ctx = context;
   showModalBottomSheet(
     context: context,
@@ -25,7 +27,7 @@ void showScannerOptions(BuildContext context) {
               title: Text('QR Scanner'),
               onTap: () {
                 Navigator.pop(context); // Close bottom sheet
-                _navigateToQRScanner(ctx);
+                _navigateToQRScanner(ctx, type);
               },
             ),
             ListTile(
@@ -43,7 +45,7 @@ void showScannerOptions(BuildContext context) {
 }
 
 // Navigate to QR Scanner page
-void _navigateToQRScanner(BuildContext context) {
+void _navigateToQRScanner(BuildContext context, type) {
   BuildContext ctx = context;
 
   Navigator.push(
@@ -56,6 +58,7 @@ void _navigateToQRScanner(BuildContext context) {
                 ctx,
                 result,
                 'QR',
+                type
               ); // Show result in AlertDialog
             },
           ),
@@ -66,7 +69,7 @@ void _navigateToQRScanner(BuildContext context) {
 // route to OCR page
 
 // Show AlertDialog with QR scan result
-void _showResultDialog(BuildContext context, String result, String source) {
+void _showResultDialog(BuildContext context, String result, String source, type) {
   try {
     BuildContext ctx = context;
 
@@ -77,7 +80,9 @@ void _showResultDialog(BuildContext context, String result, String source) {
     final jsonObject = jsonDecode(jsonString);
     final aadharResp =
         jsonObject['PrintLetterBarcodeData'] as Map<String, dynamic>;
-    aadharResp.entries.forEach((v) => print(v));
+    for (var v in aadharResp.entries) {
+      print(v);
+    }
     final aadhaarId = aadharResp['@uid'];
     print("jsonObject => $aadhaarId");
     showDialog(
@@ -90,12 +95,19 @@ void _showResultDialog(BuildContext context, String result, String source) {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
-                ctx.read<PersonalDetailsBloc>().add(
-                  ScannerResponseEvent(
+                if (type == 'dedupe') {
+                  Navigator.pop(context);
+                  ctx.read<DedupeBloc>().add(ScannerDedupeEvent(
                     scannerResponse: {'aadhaarResponse': aadharResp},
-                  ),
-                );
+                  ));
+                } else {
+                  Navigator.pop(context);
+                  ctx.read<PersonalDetailsBloc>().add(
+                    ScannerResponseEvent(
+                      scannerResponse: {'aadhaarResponse': aadharResp},
+                    ),
+                  );
+                }
               },
               child: Text('OK'),
             ),

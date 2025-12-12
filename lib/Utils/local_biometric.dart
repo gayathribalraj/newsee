@@ -37,7 +37,6 @@ class BioMetricLogin {
           message: "BioMetric not added on this device",
           status: false,
         );
-        ;
       }
 
       final bool didAuthenticate = await localauth.authenticate(

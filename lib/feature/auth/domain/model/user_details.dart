@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 part 'user_details.g.dart';
 
@@ -11,11 +10,11 @@ class UserDetails {
   final String OrgLevel;
   final String OrgName;
   UserDetails({
-    required this.LPuserID, 
-    required this.UserName, 
-    required this.Orgscode, 
+    required this.LPuserID,
+    required this.UserName,
+    required this.Orgscode,
     required this.OrgLevel,
-    required this.OrgName
+    required this.OrgName,
   });
 
   UserDetails copyWith({
@@ -54,9 +53,10 @@ class UserDetails {
     );
   }
 
-  Map<String,dynamic> toJson() => _$UserDetailsToJson(this);
+  Map<String, dynamic> toJson() => _$UserDetailsToJson(this);
 
-  factory UserDetails.fromJson(Map<String,dynamic> source) => _$UserDetailsFromJson(source);
+  factory UserDetails.fromJson(Map<String, dynamic> source) =>
+      _$UserDetailsFromJson(source);
 
   @override
   String toString() {
@@ -66,21 +66,20 @@ class UserDetails {
   @override
   bool operator ==(covariant UserDetails other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.LPuserID == LPuserID &&
-      other.UserName == UserName &&
-      other.Orgscode == Orgscode &&
-      other.OrgLevel == OrgLevel &&
-      other.OrgName == OrgName;
+
+    return other.LPuserID == LPuserID &&
+        other.UserName == UserName &&
+        other.Orgscode == Orgscode &&
+        other.OrgLevel == OrgLevel &&
+        other.OrgName == OrgName;
   }
 
   @override
   int get hashCode {
     return LPuserID.hashCode ^
-      UserName.hashCode ^
-      Orgscode.hashCode ^
-      OrgLevel.hashCode ^
-      OrgName.hashCode;
+        UserName.hashCode ^
+        Orgscode.hashCode ^
+        OrgLevel.hashCode ^
+        OrgName.hashCode;
   }
 }

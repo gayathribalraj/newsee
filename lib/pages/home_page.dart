@@ -7,6 +7,8 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/feature/masterupdate/presentation/page/master_update.dart';
+import 'package:newsee/feature/pd/presentation/pages/pd_inbox.dart';
+import 'package:newsee/feature/queryInbox/presentation/page/query_inbox.dart';
 import '../widgets/side_navigation.dart';
 import '../widgets/bottom_navigation.dart';
 import '../widgets/floating_action.dart';
@@ -16,7 +18,7 @@ import '../widgets/search_bar.dart';
 class HomePage extends StatefulWidget {
   int? tabdata;
 
-  HomePage({Key? key, this.tabdata}) : super(key: key);
+  HomePage({super.key, this.tabdata});
 
   @override
   State<HomePage> createState() => HomePageState();
@@ -51,13 +53,9 @@ class HomePageState extends State<HomePage> {
       case 0:
         return LeadTabBar(searchQuery: searchQuery);
       case 1:
-        return Center(
-          child: Text("Field Visit Inbox", style: TextStyle(fontSize: 24)),
-        );
+        return PDInbox(searchQuery: '');
       case 2:
-        return Center(
-          child: Text("Query Inbox", style: TextStyle(fontSize: 24)),
-        );
+        return Center(child: QueryInbox(title: '', body: ''));
       case 3:
       default:
         return Center(child: MasterUpdate());
@@ -88,7 +86,7 @@ class HomePageState extends State<HomePage> {
         onTap: onItemTapped,
       ),
       floatingActionButton:
-          selectedIndex != 3 ? FloatingActionBarWidget() : null,
+          selectedIndex == 0 ? FloatingActionBarWidget() : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }

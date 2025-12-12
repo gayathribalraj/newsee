@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/AppData/app_constants.dart';
+import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/core/api/api_config.dart';
 import 'package:newsee/core/api/failure.dart';
@@ -23,7 +24,7 @@ part 'cropyieldpage_event.dart';
 part 'cropyieldpage_state.dart';
 
 class CropyieldpageBloc extends Bloc<CropyieldpageEvent, CropyieldpageState> {
-  CropyieldpageBloc(): super(CropyieldpageState.init()) {
+  CropyieldpageBloc() : super(CropyieldpageState.init()) {
     on<CropPageInitialEvent>(initCropYieldDetails);
     on<CropFormSaveEvent>(onSaveCropYieldPage);
     on<CropDetailsSetEvent>(onDataSet);
@@ -32,11 +33,12 @@ class CropyieldpageBloc extends Bloc<CropyieldpageEvent, CropyieldpageState> {
     on<CropDetailsSubmitEvent>(onSubmitCropDetails);
     on<CropDetailsDeleteEvent>(onDeleteCropDetails);
     on<CropDetailsRemoveEvent>(onRemoveCrop);
+    on<RBIHCropDetailsFetch>(loadRBIHData);
   }
 
   Future<void> onSubmitCropDetails(
     CropDetailsSubmitEvent event,
-    Emitter emit
+    Emitter emit,
   ) async {
     try {
       emit(state.copyWith(status: SaveStatus.loading));
@@ -57,63 +59,60 @@ class CropyieldpageBloc extends Bloc<CropyieldpageEvent, CropyieldpageState> {
           total: event.total,
           cropsCultivatedOrProposedCrops: "12",
           surveyNo: "34567",
-          farmDistance: "Chennai"
+          farmDistance: "Chennai",
         ),
         assessmentSOF: state.cropData,
-        token: ApiConfig.AUTH_TOKEN
+        token: ApiConfig.AUTH_TOKEN,
       );
       print("cropReq $cropReq");
       CropDetailsRepository cropRepository = CropDetailsRepositoryImpl();
-      var responseHandler = await cropRepository.saveCrop(
-        cropReq,
-      );  
+      var responseHandler = await cropRepository.saveCrop(cropReq);
       print("get responseHandler value is => $responseHandler");
 
-      AsyncResponseHandler<Failure, CropGetResponse> cropGetResponse = await cropRepository.getCrop(
-        event.proposalNumber
-      );
+      AsyncResponseHandler<Failure, CropGetResponse> cropGetResponse =
+          await cropRepository.getCrop(event.proposalNumber);
       if (responseHandler.isRight() && cropGetResponse.isRight()) {
         // List<Map<String, dynamic>> listofAssessment = responseHandler.right.responseData?['AssessmentSOF'];
         // print("listofAssessment value is => $listofAssessment");
         // List<LandData> landData = listofAssessment.map((e) => LandData.fromMap(e)).toList();
 
-        print("cropGetResponse.right.agriCropDetails ${cropGetResponse.right.agriCropDetails}");
-        
+        print(
+          "cropGetResponse.right.agriCropDetails ${cropGetResponse.right.agriCropDetails}",
+        );
+
         emit(
           state.copyWith(
             status: SaveStatus.success,
             cropData: cropGetResponse.right.agriCropDetails,
-            showSubmit: false
-          )
+            showSubmit: false,
+          ),
         );
-      } else if(responseHandler.isRight()) {
-         emit(
-          state.copyWith(
-            status: SaveStatus.success,
-            showSubmit: false
-          )
-        );
+      } else if (responseHandler.isRight()) {
+        emit(state.copyWith(status: SaveStatus.success, showSubmit: false));
       } else {
-      emit(
-        state.copyWith(
-          status: SaveStatus.failure,
-          errorMessage: responseHandler.left.message,
-          showSubmit: true
-        ),
-      );
-    }
-    } catch(error) {
+        emit(
+          state.copyWith(
+            status: SaveStatus.failure,
+            errorMessage: responseHandler.left.message,
+            showSubmit: true,
+          ),
+        );
+      }
+    } catch (error) {
       print("onSubmitCropDetails $error");
       emit(
         state.copyWith(
           status: SaveStatus.failure,
-          errorMessage: error.toString()
+          errorMessage: error.toString(),
         ),
       );
     }
   }
 
-  Future<void> initCropYieldDetails(CropPageInitialEvent event, Emitter emit) async {
+  Future<void> initCropYieldDetails(
+    CropPageInitialEvent event,
+    Emitter emit,
+  ) async {
     try {
       emit(state.copyWith(status: SaveStatus.loading));
       Database _db = await DBConfig().database;
@@ -122,11 +121,8 @@ class CropyieldpageBloc extends Bloc<CropyieldpageEvent, CropyieldpageState> {
 
       //Get Crop Details
       CropDetailsRepository cropRepository = CropDetailsRepositoryImpl();
-      AsyncResponseHandler<Failure, CropGetResponse> cropResponse = await cropRepository.getCrop(
-        event.proposalNumber
-      );
-
-      
+      AsyncResponseHandler<Failure, CropGetResponse> cropResponse =
+          await cropRepository.getCrop(event.proposalNumber);
 
       //Get Land Details
       // final LandHoldingRepository landHoldingRepository =
@@ -137,7 +133,9 @@ class CropyieldpageBloc extends Bloc<CropyieldpageEvent, CropyieldpageState> {
       //Emit init state
       // if (cropResponse.isRight() && landresponse.isRight()) {
       if (cropResponse.isRight()) {
-        print("cropResponse.right.agriCropDetails-gettime ${cropResponse.right.agriCropDetails}");
+        print(
+          "cropResponse.right.agriCropDetails-gettime ${cropResponse.right.agriCropDetails}",
+        );
         // List<LandData> landData = landresponse.right.agriLandHoldingsList.map((e) => LandData.fromMap(e)).toList();
         emit(
           state.copyWith(
@@ -146,73 +144,67 @@ class CropyieldpageBloc extends Bloc<CropyieldpageEvent, CropyieldpageState> {
             cropData: cropResponse.right.agriCropDetails,
             landDetails: cropResponse.right.agriLandDetails,
             // landData: landData
-          )
+          ),
         );
-      // } else if (landresponse.isRight()) {
-      //   List<LandData> landData = landresponse.right.agriLandHoldingsList.map((e) => LandData.fromMap(e)).toList();
-      //   emit(
-      //     state.copyWith(
-      //       lovlist: listOfLov,
-      //       status: SaveStatus.init,
-      //       landData: landData
-      //     )
-      //   );
+        // } else if (landresponse.isRight()) {
+        //   List<LandData> landData = landresponse.right.agriLandHoldingsList.map((e) => LandData.fromMap(e)).toList();
+        //   emit(
+        //     state.copyWith(
+        //       lovlist: listOfLov,
+        //       status: SaveStatus.init,
+        //       landData: landData
+        //     )
+        //   );
       } else {
-        emit(
-          state.copyWith(
-            lovlist: listOfLov,
-            status: SaveStatus.init,
-          )
-        );
+        emit(state.copyWith(lovlist: listOfLov, status: SaveStatus.init));
       }
-      
-    } catch(error) {
+    } catch (error) {
       print("onSaveCropYieldPage-error $error");
       emit(state.copyWith(status: SaveStatus.failure));
     }
   }
 
   Future<void> onSaveCropYieldPage(
-      CropFormSaveEvent event,
-      Emitter<CropyieldpageState> emit,
-    ) async {
+    CropFormSaveEvent event,
+    Emitter<CropyieldpageState> emit,
+  ) async {
     final newList = [...?state.cropData, event.cropData];
     emit(
       state.copyWith(
         status: SaveStatus.mastersucess,
         cropData: newList,
         selectedCropData: null,
-        showSubmit: true
+        showSubmit: true,
       ),
     );
   }
 
-   // Load data into form for editing
-  Future<void> onDataSet(CropDetailsSetEvent event, Emitter<CropyieldpageState> emit) async{
+  // Load data into form for editing
+  Future<void> onDataSet(
+    CropDetailsSetEvent event,
+    Emitter<CropyieldpageState> emit,
+  ) async {
     emit(
       state.copyWith(
         selectedCropData: event.cropData,
-        status: SaveStatus.update
-      )
+        status: SaveStatus.update,
+      ),
     );
     await Future.delayed(Duration(seconds: 2));
-    emit(
-      state.copyWith(
-        status: SaveStatus.edit
-      )
-    );
+    emit(state.copyWith(status: SaveStatus.edit));
   }
 
-  void onResetForm(CropDetailsResetEvent event, Emitter<CropyieldpageState> emit) {
-    emit(
-      state.copyWith(
-        selectedCropData: null,
-        status: SaveStatus.reset
-      )
-    );
+  void onResetForm(
+    CropDetailsResetEvent event,
+    Emitter<CropyieldpageState> emit,
+  ) {
+    emit(state.copyWith(selectedCropData: null, status: SaveStatus.reset));
   }
 
-  void onUpdateForm(CropDetailsUpdateEvent event, Emitter<CropyieldpageState> emit) {
+  void onUpdateForm(
+    CropDetailsUpdateEvent event,
+    Emitter<CropyieldpageState> emit,
+  ) {
     List<CropDetailsModal>? fullcropdata = state.cropData;
     fullcropdata?[event.index] = event.cropData;
     print("Updated crop data is there is $fullcropdata");
@@ -221,23 +213,24 @@ class CropyieldpageBloc extends Bloc<CropyieldpageEvent, CropyieldpageState> {
         cropData: fullcropdata,
         selectedCropData: null,
         status: SaveStatus.mastersucess,
-        showSubmit: true
-      )
+        showSubmit: true,
+      ),
     );
   }
 
-  Future<void> onDeleteCropDetails(CropDetailsDeleteEvent event, Emitter emit) async {
+  Future<void> onDeleteCropDetails(
+    CropDetailsDeleteEvent event,
+    Emitter emit,
+  ) async {
     try {
       emit(state.copyWith(status: SaveStatus.loading));
       CropDeleteRequest deleteReq = CropDeleteRequest(
-        proposalNumber: event.proposalNumber, 
-        rowId: event.rowId, 
-        token: ApiConfig.AUTH_TOKEN
+        proposalNumber: event.proposalNumber,
+        rowId: event.rowId,
+        token: ApiConfig.AUTH_TOKEN,
       );
       CropDetailsRepository cropRepository = CropDetailsRepositoryImpl();
-      var delResponseHandler = await cropRepository.deleteCrop(
-        deleteReq,
-      );  
+      var delResponseHandler = await cropRepository.deleteCrop(deleteReq);
       print("get responseHandler value is => $delResponseHandler");
 
       if (delResponseHandler.isRight()) {
@@ -254,39 +247,38 @@ class CropyieldpageBloc extends Bloc<CropyieldpageEvent, CropyieldpageState> {
         //     )
         //   );
         // } else {
-          List<CropDetailsModal> cropDetailsList = state.cropData!;
-          cropDetailsList.removeAt(event.index);
-          final addedCrop = checkNewArray(cropDetailsList);
-          final showSubmit = addedCrop ? true : false;
-          print("final landDetailsList $cropDetailsList");
-          emit(
-            state.copyWith(
-              status: SaveStatus.delete,
-              cropData: cropDetailsList,
-              errorMessage: delResponseHandler.right,
-              showSubmit: showSubmit
-            )
-          );
+        List<CropDetailsModal> cropDetailsList = state.cropData!;
+        cropDetailsList.removeAt(event.index);
+        final addedCrop = checkNewArray(cropDetailsList);
+        final showSubmit = addedCrop ? true : false;
+        print("final landDetailsList $cropDetailsList");
+        emit(
+          state.copyWith(
+            status: SaveStatus.delete,
+            cropData: cropDetailsList,
+            errorMessage: delResponseHandler.right,
+            showSubmit: showSubmit,
+          ),
+        );
         // }
       } else {
         emit(
           state.copyWith(
             status: SaveStatus.failure,
             cropData: state.cropData,
-            errorMessage: delResponseHandler.left.message
-          )
+            errorMessage: delResponseHandler.left.message,
+          ),
         );
       }
-    } catch(error) {
+    } catch (error) {
       emit(
         state.copyWith(
           status: SaveStatus.failure,
           cropData: state.cropData,
-          errorMessage: error.toString()
-        )
+          errorMessage: error.toString(),
+        ),
       );
     }
-
   }
 
   Future<void> onRemoveCrop(CropDetailsRemoveEvent event, Emitter emit) async {
@@ -298,38 +290,117 @@ class CropyieldpageBloc extends Bloc<CropyieldpageEvent, CropyieldpageState> {
       print("final landDetailsList $cropDetailsList");
       final addedCrop = checkNewArray(cropDetailsList);
       final showSubmit = addedCrop ? true : false;
-       emit(
+      emit(
         state.copyWith(
           status: SaveStatus.delete,
           cropData: cropDetailsList,
           errorMessage: '',
-          showSubmit: showSubmit
-        )
+          showSubmit: showSubmit,
+        ),
       );
-    } catch(error) {
-       emit(
+    } catch (error) {
+      emit(
         state.copyWith(
           status: SaveStatus.failure,
           cropData: state.cropData,
-          errorMessage: error.toString()
-        )
+          errorMessage: error.toString(),
+        ),
       );
     }
   }
 
-
   bool checkNewArray(List<CropDetailsModal> arraydata) {
     try {
       for (int i = 0; i < arraydata.length; i++) {
-        if(arraydata[i].lasSeqno == '') {
+        if (arraydata[i].lasSeqno == '') {
           return true;
         }
       }
       return false;
-    } catch(error) {
+    } catch (error) {
       print("final checkNewArray $error");
       return false;
     }
   }
 
+  Future<void> loadRBIHData(RBIHCropDetailsFetch event, Emitter emit) async {
+    try {
+      // final response = await offlineDataProvider(
+      //   path: AppConstants.rhIHLandCropResponse,
+      // );
+      // if (response != null) {
+      //   final jsonData = response.data;
+      //   final data = jsonData['data']['data'] as Map<String, dynamic>;
+
+      // print("_loadData response $response");
+      // Assuming the JSON structure has these keys
+      // final List<dynamic> cryieldDetails =
+      //     response.data['data']['data']['cropYieldDetails']['cropDetail'];
+
+      // final cropYieldDetailsList =
+      //     (cryieldDetails as List<dynamic>?)
+      //         ?.map((item) => item as Map<String, dynamic>)
+      //         .toList() ??
+      //     [];
+      emit(state.copyWith(status: SaveStatus.loading));
+      final rbiCropDataList = Globalconfig.RBIHCropDataList;
+      print("cropYieldDetailsList: $rbiCropDataList");
+      List<CropDetailsModal> cropDataList =
+          rbiCropDataList.map((cropDetail) {
+            print("totarea raw value: $cropDetail");
+            String crop = '';
+            String cropname = cropDetail['croptype'] ?? '';
+            if (cropname.toLowerCase().contains('wheat')) {
+              print('This is wheat crop');
+              crop = '1';
+            } else if (cropname.toLowerCase().contains('bajara')) {
+              crop = '11';
+            } else if (cropname.toLowerCase().contains('coffee')) {
+              crop = '13';
+            } else if (cropname.toLowerCase().contains('daal')) {
+              crop = '14';
+            } else if (cropname.toLowerCase().contains('jawar')) {
+              crop = '2';
+            } else {
+              crop = '3';
+            }
+            String season = cropDetail['seasontype'].toString();
+            String lasSeason = '';
+            if (season.toLowerCase().contains('Kharif')) {
+              lasSeason = '1';
+            } else {
+              lasSeason = '2';
+            }
+            return CropDetailsModal(
+              lasSeason: lasSeason,
+
+              lasAreaofculti: cropDetail['croparea'].toString(),
+              // lasScaloffin: '0',
+              lasCrop: crop,
+              // lcdCropType: '2',
+              lasTypOfLand: '1',
+              // lasEligibleamt: 0,
+              lasPrePerAcre: '',
+              // lasReqScaloffin: 0,
+              lasPreToCollect: '',
+              // lcdCovOfCrop:
+              //     (crop == '1' ||
+              //             crop == '2' ||
+              //             crop == '3' ||
+              //             crop == '5' ||
+              //             crop == '6')
+              //         ? '1'
+              //         : '2',
+            );
+          }).toList();
+
+      emit(state.copyWith(status: SaveStatus.init, cropData: cropDataList));
+      // }
+    } catch (e) {
+      print('Error loading data: $e');
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Error loading data: $e')),
+      // );
+    }
+  }
 }

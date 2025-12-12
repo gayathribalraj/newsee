@@ -1,6 +1,5 @@
 import 'package:newsee/AppData/DBConstants/dbconstants.dart';
 import 'package:newsee/Utils/query_builder.dart';
-import 'package:newsee/core/db/db_config.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
 import 'package:newsee/feature/masters/domain/repository/simple_crud_repo.dart';
 import 'package:newsee/feature/masters/domain/repository/simplecursor_crud_repo.dart';

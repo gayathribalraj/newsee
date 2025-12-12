@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:newsee/core/api/api_config.dart';
-import 'package:newsee/feature/dedupe/domain/model/deduperequest.dart';
 
 class DedupeDataSource {
   final Dio dio;

@@ -46,6 +46,7 @@ class DraftInboxState extends State<DraftInbox> {
       final draft = await draftService.getDraft(ref);
       if (draft != null) loaded.add(draft);
     }
+    print('loadedDraftsList: $loaded');
     setState(() => allDrafts = loaded);
   }
 
@@ -96,11 +97,11 @@ class DraftInboxState extends State<DraftInbox> {
                                   : 'New Customer',
                           product:
                               draft
-                                  .loan['selectedProductScheme']['optionDesc'] ??
+                                  .loan['selectedProductScheme']?['optionDesc'] ??
                               'N/A',
                           phone: draft.personal['primaryMobileNumber'] ?? 'N/A',
                           ennablePhoneTap: true,
-                          createdon: draft.personal['dob'] ?? 'N/A',
+                          createdon: draft.createdOn,
                           location: draft.address['state'] ?? 'N/A',
                           loanamount:
                               draft.personal['loanAmountRequested']

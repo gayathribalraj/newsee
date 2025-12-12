@@ -17,6 +17,10 @@ class DocumentDataSource {
     final res = await dio.post(ApiConfig.UPLOAD_DOCUMENT, data: payload);
     return res;
   }
+  uploadVideo(FormData payload) async {
+    final res = await dio.post(ApiConfig.UPLOAD_VIDEO, data: payload);
+    return res;
+  }
 
   Future<Response> getDocuments(Map<String, dynamic> payload) async {
     final res =

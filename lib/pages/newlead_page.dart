@@ -7,7 +7,6 @@ import 'package:newsee/feature/coapplicant/presentation/bloc/coapp_details_bloc.
 import 'package:newsee/feature/coapplicant/presentation/page/coapp_page.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
 import 'package:newsee/feature/dedupe/presentation/page/dedupe_page.dart';
-import 'package:newsee/feature/leadInbox/domain/modal/get_lead_response.dart';
 import 'package:newsee/feature/leadsubmit/presentation/bloc/lead_submit_bloc.dart';
 import 'package:newsee/feature/loanproductdetails/presentation/bloc/loanproduct_bloc.dart';
 import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
@@ -254,6 +253,7 @@ class NewLeadPage extends StatelessWidget {
                                 // );
                               }
                             },
+
                             tabs:
                                 fullLeadData == null || tabType == 'draft'
                                     ? <Widget>[
@@ -330,6 +330,7 @@ class NewLeadPage extends StatelessWidget {
                   ? null
                   : Sidenavigationbar(pageContext: context),
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children:
                 fullLeadData == null
                     ? [

@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/core/api/api_config.dart';
-import 'package:path/path.dart';
 
 class AuthRemoteDatasource {
   final Dio dio;
@@ -17,6 +15,7 @@ class AuthRemoteDatasource {
   @return     : Future<Response> Response - > HttpResponse
    */
   loginWithUserAccount(Map<String, dynamic> payload) async {
+    // dio.options.baseUrl = ApiConfig.BASE_URL_QUERY;
     Response response = await dio.post(
       'MobileService/LoginService',
       data: {'Login': payload, 'token': ApiConfig.AUTH_TOKEN},

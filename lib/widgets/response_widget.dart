@@ -31,15 +31,13 @@ class ResponseWidget extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  ...dataList
-                      .map(
-                        (list) => BuildInRow(
-                          icon: list['icon'] as IconData,
-                          label: list['label'] as String,
-                          value: list['value'] as String,
-                        ),
-                      )
-                      .toList(),
+                  ...dataList.map(
+                    (list) => BuildInRow(
+                      icon: list['icon'] as IconData,
+                      label: list['label'] as String,
+                      value: list['value'] as String,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -61,10 +59,10 @@ class ResponseWidget extends StatelessWidget {
                     ),
                   ),
                   style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(
+                    minimumSize: WidgetStateProperty.all(
                       Size(double.infinity, 50),
                     ),
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                       const Color.fromARGB(255, 75, 33, 83),
                     ),
                   ),

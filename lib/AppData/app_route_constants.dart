@@ -43,4 +43,12 @@ class AppRouteConstants {
     'name': '  imageview',
     'path': '/imageview',
   };
+  static const RouteProps QUERY_INBOX_PAGE = {
+    'name': '  queryinbox',
+    'path': '/queryinbox',
+  };
+  static const RouteProps ChatWindow = {
+    'name': 'chatwindow',
+    'path': '/chatwindow',
+  };
 }

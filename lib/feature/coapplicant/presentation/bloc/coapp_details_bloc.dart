@@ -27,7 +27,6 @@ import 'package:newsee/feature/cif/data/repository/cif_respository_impl.dart';
 import 'package:newsee/feature/cif/domain/model/user/cif_request.dart';
 import 'package:newsee/feature/cif/domain/model/user/cif_response.dart';
 import 'package:newsee/feature/cif/domain/repository/cif_repository.dart';
-import 'package:newsee/feature/coapplicant/applicants_utility_service.dart';
 import 'package:newsee/feature/coapplicant/domain/modal/coapplicant_data.dart';
 import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/feature/masters/domain/modal/geography_master.dart';
@@ -70,13 +69,24 @@ final class CoappDetailsBloc
               .toList();
 
       emit(state.copyWith(coAppList: updatedList, status: SaveStatus.success));
+      draftSave(updatedList);
     } catch (e) {
       print(e);
     }
   }
 
   addCoappOrGurantor(IsCoAppOrGurantorAdd event, Emitter emit) {
-    emit(state.copyWith(isApplicantsAdded: event.addapplicants));
+    if (event.onNext == true) {
+      emit(
+        state.copyWith(
+          isApplicantsAdded: event.addapplicants,
+          status: SaveStatus.success,
+        ),
+      );
+      draftSave(state.coAppList);
+    } else {
+      emit(state.copyWith(isApplicantsAdded: event.addapplicants));
+    }
   }
 
   Future<void> initCoAppDetailsPage(
@@ -84,10 +94,10 @@ final class CoappDetailsBloc
     Emitter emit,
   ) async {
     // fetch lov
-    Database _db = await DBConfig().database;
-    List<Lov> listOfLov = await LovCrudRepo(_db).getAll();
+    Database db = await DBConfig().database;
+    List<Lov> listOfLov = await LovCrudRepo(db).getAll();
     List<GeographyMaster> stateCityMaster = await GeographymasterCrudRepo(
-      _db,
+      db,
     ).getByColumnNames(
       columnNames: [
         TableKeysGeographyMaster.stateId,
@@ -196,6 +206,18 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
     final response = await dedupeRepository.searchCif(event.request);
     if (response.isRight()) {
       CifResponse cifResponse = response.right;
+
+      final title = findLovByHeaderAndValue('Title', cifResponse.lleadtitle);
+      if (title.optvalue.isNotEmpty) {
+        cifResponse = cifResponse.copyWith(lleadtitle: title.optvalue);
+      }
+
+      final gender = findLovByHeaderAndValue('Gender', cifResponse.lldGender);
+
+      if (gender.optvalue.isNotEmpty) {
+        cifResponse = cifResponse.copyWith(lldGender: gender.optvalue);
+      }
+
       // map cifresponse to CoapplicantData so we can set data to form()
       CoapplicantData coapplicantDataFromCif = mapCoapplicantDataFromCif(
         cifResponse,
@@ -211,6 +233,23 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
       print('cif failure response.left ');
       emit(state.copyWith(status: SaveStatus.dedupefailure, isCifValid: false));
     }
+  }
+
+  Lov findLovByHeaderAndValue(String header, String? value) {
+    if (value == null) {
+      return Lov(Header: header, optvalue: '', optDesc: '', optCode: '');
+    }
+
+    return state.lovList!
+        .where((v) => v.Header == header)
+        .firstWhere(
+          (lov) =>
+              lov.optvalue.toString().toUpperCase() == value.toUpperCase() ||
+              lov.optDesc.toString().toUpperCase() == value.toUpperCase() ||
+              lov.optCode.toString().toUpperCase() == value.toUpperCase(),
+          orElse:
+              () => Lov(Header: header, optvalue: '', optDesc: '', optCode: ''),
+        );
   }
 
   Future<void> validateAadaar(AadhaarValidateEvent event, Emitter emit) async {
@@ -296,20 +335,10 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
     String middleName = '';
     String lastName = '';
 
-    List<String> nameParts = (response?.name ?? '').trim().split(
-      RegExp(r'\s+'),
-    );
-
-    if (nameParts.length >= 3) {
-      firstName = nameParts[0];
-      middleName = nameParts[1];
-      lastName = nameParts.sublist(2).join(' ');
-    } else if (nameParts.length == 2) {
-      firstName = nameParts[0];
-      lastName = nameParts[1];
-    } else if (nameParts.length == 1) {
-      firstName = nameParts[0];
-    }
+    final result = nameSeperate(response?.name ?? '');
+    firstName = result['firstName']!;
+    middleName = result['middleName']!;
+    lastName = result['lastName']!;
 
     String mobileno = '';
     if (response.mobile.length == 12 && response.mobile.startsWith("91")) {
@@ -322,8 +351,8 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
       lastName: lastName,
       email: response.email ?? '',
       primaryMobileNumber: mobileno,
-      // aadharRefNo: response.referenceId ?? '',
       aadharRefNo: response.referenceId ?? '',
+      gender: response.gender ?? '',
       address1:
           (response.careOf?.isNotEmpty ??
                   false || response.street?.isNotEmpty ??
@@ -372,11 +401,11 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
     try {
       print('coapp: ${event.leadDetails}');
 
-      final _db = await DBConfig().database;
+      final db = await DBConfig().database;
 
-      final listOfLov = await LovCrudRepo(_db).getAll();
+      final listOfLov = await LovCrudRepo(db).getAll();
       final stateCityMaster = await GeographymasterCrudRepo(
-        _db,
+        db,
       ).getByColumnNames(
         columnNames: [
           TableKeysGeographyMaster.stateId,
@@ -406,13 +435,18 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
 
       if (coappAdded == 'Y') {
         for (final val in event.leadDetails ?? []) {
-          if (val['applicantType'] == 'C' || val.containsKey('lldCoappCbsid')) {
+          if (val['applicantType'] == 'C' ||
+              (val.containsKey('lldCoappCbsid') == true &&
+                  val['lldCoappCbsid'] != null)) {
             final mapped = mapCoApplicant(val);
             if (mapped != null) {
               coappData.add(mapped);
               coappandGauList.add(mapped);
             }
-          } else {
+          }
+          if (val['applicantType'] == 'G' ||
+              (val.containsKey('lldGuaCbsid') == true &&
+                  val['lldGuaCbsid'] != null)) {
             final mapped = mapGaurantor(val);
             if (mapped != null) {
               gaurantorData.add(mapped);
@@ -500,7 +534,7 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
                 firstName: val['lldCoappfrstname'],
                 middleName: val['lldCoappmidname'],
                 lastName: val['lldLastnameCoapplican'],
-                dob: val['lldCoappdob'].toString(),
+                dob: getDateFormat(val['lldCoappdob']),
                 relationshipFirm: val['lldCoappRelationFirm'],
                 residentialStatus: val['lldCoappResidentStatus'],
                 email: val['lldCoappemailid'],
@@ -508,6 +542,7 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
                 secondaryMobileNumber: val['lldCoappSecMobNo'],
                 panNumber: val['lldCoapppanno'],
                 aadharRefNo: val['lldCoappadharno'],
+                gender: val['lldCoappGender'],
                 address1: val['lldCoappaddress'],
                 address2: val['lldCoappaddresslane1'],
                 address3: val['lldCoappaddresslane2'],
@@ -542,7 +577,7 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
                 firstName: val['lldguafrstname'],
                 middleName: val['lldguamidname'],
                 lastName: val['lldgualastname'],
-                dob: val['lldguadob'].toString(),
+                dob: getDateFormat(val['lldguadob']),
                 relationshipFirm: val['lldGuaRelationFirm'],
                 residentialStatus: val['lldGuaResidentStatus'],
                 email: val['lldguaemailid'],
@@ -550,6 +585,7 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
                 secondaryMobileNumber: val['lldGuaSecMobNo'],
                 panNumber: val['lldGuapanno'],
                 aadharRefNo: val['lldGuaadharno'],
+                gender: val['lldGuaraGender'],
                 address1: val['lldGuaaddress'],
                 address2: val['lldGuaaddresslane1'],
                 address3: val['lldGuaaddresslane2'],
@@ -564,7 +600,6 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
               : val != null
               ? CoapplicantData.fromMap(val)
               : null;
-      ;
       return gaurantorData;
     } catch (error) {
       print("mapGaurantor-error => $error");
@@ -586,15 +621,15 @@ fetching dedupe for co applicant reusing dedupe page cif search logic here
         citydistrictrequest,
       );
 
-      Map<String, dynamic> _resp = response.right as Map<String, dynamic>;
+      Map<String, dynamic> resp = response.right as Map<String, dynamic>;
 
       List<GeographyMaster> cityMaster =
-          _resp['cityMaster'] != null && _resp['cityMaster'].isNotEmpty
-              ? _resp['cityMaster'] as List<GeographyMaster>
+          resp['cityMaster'] != null && resp['cityMaster'].isNotEmpty
+              ? resp['cityMaster'] as List<GeographyMaster>
               : [];
       List<GeographyMaster> districtMaster =
-          _resp['districtMaster'] != null && _resp['districtMaster'].isNotEmpty
-              ? _resp['districtMaster'] as List<GeographyMaster>
+          resp['districtMaster'] != null && resp['districtMaster'].isNotEmpty
+              ? resp['districtMaster'] as List<GeographyMaster>
               : [];
 
       if (cityCode == null) {

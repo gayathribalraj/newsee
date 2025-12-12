@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:newsee/timer/timer.dart';
 
 class App extends StatelessWidget {

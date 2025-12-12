@@ -2,14 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/core/api/failure.dart';
-import 'package:newsee/core/db/db_config.dart';
 import 'package:newsee/feature/masters/domain/modal/master_request.dart';
 import 'package:newsee/feature/masters/domain/modal/master_response.dart';
 import 'package:newsee/feature/masters/domain/modal/master_types.dart';
-import 'package:newsee/feature/masters/domain/modal/master_version.dart';
 import 'package:newsee/feature/masters/domain/repository/master_repo.dart';
-import 'package:newsee/feature/masters/domain/repository/masterversion_crud_repo.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 part './masters_event.dart';
 part './masters_state.dart';

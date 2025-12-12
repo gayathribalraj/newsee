@@ -16,11 +16,11 @@ class SkeletonLoader extends StatelessWidget {
   final BorderRadius borderRadius;
 
   const SkeletonLoader({
-    Key? key,
+    super.key,
     this.width = 150,
     this.height = 50,
     this.borderRadius = const BorderRadius.all(Radius.circular(8.0)),
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(

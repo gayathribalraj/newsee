@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:newsee/Utils/utils.dart';
 
 class SysmoTitle extends StatelessWidget {
   final IconData icon;
@@ -24,7 +25,7 @@ class SysmoTitle extends StatelessWidget {
           Text("$label: ", style: const TextStyle(fontWeight: FontWeight.bold)),
           Expanded(
             child: Text(
-              value,
+              label == 'Loan Amount' ? formatAmount(value, 'currency') : value,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

@@ -12,7 +12,7 @@ MPINEncryptResponse encryptMobileMPIN(String plaintext, String passphrase) {
   try {
     // Convert passphrase to a 16-byte key for AES-128
     final key = encrypt.Key.fromUtf8(
-      passphrase.padRight(16, '\0').substring(0, 16),
+      passphrase.padRight(16, '0').substring(0, 16),
     );
 
     // Use a 16-byte zeroed IV to match Java's new byte[16]

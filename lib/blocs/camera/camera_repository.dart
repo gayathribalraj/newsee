@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:equatable/equatable.dart';
 
 class CameraCaptureResponse {
   final XFile xfile;

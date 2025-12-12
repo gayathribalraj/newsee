@@ -3,39 +3,23 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-/**
- * @author  : karthick.d    
- */
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 
 // to be converted  as Data class with fields
 
 class GroupLeadInbox {
   final Map<String, dynamic>? finalList;
-  GroupLeadInbox({
-    this.finalList,
-  });
+  GroupLeadInbox({this.finalList});
 
-  GroupLeadInbox copyWith({
-    Map<String, dynamic>? finalList,
-  }) {
-    return GroupLeadInbox(
-      finalList: finalList ?? this.finalList,
-    );
+  GroupLeadInbox copyWith({Map<String, dynamic>? finalList}) {
+    return GroupLeadInbox(finalList: finalList ?? this.finalList);
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'finalList': finalList,
-    };
+    return <String, dynamic>{'finalList': finalList};
   }
 
   factory GroupLeadInbox.fromMap(Map<String, dynamic>? map) {
-    return GroupLeadInbox(
-      finalList: Map<String, dynamic>.from(map! as Map),
-    );
+    return GroupLeadInbox(finalList: Map<String, dynamic>.from(map! as Map));
   }
 
   String toJson() => json.encode(toMap());
@@ -50,9 +34,8 @@ class GroupLeadInbox {
   bool operator ==(covariant GroupLeadInbox other) {
     if (identical(this, other)) return true;
     final mapEquals = const DeepCollectionEquality().equals;
-  
-    return 
-      mapEquals(other.finalList, finalList);
+
+    return mapEquals(other.finalList, finalList);
   }
 
   @override

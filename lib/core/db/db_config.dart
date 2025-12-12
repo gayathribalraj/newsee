@@ -6,12 +6,13 @@
  */
 
 import 'package:newsee/AppData/DBConstants/dbconstants.dart';
+import 'package:newsee/AppData/DBConstants/table_key_cibil_reports.dart';
 import 'package:newsee/AppData/DBConstants/table_key_geographymaster.dart';
 import 'package:newsee/AppData/DBConstants/table_key_products.dart';
 import 'package:newsee/AppData/DBConstants/table_key_productschema.dart';
-import 'package:newsee/AppData/DBConstants/table_key_statecitymaster.dart';
 import 'package:newsee/AppData/DBConstants/table_keys_productmaster.dart';
 import 'package:newsee/AppData/DBConstants/table_key_masterversion.dart';
+import 'package:newsee/feature/audit_logs/data/datasources/table_key_auditlog.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -58,6 +59,10 @@ class DBConfig {
       printTableCreateSuccess(TableKeyMasterversion.tableName);
       await db.execute(TableKeysGeographyMaster.createTableQuery);
       printTableCreateSuccess(TableKeysGeographyMaster.tableName);
+      await db.execute(TableKeysCibilReports.createTableQuery);
+      printTableCreateSuccess(TableKeysCibilReports.tableName);
+      await db.execute(AuditLogSchema.createTableQuery);
+      printTableCreateSuccess(AuditLogSchema.tableName);
     } catch (e) {
       // db creation failure - > log u r exception
 

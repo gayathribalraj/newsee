@@ -63,9 +63,7 @@ class DocumentBloc extends Bloc<DocumentEvent, DocumentState> {
         // group images by docId (assuming there's a `docId` field in both models)
         final Map<String, List<DocumentImage>> imagesByDocId = {};
         for (final image in allImages) {
-          if (image.docId != null) {
-            imagesByDocId.putIfAbsent(image.docId, () => []).add(image);
-          }
+          imagesByDocId.putIfAbsent(image.docId, () => []).add(image);
         }
         // map documents and attach their respective images
         final documents =

@@ -7,9 +7,7 @@ import 'package:newsee/feature/masters/data/repository/master_repo_impl.dart';
 import 'package:newsee/feature/masters/domain/modal/master_request.dart';
 import 'package:newsee/feature/masters/domain/modal/master_response.dart';
 import 'package:newsee/feature/masters/domain/modal/master_types.dart';
-import 'package:newsee/feature/masters/domain/modal/master_version.dart';
 import 'package:newsee/feature/masters/presentation/bloc/masters_bloc.dart';
-import 'package:newsee/pages/home_page.dart';
 import 'package:newsee/widgets/download_progress_widget.dart';
 
 class MastersPage extends StatelessWidget {

@@ -36,3 +36,14 @@ class DedupeDraftResponseFetch extends DedupeEvent {
 class DedupeDetailsInitEvent extends DedupeEvent {
   DedupeDetailsInitEvent();
 }
+
+class ValiateAadharFromPluginEvent extends DedupeEvent {
+  final dynamic responseData;
+  ValiateAadharFromPluginEvent({required this.responseData});
+}
+
+class ScannerDedupeEvent extends DedupeEvent {
+  final Map<String, dynamic> scannerResponse;
+  ScannerDedupeEvent({required this.scannerResponse});
+}
+

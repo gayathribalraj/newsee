@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:newsee/AppData/app_constants.dart';
 
 enum MpinStatus { init, loading, success, failure }
 
@@ -12,7 +11,7 @@ class MpinState extends Equatable {
   const MpinState({
     this.mpin = const ['', '', '', ''],
     this.confirmMpin = const ['', '', '', ''],
-    this.status = MpinStatus.init ,
+    this.status = MpinStatus.init,
     this.errorMessage = '',
   });
 

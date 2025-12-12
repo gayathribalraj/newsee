@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:newsee/AppData/app_constants.dart';
+import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/feature/coapplicant/domain/modal/coapplicant_data.dart';
 import 'package:newsee/feature/coapplicant/presentation/bloc/coapp_details_bloc.dart';
 import 'package:newsee/feature/coapplicant/presentation/widgets/co_applicant_form_sheet.dart';
@@ -19,7 +19,22 @@ class CoApplicantPage extends StatefulWidget {
 }
 
 class _CoApplicantPageState extends State<CoApplicantPage> {
-  List<Map<String, dynamic>> applicantsList = [];
+  @override
+  void initState() {
+    super.initState();
+
+    final coapplist = context.read<CoappDetailsBloc>().state.coAppList;
+    print(coapplist);
+    if (coapplist.isNotEmpty) {
+      context.read<CoappDetailsBloc>().add(
+        IsCoAppOrGurantorAdd(addapplicants: 'Y'),
+      );
+    } else {
+      context.read<CoappDetailsBloc>().add(
+        IsCoAppOrGurantorAdd(addapplicants: 'N'),
+      );
+    }
+  }
 
   Future<void> openCoApplicantFormSheet(
     String type,
@@ -73,8 +88,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Members"),
-        // title: const Text("Co-Applicants/Gurantors"),
+        title: const Text("Co-Applicants/Gurantors"),
         automaticallyImplyLeading: false,
       ),
       body: Padding(
@@ -113,6 +127,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                     const Text("No"),
                   ],
                 ),
+
                 if (state.isApplicantsAdded == 'Y' &&
                     state.coAppList.isNotEmpty) ...[
                   const SizedBox(height: 16),
@@ -120,9 +135,6 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                     'Added Applicants',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  // ...state.coAppList.map((app) {
-                  //   final CoapplicantData data = app;
-                  //   final type = app.applicantType;
                   ...state.coAppList.asMap().entries.map((entry) {
                     final int index = entry.key;
                     final CoapplicantData data = entry.value;
@@ -138,7 +150,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                               child: Text("${data.firstName} ${data.lastName}"),
                             ),
                             Text(
-                              "(${type == 'C' ? 'Member' : 'Guarantor'})",
+                              "(${type == 'C' ? 'Co-Applicant' : 'Guarantor'})",
                               style: TextStyle(fontSize: 12),
                             ),
                           ],
@@ -148,8 +160,8 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                         ),
                         onTap: () {
                           if (data.customertype == '002' &&
-                              (data.cifNumber == null &&
-                                  data.cifNumber == '')) {
+                              (data.cifNumber == null ||
+                                  data.cifNumber!.isEmpty)) {
                             context.read<CoappDetailsBloc>().add(
                               CifEditManuallyEvent(false),
                             );
@@ -175,13 +187,47 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                         ),
                       ),
                     );
-                  }).toList(),
+                  }),
                 ],
+                const Spacer(),
+                if (state.isApplicantsAdded == 'N' ||
+                    state.coAppList.isNotEmpty)
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 3, 9, 110),
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (state.coAppList.isNotEmpty) {
+                          goToNextTab(context: context);
+                        } else {
+                          context.read<CoappDetailsBloc>().add(
+                            IsCoAppOrGurantorAdd(
+                              addapplicants: 'N',
+                              onNext: true,
+                            ),
+                          );
+                          goToNextTab(context: context);
+                        }
+                      },
+                      child: const Text('Next'),
+                    ),
+                  ),
               ],
             );
           },
         ),
       ),
+
       floatingActionButton: BlocBuilder<CoappDetailsBloc, CoappDetailsState>(
         builder: (context, state) {
           return state.isApplicantsAdded == 'Y'

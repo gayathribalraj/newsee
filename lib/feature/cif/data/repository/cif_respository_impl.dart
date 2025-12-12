@@ -1,7 +1,5 @@
-import 'dart:io';
-
+import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/Utils/offline_data_provider.dart';
@@ -17,17 +15,15 @@ import 'package:newsee/feature/cif/domain/model/user/cif_request.dart';
 import 'package:newsee/feature/cif/domain/model/user/cif_response.dart';
 import 'package:newsee/feature/cif/domain/repository/cif_repository.dart';
 
-import 'dart:convert';
-
 class CifRepositoryImpl implements CifRepository {
   @override
   Future<AsyncResponseHandler<Failure, CifResponse>> searchCif(
     CIFRequest req,
   ) async {
     try {
-      print('CIF Search request payload => $req');
       final payload = req.toJson();
-
+      print('CIF Search request payload => $payload');
+      // call remote or offline data source
       var response =
           Globalconfig.isOffline
               ? await offlineDataProvider(path: AppConstants.cifResponsonse)
@@ -35,7 +31,18 @@ class CifRepositoryImpl implements CifRepository {
                 dio: ApiClient().getDio(),
               ).searchCif(payload);
 
+      final data = response.data;
+      print('Raw CIF API response => $data');
       if (response.data[ApiConfig.API_RESPONSE_SUCCESS_KEY]) {
+        // final responseContent = data[ApiConfig.API_RESPONSE_KEY];
+        // final responseJson =
+        //     responseContent is String
+        //         ? json.decode(responseContent)
+        //         : responseContent ?? {};
+
+        // final cifResponse = CifResponse.fromJson(
+        //   responseJson['data']['ApplicantDetails'],
+        // );
         final cifResponse = CifResponse.fromJson(
           response.data[ApiConfig
               .API_RESPONSE_RESPONSE_KEY]['lpretLeadDetails'],
@@ -61,9 +68,11 @@ class CifRepositoryImpl implements CifRepository {
           depositAmount: depositAmount,
         );
         print('ChifResponseModel => ${_cifresponse.toString()}');
+
         return AsyncResponseHandler.right(_cifresponse);
       } else {
-        var errorMessage = response.data['ErrorMessage'] ?? "Unknown error";
+        final String errorMessage =
+            data[ApiConfig.API_RESPONSE_ERRORMESSAGE_KEY] ?? 'Unknown error';
         print('CIF Search error => $errorMessage');
         return AsyncResponseHandler.left(AuthFailure(message: errorMessage));
       }
@@ -72,7 +81,7 @@ class CifRepositoryImpl implements CifRepository {
           DioHttpExceptionParser(exception: e).parse();
       return AsyncResponseHandler.left(failure);
     } catch (error) {
-      print("cifResponseHandler-> $error");
+      print("cifResponseHandler -> $error");
       return AsyncResponseHandler.left(
         HttpConnectionFailure(message: "Unexpected Failure during CIF Search"),
       );

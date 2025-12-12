@@ -1,5 +1,6 @@
 class DraftLead {
   final String leadref;
+  final String createdOn;
   final Map<String, dynamic> loan;
   final Map<String, dynamic> dedupe;
   final Map<String, dynamic> personal;
@@ -8,6 +9,7 @@ class DraftLead {
 
   DraftLead({
     required this.leadref,
+    required this.createdOn,
     required this.loan,
     required this.dedupe,
     required this.personal,
@@ -17,6 +19,7 @@ class DraftLead {
 
   Map<String, dynamic> toJson() => {
     'leadref': leadref,
+    'createdOn': createdOn,
     'loan': loan,
     'dedupe': dedupe,
     'personal': personal,
@@ -26,6 +29,7 @@ class DraftLead {
 
   factory DraftLead.fromJson(Map<String, dynamic> json) => DraftLead(
     leadref: json['leadref'] as String,
+    createdOn: json['createdOn'] as String,
     loan:
         json['loan'] is Map<String, dynamic>
             ? Map<String, dynamic>.from(json['loan'])
@@ -45,7 +49,7 @@ class DraftLead {
     coapplicant:
         json['coapplicant'] is List
             ? (json['coapplicant'] as List)
-                .where((e) => e is Map<String, dynamic>)
+                .whereType<Map<String, dynamic>>()
                 .map(
                   (e) => Map<String, dynamic>.from(e as Map<String, dynamic>),
                 )

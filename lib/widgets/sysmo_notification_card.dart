@@ -31,16 +31,16 @@ class SysmoNotificationCard extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  child: Icon(icon, color: Colors.red, size: 26),
                   backgroundColor: const Color.fromARGB(36, 0, 150, 135),
                   radius: 20,
+                  child: Icon(icon, color: Colors.red, size: 26),
                 ),
                 const SizedBox(width: 10),
 
                 Padding(
                   padding: const EdgeInsets.only(left: 8),
                   child: Text(
-                    "$label",
+                    label,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -55,8 +55,8 @@ class SysmoNotificationCard extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                child: Icon(infoicon, color: Colors.blue, size: 20),
                 backgroundColor: const Color.fromARGB(36, 0, 150, 135),
+                child: Icon(infoicon, color: Colors.blue, size: 20),
               ),
 
               Expanded(

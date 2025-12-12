@@ -86,7 +86,7 @@ class CompletedLeads extends StatelessWidget {
                     loan.contains(searchQuery.toString());
               }).toList();
 
-          if (filteredLeads == null || filteredLeads.isEmpty) {
+          if (filteredLeads.isEmpty) {
             return RefreshIndicator(
               onRefresh: onRefresh,
               child: ListView(

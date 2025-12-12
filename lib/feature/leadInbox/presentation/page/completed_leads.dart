@@ -40,7 +40,8 @@ class CompletedLeads extends StatelessWidget {
           }
           if (state.getLeaStatus == SaveStatus.loading) {
             presentLoading(context, 'Fetching Lead Details...');
-          } else if (state.getLeaStatus == SaveStatus.success || state.getLeaStatus == SaveStatus.failure) {
+          } else if (state.getLeaStatus == SaveStatus.success ||
+              state.getLeaStatus == SaveStatus.failure) {
             dismissLoading(context);
           }
 
@@ -58,7 +59,7 @@ class CompletedLeads extends StatelessWidget {
                 context.pop();
                 final tabController = DefaultTabController.of(context);
                 if (tabController.index < tabController.length - 1) {
-                  tabController.animateTo(tabController.index + 1);
+                  tabController.animateTo(tabController.index + 2);
                 }
               },
               leftButtonLabel: 'Cancel',
@@ -79,11 +80,13 @@ class CompletedLeads extends StatelessWidget {
             );
           }
 
-          if(state.getLeaStatus == SaveStatus.loading) {
-
-          } else if(state.getLeaStatus == SaveStatus.success) {
-            context.pushNamed('newlead', extra: {'leadData': state.getleadData});
-          } else if(state.getLeaStatus == SaveStatus.failure) {
+          if (state.getLeaStatus == SaveStatus.loading) {
+          } else if (state.getLeaStatus == SaveStatus.success) {
+            context.pushNamed(
+              'newlead',
+              extra: {'leadData': state.getleadData},
+            );
+          } else if (state.getLeaStatus == SaveStatus.failure) {
             showDialog(
               context: context,
               builder:
@@ -99,9 +102,7 @@ class CompletedLeads extends StatelessWidget {
         builder: (context, state) {
           Future<void> onRefresh() async {
             context.read<LeadBloc>().add(
-              SearchLeadEvent(
-                pageNo: state.currentPage 
-              )
+              SearchLeadEvent(pageNo: state.currentPage),
             );
           }
 
@@ -183,8 +184,9 @@ class CompletedLeads extends StatelessWidget {
                   location: lead['lleadprefbrnch'] ?? 'N/A',
                   loanamount: lead['lldLoanamtRequested']?.toString() ?? '',
                   onTap: () {
-                    context.read<LeadBloc>().add(GetLeadDataEvent(leadId: lead['lleadid']));
-                    
+                    context.read<LeadBloc>().add(
+                      GetLeadDataEvent(leadId: lead['lleadid']),
+                    );
                   },
                   showarrow: false,
                   button: TextButton(

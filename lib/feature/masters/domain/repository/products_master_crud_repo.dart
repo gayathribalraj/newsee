@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:newsee/AppData/DBConstants/table_keys_productmaster.dart';
 import 'package:newsee/Utils/query_builder.dart';
-import 'package:newsee/feature/masters/domain/modal/product.dart';
 import 'package:newsee/feature/masters/domain/modal/product_master.dart';
 import 'package:newsee/feature/masters/domain/repository/simple_crud_repo.dart';
 import 'package:newsee/feature/masters/domain/repository/simplecursor_crud_repo.dart';

@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:newsee/Model/liveliness_details.dart';
+
 class PersonalData {
   final String? title;
   final String? firstName;
@@ -26,6 +28,7 @@ class PersonalData {
   final String? sourceid;
   final String? sourcename;
   final String? subActivity;
+  final LiveLinessDetails? borrowerLivelinessDet;
   PersonalData({
     this.title,
     this.firstName,
@@ -51,6 +54,7 @@ class PersonalData {
     this.sourceid,
     this.sourcename,
     this.subActivity,
+    this.borrowerLivelinessDet,
   });
 
   PersonalData copyWith({
@@ -79,6 +83,7 @@ class PersonalData {
     String? sourceid,
     String? sourcename,
     String? subActivity,
+    LiveLinessDetails? borrowerLivelinessDet,
   }) {
     return PersonalData(
       title: title ?? this.title,
@@ -106,6 +111,8 @@ class PersonalData {
       sourceid: sourceid ?? this.sourceid,
       sourcename: sourcename ?? this.sourcename,
       subActivity: subActivity ?? this.subActivity,
+      borrowerLivelinessDet:
+          borrowerLivelinessDet ?? this.borrowerLivelinessDet,
     );
   }
 
@@ -135,6 +142,7 @@ class PersonalData {
       'sourceid': sourceid,
       'sourcename': sourcename,
       'subActivity': subActivity,
+      'borrowerLivelinessDet': borrowerLivelinessDet?.toMap(),
     };
   }
 
@@ -196,6 +204,10 @@ class PersonalData {
           map['sourcename'] != null ? map['sourcename'] as String : null,
       subActivity:
           map['subActivity'] != null ? map['subActivity'] as String : null,
+      borrowerLivelinessDet:
+          map['borrowerLivelinessDet'] != null
+              ? LiveLinessDetails.fromMap(map['borrowerLivelinessDet'])
+              : null,
     );
   }
 
@@ -206,7 +218,7 @@ class PersonalData {
 
   @override
   String toString() {
-    return 'PersonalData(title: $title, firstName: $firstName, middleName: $middleName, lastName: $lastName, dob: $dob, residentialStatus: $residentialStatus, primaryMobileNumber: $primaryMobileNumber, secondaryMobileNumber: $secondaryMobileNumber, email: $email, panNumber: $panNumber, aadharRefNo: $aadharRefNo, passportNumber: $passportNumber, loanAmountRequested: $loanAmountRequested, natureOfActivity: $natureOfActivity, occupationType: $occupationType, agriculturistType: $agriculturistType, farmerCategory: $farmerCategory, farmerType: $farmerType, religion: $religion, caste: $caste, sourceid: $sourceid, sourcename: $sourcename, subActivity: $subActivity)';
+    return 'PersonalData(title: $title, firstName: $firstName, middleName: $middleName, lastName: $lastName, dob: $dob, residentialStatus: $residentialStatus, primaryMobileNumber: $primaryMobileNumber, secondaryMobileNumber: $secondaryMobileNumber, email: $email, panNumber: $panNumber, aadharRefNo: $aadharRefNo, passportNumber: $passportNumber, loanAmountRequested: $loanAmountRequested, natureOfActivity: $natureOfActivity, occupationType: $occupationType, agriculturistType: $agriculturistType, farmerCategory: $farmerCategory, farmerType: $farmerType, religion: $religion, caste: $caste, sourceid: $sourceid, sourcename: $sourcename, subActivity: $subActivity, borrowerLivelinessDet: $borrowerLivelinessDet)';
   }
 
   @override
@@ -236,7 +248,8 @@ class PersonalData {
         other.gender == gender &&
         other.sourceid == sourceid &&
         other.sourcename == sourcename &&
-        other.subActivity == subActivity;
+        other.subActivity == subActivity &&
+        other.borrowerLivelinessDet == borrowerLivelinessDet;
   }
 
   @override
@@ -264,6 +277,13 @@ class PersonalData {
         gender.hashCode ^
         sourceid.hashCode ^
         sourcename.hashCode ^
-        subActivity.hashCode;
+        subActivity.hashCode ^
+        borrowerLivelinessDet.hashCode;
   }
+
+  // Map<String, dynamic> toMapWithoutLiveliness() {
+  //   final map = toMap();
+  //   map.remove('borrowerLivelinessDet');
+  //   return map;
+  // }
 }

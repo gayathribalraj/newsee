@@ -22,7 +22,7 @@ class LeadTileCardShimmer extends StatelessWidget {
   final String loanamount;
 
   const LeadTileCardShimmer({
-    Key? key,
+    super.key,
     this.title = 'Loading...',
     this.subtitle = 'Loading...',
     required this.icon,
@@ -33,7 +33,7 @@ class LeadTileCardShimmer extends StatelessWidget {
     this.createdon = 'Loading...',
     this.location = 'Loading...',
     this.loanamount = 'Loading...',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -92,14 +92,14 @@ class LeadTileCardShimmer extends StatelessWidget {
                     child: TextButton(
                       onPressed: () async {
                         final phoneNumber = "919940362579";
-                        final Uri _url = Uri.parse(
+                        final Uri url = Uri.parse(
                           'https://wa.me/sms:$phoneNumber',
                         );
 
-                        if (!await canLaunchUrl(_url)) {
-                          throw 'Could not launch $_url';
+                        if (!await canLaunchUrl(url)) {
+                          throw 'Could not launch $url';
                         } else {
-                          await launchUrl(_url);
+                          await launchUrl(url);
                         }
                         Navigator.pop(context);
                       },
@@ -121,7 +121,7 @@ class LeadTileCardShimmer extends StatelessWidget {
                   Expanded(
                     child: iconWithLabel(
                       Icons.currency_rupee_outlined,
-                      formatAmount(loanamount),
+                      formatAmount(loanamount, 'currency'),
                     ),
                   ),
                 ],

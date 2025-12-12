@@ -54,6 +54,9 @@ class LeadSubmitPage extends StatelessWidget {
       ',',
       '',
     );
+    if (loanAmountFormatted!.contains('.')) {
+      loanAmountFormatted = loanAmountFormatted.split('.').first;
+    }
 
     UserDetails? userDetails = await loadUser();
     PersonalData updatedPersonalData = personlData.copyWith(
@@ -138,21 +141,25 @@ class LeadSubmitPage extends StatelessWidget {
                   Navigator.pop(context);
                 }
               },
+
               onPressedRightButton: () {
-                final applicantData =
-                    state.leadSubmitRequest?.individualNonIndividualDetails;
-                final applicantName =
-                    '${applicantData?.firstName} ${applicantData?.lastName}';
-                context.pushNamed(
-                  'landholdings',
-                  extra: {
-                    'proposalNumber': state.proposalNo,
-                    'applicantName': applicantName,
-                  },
-                );
+                // final applicantData =
+                //     state.leadSubmitRequest?.individualNonIndividualDetails;
+                // final applicantName =
+                //     '${applicantData?.firstName} ${applicantData?.lastName}';
+                // context.pushNamed(
+                //   'landholdings',
+                //   extra: {
+                //     'proposalNumber': state.proposalNo,
+                //     'applicantName': applicantName,
+                //   },
+                // );
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(context);
+                }
               },
               leftButtonLabel: 'Go To Inbox',
-              rightButtonLabel: 'Go To LandHolding',
+              rightButtonLabel: 'Cancel',
             );
           } else if (state.proposalSubmitStatus == SaveStatus.failure) {
             print("state.proposalSubmitStatus == SaveStatus.failure");
@@ -203,7 +210,7 @@ class LeadSubmitPage extends StatelessWidget {
           );
           Dedupe dedupeData = Dedupe(
             existingCustomer: dedupeState?.isNewCustomer != null ? false : true,
-            cifNumber: dedupeState?.cifResponse?.lldCbsid,
+            cifNumber: dedupeState?.cifResponse?.lldCbsid ?? '',
             constitution: dedupeState?.constitution,
           );
           PersonalData? personalData = personalState?.personalData;
@@ -276,7 +283,7 @@ class LeadSubmitPage extends StatelessWidget {
     }
   }
 
-  void openProposalSheet(BuildContext context, LeadSubmitState state) {
+  Future<void> openProposalSheet(BuildContext context, LeadSubmitState state) {
     return openBottomSheet(
       context,
       0.5,
@@ -367,12 +374,13 @@ class LeadSubmitPage extends StatelessWidget {
               SysmoTitle(
                 icon: Icons.currency_rupee,
                 label: "Loan Amount",
-                value: formatAmount('${personalData.loanAmountRequested}'),
+                value: personalData.loanAmountRequested!,
               ),
               SysmoTitle(
                 icon: Icons.location_on,
                 label: "Location",
-                value: addressData.cityDistrict!,
+                value: addressData.address1!,
+                // value: addressData.cityDistrict!,
               ),
             ],
           ),
@@ -450,10 +458,8 @@ class LeadSubmitPage extends StatelessWidget {
                 ),
               ),
               style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(
-                  Size(double.infinity, 50),
-                ),
-                backgroundColor: MaterialStateProperty.all(
+                minimumSize: WidgetStateProperty.all(Size(double.infinity, 50)),
+                backgroundColor: WidgetStateProperty.all(
                   const Color.fromARGB(255, 75, 33, 83),
                 ),
               ),

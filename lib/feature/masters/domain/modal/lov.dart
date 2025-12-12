@@ -6,7 +6,6 @@ import 'dart:convert';
 @param      : refer ReadMe.MD in feature/masters/Readme.MD
  */
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 // lov.g.dart is a generated file by jsonserializable which having helper methods

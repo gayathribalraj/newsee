@@ -1,7 +1,5 @@
-import 'package:newsee/AppData/DBConstants/dbconstants.dart';
 import 'package:newsee/AppData/DBConstants/table_key_productschema.dart';
 import 'package:newsee/Utils/query_builder.dart';
-import 'package:newsee/feature/masters/domain/modal/lov.dart';
 import 'package:newsee/feature/masters/domain/modal/productschema.dart';
 import 'package:newsee/feature/masters/domain/repository/simple_crud_repo.dart';
 import 'package:newsee/feature/masters/domain/repository/simplecursor_crud_repo.dart';
@@ -40,7 +38,7 @@ class ProductSchemaCrudRepo extends SimpleCrudRepo<ProductSchema>
   Future<List<ProductSchema>> getAll() async {
     final List<Map<String, dynamic>> data = await _db.query(
       TableKeysProductSchema.tableName,
-      orderBy: 'id DESC',
+      orderBy: 'optionDesc COLLATE NOCASE ASC',
     );
     print("retdata $data");
     return List.generate(

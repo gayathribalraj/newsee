@@ -35,8 +35,9 @@ class SearchableMultiSelectDropdown<T> extends StatelessWidget {
 
   _onChangeListener(List<T> val) {
     selectedItemsNotifier.value = val;
-    if (onChangeListener != null)
+    if (onChangeListener != null) {
       onChangeListener!(selectedItemsNotifier.value);
+    }
   }
 
   @override

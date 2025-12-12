@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:newsee/feature/draft/presentation/pages/draft_inbox.dart';
 import 'package:newsee/feature/leadInbox/presentation/page/completed_leads.dart';
 import 'package:newsee/feature/proposal_inbox/presentation/page/proposal_inbox_leads.dart';
-import 'pending_leads.dart';
 
 class LeadTabBar extends StatelessWidget {
   final String searchQuery;

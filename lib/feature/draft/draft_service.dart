@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:newsee/feature/draft/draft_event_notifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:newsee/feature/draft/domain/draft_lead_model.dart';
@@ -29,8 +30,12 @@ class DraftService {
     if (jsonString != null) {
       currentData = jsonDecode(jsonString) as Map<String, dynamic>;
     } else {
+      final String formattedDateTime = DateFormat(
+        'dd-MM-yyyy HH:mm:ss',
+      ).format(DateTime.now());
       currentData = {
         'leadref': leadref,
+        'createdOn': formattedDateTime,
         'loan': {},
         'dedupe': {},
         'personal': {},
@@ -45,7 +50,7 @@ class DraftService {
       } else if (tabData is List) {
         currentData[tabKey] =
             tabData
-                .where((e) => e is Map<String, dynamic>)
+                .whereType<Map<String, dynamic>>()
                 .map(
                   (e) => Map<String, dynamic>.from(e as Map<String, dynamic>),
                 )

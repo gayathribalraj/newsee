@@ -7,6 +7,7 @@ import 'package:newsee/AppData/app_api_constants.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/Model/address_data.dart';
 import 'package:newsee/Model/personal_data.dart';
+import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/core/api/failure.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
@@ -60,7 +61,7 @@ final class LeadSubmitBloc extends Bloc<LeadSubmitEvent, LeadSubmitState> {
         cifNumber: '',
         constitution: '',
       ),
-      individualNonIndividualDetails: personalData ?? null,
+      individualNonIndividualDetails: personalData,
       addressDetails: [AddressData()],
     );
     emit(state.copyWith(leadSubmitRequest: leadSubmitRequest));
@@ -69,6 +70,17 @@ final class LeadSubmitBloc extends Bloc<LeadSubmitEvent, LeadSubmitState> {
   Future<void> onLeadPush(LeadSubmitPushEvent event, Emitter emit) async {
     emit(state.copyWith(leadSubmitStatus: SubmitStatus.loading));
 
+    final dob = event.personalData?.toMap()['dob'];
+    final formateddate = getDateFormatedByProvided(
+      dob,
+      from: AppConstants.Format_dd_MM_yyyy,
+      to: AppConstants.Format_yyyy_MM_dd,
+    );
+    final personalDataMap = event.personalData?.toMap();
+    if (personalDataMap != null) {
+      personalDataMap['dob'] = formateddate;
+      PersonalData.fromMap(personalDataMap);
+    }
     // final coappdataMap = event.coAppAndGurantorData?.toMap();
     // coapplicant or gurantor applicants List are seperating
     final coApplicants =
@@ -85,12 +97,62 @@ final class LeadSubmitBloc extends Bloc<LeadSubmitEvent, LeadSubmitState> {
             .toList() ??
         [];
 
-    coApplicants.isNotEmpty
-        ? coApplicants[0].addAll({"residentialStatus": "4"})
-        : coApplicants;
-    guarantors.isNotEmpty
-        ? guarantors[0].addAll({"residentialStatus": "4"})
-        : guarantors;
+    if (coApplicants.isNotEmpty) {
+      processApplicants(coApplicants);
+      // for (var applicant in coApplicants) {
+      //   final dob = applicant['dob'];
+      //   final formatted = getDateFormatedByProvided(
+      //     dob,
+      //     from: AppConstants.Format_dd_MM_yyyy,
+      //     to: AppConstants.Format_yyyy_MM_dd,
+      //   );
+      //   String loanLiabilityAmount = applicant['loanLiabilityAmount']
+      //       ?.replaceAll(',', '');
+      //   if (loanLiabilityAmount.contains('.')) {
+      //     loanLiabilityAmount = loanLiabilityAmount.split('.').first;
+      //   }
+      //   applicant['loanLiabilityAmount'] = loanLiabilityAmount;
+      //   String depositAmount = applicant['depositAmount']?.replaceAll(',', '');
+      //   if (depositAmount.contains('.')) {
+      //     depositAmount = depositAmount.split('.').first;
+      //   }
+      //   applicant['depositAmount'] = depositAmount;
+      //   applicant['dob'] = formatted;
+      //   applicant.addAll({"residentialStatus": "4"});
+      // }
+    }
+
+    if (guarantors.isNotEmpty) {
+      processApplicants(guarantors);
+      // for (var guarantor in guarantors) {
+      //   final dob = guarantor['dob'];
+      //   final formatted = getDateFormatedByProvided(
+      //     dob,
+      //     from: AppConstants.Format_dd_MM_yyyy,
+      //     to: AppConstants.Format_yyyy_MM_dd,
+      //   );
+      //   guarantor['dob'] = formatted;
+      //   String loanLiabilityAmount = guarantor['loanLiabilityAmount']
+      //       ?.replaceAll(',', '');
+      //   if (loanLiabilityAmount.contains('.')) {
+      //     loanLiabilityAmount = loanLiabilityAmount.split('.').first;
+      //   }
+      //   guarantor['loanLiabilityAmount'] = loanLiabilityAmount;
+      //   String depositAmount = guarantor['depositAmount']?.replaceAll(',', '');
+      //   if (depositAmount.contains('.')) {
+      //     depositAmount = depositAmount.split('.').first;
+      //   }
+      //   guarantor['depositAmount'] = depositAmount;
+      //   guarantor.addAll({"residentialStatus": "4"});
+      // }
+    }
+
+    // coApplicants.isNotEmpty
+    //     ? coApplicants[0].addAll({"residentialStatus": "4"})
+    //     : coApplicants;
+    // guarantors.isNotEmpty
+    //     ? guarantors[0].addAll({"residentialStatus": "4"})
+    //     : guarantors;
 
     final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
     String? getString = await asyncPrefs.getString('userdetails');
@@ -145,6 +207,43 @@ final class LeadSubmitBloc extends Bloc<LeadSubmitEvent, LeadSubmitState> {
 
       emit(state.copyWith(leadSubmitStatus: SubmitStatus.failure));
     }
+  }
+
+  void processApplicants(List<Map<String, dynamic>> applicants) {
+    for (var applicant in applicants) {
+      final dob = applicant['dob'];
+      final formattedDob = getDateFormatedByProvided(
+        dob,
+        from: AppConstants.Format_dd_MM_yyyy,
+        to: AppConstants.Format_yyyy_MM_dd,
+      );
+
+      applicant['dob'] = formattedDob;
+      applicant['loanLiabilityAmount'] = sanitizeAmount(
+        applicant['loanLiabilityAmount'],
+      );
+
+      final key =
+          applicant['applicantType'] == 'C'
+              ? 'coAppLivelinessDet'
+              : 'guaLivelinessDet';
+
+      applicant[key] = applicant['livelinessDetails'];
+
+      applicant['depositAmount'] = sanitizeAmount(applicant['depositAmount']);
+      applicant['residentialStatus'] = '4';
+      applicant.remove('livelinessDetails');
+      applicant.remove('applicantType');
+    }
+  }
+
+  String sanitizeAmount(String? amount) {
+    if (amount == null) return '';
+    var cleaned = amount.replaceAll(',', '');
+    if (cleaned.contains('.')) {
+      cleaned = cleaned.split('.').first;
+    }
+    return cleaned;
   }
 
   deleteDraftFromStorage() async {

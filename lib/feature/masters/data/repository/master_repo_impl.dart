@@ -1,15 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:newsee/AppData/app_api_constants.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/Utils/offline_data_provider.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/core/api/api_client.dart';
-import 'package:newsee/core/api/api_config.dart';
 import 'package:newsee/core/api/auth_failure.dart';
 import 'package:newsee/core/api/failure.dart';
 import 'package:newsee/core/api/http_connection_failure.dart';
@@ -21,7 +16,6 @@ import 'package:newsee/feature/masters/data/repository/lov_parser_impl.dart';
 import 'package:newsee/feature/masters/data/repository/product_master_parser_impl.dart';
 import 'package:newsee/feature/masters/data/repository/product_parser_impl.dart';
 import 'package:newsee/feature/masters/data/repository/productschema_parser_impl.dart';
-import 'package:newsee/feature/masters/data/repository/statecity_parser_impl.dart';
 import 'package:newsee/feature/masters/domain/modal/geography_master.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
 import 'package:newsee/feature/masters/domain/modal/master_request.dart';
@@ -31,7 +25,6 @@ import 'package:newsee/feature/masters/domain/modal/master_version.dart';
 import 'package:newsee/feature/masters/domain/modal/product.dart';
 import 'package:newsee/feature/masters/domain/modal/product_master.dart';
 import 'package:newsee/feature/masters/domain/modal/productschema.dart';
-import 'package:newsee/feature/masters/domain/modal/statecitymaster.dart';
 import 'package:newsee/feature/masters/domain/repository/geographymaster_crud_repo.dart';
 import 'package:newsee/feature/masters/domain/repository/lov_crud_repo.dart';
 import 'package:newsee/feature/masters/domain/repository/master_repo.dart';
@@ -39,7 +32,6 @@ import 'package:newsee/feature/masters/domain/repository/masterversion_crud_repo
 import 'package:newsee/feature/masters/domain/repository/product_schema_crud_repo.dart';
 import 'package:newsee/feature/masters/domain/repository/products_crud_repo.dart';
 import 'package:newsee/feature/masters/domain/repository/products_master_crud_repo.dart';
-import 'package:newsee/feature/masters/domain/repository/statecity_master_crud_repo.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class MasterRepoImpl extends MasterRepo {

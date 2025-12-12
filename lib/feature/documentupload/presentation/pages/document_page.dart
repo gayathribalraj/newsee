@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:newsee/Utils/media_service.dart';
 import 'package:newsee/feature/documentupload/presentation/bloc/document_bloc.dart';
 import 'package:newsee/feature/documentupload/presentation/bloc/document_event.dart';
@@ -42,6 +43,12 @@ class _DocumentPageState extends State<DocumentPage> {
         appBar: AppBar(
           title: const Text('Documents Upload'),
           backgroundColor: Colors.grey[100],
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              context.goNamed('home');
+            },
+          ),
         ),
         body: BlocListener<DocumentBloc, DocumentState>(
           listenWhen:

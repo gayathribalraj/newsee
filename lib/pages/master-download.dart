@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/blocs/progress/progress_bloc.dart';
 import 'package:newsee/widgets/download_progress_widget.dart';
-import 'package:newsee/widgets/skeleton.dart';
-import '../widgets/progress_bar.dart';
 
 /*
 @author : Gayathri.b    19/05/2025
@@ -38,7 +36,7 @@ class MasterDownload extends StatelessWidget {
             builder: (context, state) {
               return DownloadProgressWidget(
                 downloadProgress: state.downloadProgress,
-                // mastername: 
+                // mastername:
               );
             },
           ),

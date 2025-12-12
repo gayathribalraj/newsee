@@ -25,12 +25,7 @@ final class CifBloc extends Bloc<CifEvent, CifState> {
       );
     } else {
       print('cif failure response.left ');
-      emit(
-        state.copyWith(
-          status: CifStatus.failure,
-          errorMessage: response.left.message,
-        ),
-      );
+      emit(state.copyWith(status: CifStatus.failure));
     }
   }
 }

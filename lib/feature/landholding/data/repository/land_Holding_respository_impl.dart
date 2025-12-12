@@ -52,13 +52,13 @@ class LandHoldingRespositoryImpl implements LandHoldingRepository {
   }
 
   @override
-  Future<AsyncResponseHandler<Failure, LandHoldingResponceModel>> getLandholding(
-    String proposalNumber
-  ) async {
+  Future<AsyncResponseHandler<Failure, LandHoldingResponceModel>>
+  getLandholding(proposaldata) async {
     try {
       final req = {
-        "proposalNumber": proposalNumber,
-        "token": ApiConfig.AUTH_TOKEN
+        "proposalNumber": proposaldata['proposalNumber'],
+        'custId': proposaldata['custId'],
+        "token": ApiConfig.AUTH_TOKEN,
       };
       final payload = req;
       print('Land Holging get payload => $payload');
@@ -93,7 +93,9 @@ class LandHoldingRespositoryImpl implements LandHoldingRepository {
   }
 
   @override
-  Future<AsyncResponseHandler<Failure, String>> deleteLandHoldingData(LandHoldingDeleteRequest req) async {
+  Future<AsyncResponseHandler<Failure, String>> deleteLandHoldingData(
+    LandHoldingDeleteRequest req,
+  ) async {
     try {
       final payload = req.toJson();
       print('Land Holging get payload => $payload');
@@ -102,7 +104,8 @@ class LandHoldingRespositoryImpl implements LandHoldingRepository {
         dio: ApiClient().getDio(),
       ).submitLandHolding(payload, endPoint);
       if (response.data[ApiConfig.API_RESPONSE_SUCCESS_KEY]) {
-        final String responseString = response.data[ApiConfig.API_RESPONSE_ERRORMESSAGE_KEY];
+        final String responseString =
+            response.data[ApiConfig.API_RESPONSE_ERRORMESSAGE_KEY];
         print('responseString => $responseString');
         return AsyncResponseHandler.right(responseString);
       } else {
@@ -114,7 +117,7 @@ class LandHoldingRespositoryImpl implements LandHoldingRepository {
       HttpConnectionFailure failure =
           DioHttpExceptionParser(exception: e).parse();
       return AsyncResponseHandler.left(failure);
-    } catch(error) {
+    } catch (error) {
       print("LandHoldingResponseHandler-> $error");
       return AsyncResponseHandler.left(
         HttpConnectionFailure(

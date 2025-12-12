@@ -15,6 +15,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -51,6 +52,15 @@ class MediaService {
       return LocationResponse(error: error.toString());
     }
   }
+
+   Future<List<Placemark>> getLocationDetails(lat, long) async {
+  try {
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+    return placemarks;
+  } catch (error) {
+    return [];
+  }
+}
 
   Future<bool> checkIsLocationServiceEnabled() async {
     return await Geolocator.isLocationServiceEnabled();

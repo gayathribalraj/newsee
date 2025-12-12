@@ -44,7 +44,7 @@ Future<AsyncResponseHandler<bool, List<MasterVersion>>> compareVersions(
   if (masterversionsList.isNotEmpty) {
     // master version having values which means masters already downloaded
     // and version are outdated and collected for master update
-    masterversionsList.forEach((e) {
+    for (var e in masterversionsList) {
       differredMasters.addAll(
         targetMasterList
             .where(
@@ -53,7 +53,7 @@ Future<AsyncResponseHandler<bool, List<MasterVersion>>> compareVersions(
             .toList(),
       );
       print("differredMasters $differredMasters");
-    });
+    }
     return Future.value(AsyncResponseHandler.right(differredMasters));
   } else {
     // if left is returned which tells there is no masters downloaded yet

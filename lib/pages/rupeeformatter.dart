@@ -7,7 +7,7 @@
 */
 
 import 'package:flutter/services.dart';
-import 'package:newsee/Utils/utils.dart';
+import 'package:intl/intl.dart';
 
 class Rupeeformatter extends TextInputFormatter {
   @override
@@ -15,18 +15,40 @@ class Rupeeformatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    // Removes all non digit characters and extracts only digits
-    String raw = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
-    print('Rupeeformatter-raw $raw');
+    if (newValue.text.isEmpty) {
+      return newValue.copyWith(text: '');
+    }
 
-    if (raw.isEmpty) return newValue;
+    // Remove all non-numeric characters except for the decimal separator
+    String cleanText = newValue.text.replaceAll(RegExp(r'[^\d,.]'), '');
+    print('cleanText $cleanText');
 
-    // Extract last 3 digits then extract remaining digits before the last 3 digits
-    // then group the remaining digits in 2s from the end
-    String finalValue = formatAmount(raw);
-    return TextEditingValue(
-      text: finalValue,
-      selection: TextSelection.collapsed(offset: finalValue.length),
-    );
+    // Handle decimal separator (replace comma with empty if needed)
+    String formattedText = cleanText.replaceAll(',', '');
+    print('formattedText $formattedText');
+    // Format with thousands separators and two decimal places
+    try {
+      final number = double.parse(formattedText);
+      final formatter = NumberFormat(
+        '#,##,##0.00',
+        'en_US',
+      ); // Adjust locale as needed
+      String newFormattedText = formatter.format(number);
+      print('newFormattedText $newFormattedText');
+
+      // find position just before ".00"
+      final int decimalIndex = newFormattedText.indexOf('.00');
+      final int cursorPosition =
+          decimalIndex > 0 ? decimalIndex : newFormattedText.length;
+
+      return TextEditingValue(
+        text: newFormattedText,
+        selection: TextSelection.collapsed(offset: cursorPosition),
+      );
+    } catch (e) {
+      print('oldValue $oldValue');
+      // If parsing fails return original value
+      return oldValue;
+    }
   }
 }

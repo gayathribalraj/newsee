@@ -31,8 +31,9 @@ class ProductCard extends StatelessWidget {
             const SizedBox(height: 10),
             BuildCard(
               icon: Icons.file_copy_rounded,
-              label: "Procuct Id",
+              label: "Procuct ID",
               value: productId,
+              decoration: true,
             ),
             BuildCard(
               icon: Icons.currency_rupee_rounded,
@@ -58,8 +59,14 @@ class BuildCard extends StatelessWidget {
   final IconData icon;
   final String label;
   final String value;
+  final bool? decoration;
 
-  BuildCard({required this.icon, required this.label, required this.value});
+  BuildCard({
+    required this.icon,
+    required this.label,
+    required this.value,
+    this.decoration,
+  });
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -80,7 +87,17 @@ class BuildCard extends StatelessWidget {
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
-            child: Text(value, style: const TextStyle(fontSize: 13)),
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 13,
+                decoration:
+                    decoration == true
+                        ? TextDecoration.underline
+                        : TextDecoration.none,
+                decorationColor: Colors.teal,
+              ),
+            ),
           ),
         ],
       ),

@@ -11,6 +11,7 @@ import 'package:newsee/AppSamples/ReactiveForms/view/login-with-account.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:newsee/Utils/local_biometric.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
+import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/core/api/api_client.dart';
 import 'package:newsee/feature/globalconfig/bloc/global_config_bloc.dart';
 import 'package:newsee/feature/pdf_viewer/presentation/pages/pdf_viewer_page.dart';
@@ -129,7 +130,7 @@ class LoginpageView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     width: screenWidth,
                     height: screenHeight * 0.31,
                     child: SvgPicture.asset(
@@ -295,8 +296,8 @@ class LoginpageView extends StatelessWidget {
                                       onPressed: () {
                                         maintenanceActionSheet(
                                           context,
-                                          "Comming Soon....",
-                                          "We are Working to improve Your experence with our new mobile app.",
+                                          "Coming Soon....",
+                                          "We are Working to improve your experience with our new mobile app.",
                                           Icons.person,
                                           "okay",
                                         );
@@ -380,6 +381,23 @@ class LoginpageView extends StatelessWidget {
                                 ),
                               ],
                             ),
+                          ),
+
+                          FutureBuilder(
+                            future: getPackageInfo(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return Text(
+                                  'UBI Agri QA - Version ...',
+                                  style: TextStyle(fontSize: 14),
+                                );
+                              }
+
+                              return Text(
+                                'UBI Agri QA - Version ${snapshot.data!['version']}',
+                                style: TextStyle(fontSize: 14),
+                              );
+                            },
                           ),
                         ],
                       ),

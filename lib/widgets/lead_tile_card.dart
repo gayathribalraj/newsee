@@ -162,7 +162,7 @@ class LeadTileCard extends StatelessWidget {
                       Expanded(
                         child: iconWithLabel(
                           Icons.currency_rupee_outlined,
-                          formatAmount(loanamount),
+                          formatAmount(loanamount, 'currency'),
                         ),
                       ),
                     ],

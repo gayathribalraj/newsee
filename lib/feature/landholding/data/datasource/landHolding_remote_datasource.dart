@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:newsee/core/api/api_config.dart';
-import 'package:newsee/feature/landholding/domain/modal/land_Holding_request.dart';
 
 class LandHoldingRemoteDatasource {
   final Dio dio;

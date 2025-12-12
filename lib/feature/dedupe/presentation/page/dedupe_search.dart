@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/feature/aadharvalidation/domain/modal/aadharvalidate_request.dart';
 import 'package:newsee/feature/dedupe/domain/model/deduperequest.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
@@ -10,6 +12,14 @@ import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:newsee/widgets/k_willpopscope.dart';
 import 'package:newsee/widgets/response_widget.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+
+// Kyc verification Plugin Imports
+import 'package:kyc_verification/kyc_validation.dart';
+import 'package:kyc_verification/src/widget/uiwidgetprops/button_props.dart';
+import 'package:kyc_verification/src/widget/uiwidgetprops/form_props.dart';
+import 'package:kyc_verification/src/widget/uiwidgetprops/style_props.dart';
+
+import '../../../../Utils/qr_nav_utils.dart';
 
 class DedupeSearch extends StatelessWidget {
   final FormGroup dedupeForm;
@@ -65,7 +75,6 @@ class DedupeSearch extends StatelessWidget {
       widget: BlocConsumer<DedupeBloc, DedupeState>(
         listener:
             (context, state) => {
-              print('Dedupe final Response => $state '),
               if (state.status == DedupeFetchStatus.success)
                 {
                   /* If aadharvalidateResponse is not null, show the response(name,dob,address etc) 
@@ -97,7 +106,7 @@ class DedupeSearch extends StatelessWidget {
                         {
                           "icon": Icons.contact_phone,
                           "label": "Mobile",
-                          "value": "",
+                          "value": state.aadharvalidateResponse?.mobile,
                         },
                         {
                           "icon": Icons.home,
@@ -111,7 +120,7 @@ class DedupeSearch extends StatelessWidget {
                     {
                       dataList = [
                         {
-                          "icon": Icons.currency_rupee,
+                          "icon": Icons.check_box_rounded,
                           "label": "CBS",
                           "value": "true",
                         },
@@ -130,14 +139,7 @@ class DedupeSearch extends StatelessWidget {
                           side: BorderSide(color: Colors.grey.shade300),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        // child: ResponseWidget(
-                        //   heightSize:
-                        //       state.aadharvalidateResponse != null
-                        //           ? 0.50
-                        //           : 0.32,
-                        //   dataList: dataList,
-                        //   onpressed: () => {disposeResponse(context, state)},
-                        // ),
+
                         child: ResponseWidget(
                           heightSize:
                               state.aadharvalidateResponse != null ? 0.5 : 0.32,
@@ -150,12 +152,21 @@ class DedupeSearch extends StatelessWidget {
                     },
                   ),
                 }
+              else if (state.status == DedupeFetchStatus.scan) 
+                {
+                  dedupeForm.control('aadhaar').updateValue(state.dedupeResponse!.remarks)
+                }
               else if (state.status == DedupeFetchStatus.failure)
                 {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(state.errorMsg!))),
-
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        state.errorMsg?.isNotEmpty == true
+                            ? state.errorMsg!
+                            : 'No response data from server',
+                      ),
+                    ),
+                  ),
                   if (onSuccess != null) {onSuccess!(state)},
                 },
             },
@@ -186,79 +197,124 @@ class DedupeSearch extends StatelessWidget {
                         Dropdown(
                           controlName: 'title',
                           label: 'Title',
+                          mantatory: dedupeForm
+                              .control('title')
+                              .validators
+                              .contains(RequiredValidator()),
                           items: ['Mr', 'Mrs', 'Miss', 'Others'],
                         ),
                         CustomTextField(
                           controlName: 'firstname',
                           label: 'First Name',
-                          mantatory: true,
+                          mantatory: dedupeForm
+                              .control('firstname')
+                              .validators
+                              .contains(RequiredValidator()),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              AppConstants.NameInputFormatter,
+                            ),
+                          ],
                         ),
                         CustomTextField(
                           controlName: 'lastname',
                           label: 'Last Name',
-                          mantatory: true,
+                          mantatory: dedupeForm
+                              .control('lastname')
+                              .validators
+                              .contains(RequiredValidator()),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              AppConstants.NameInputFormatter,
+                            ),
+                          ],
                         ),
                         IntegerTextField(
                           controlName: 'mobilenumber',
                           label: 'Mobile Number',
-                          mantatory: true,
+                          mantatory: dedupeForm
+                              .control('mobilenumber')
+                              .validators
+                              .contains(RequiredValidator()),
                           maxlength: 10,
                           minlength: 10,
                         ),
                         CustomTextField(
                           controlName: 'pan',
                           label: 'PAN Number',
-                          mantatory: true,
+                          mantatory: dedupeForm
+                              .control('pan')
+                              .validators
+                              .contains(RequiredValidator()),
                           maxlength: 10,
                           autoCapitalize: true,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[A-Z0-9]'),
+                            ),
+                          ],
                         ),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Expanded(
-                              child: IntegerTextField(
-                                controlName: 'aadhaar',
-                                label: 'Aadhaar Number',
-                                mantatory: true,
-                                maxlength: 12,
-                                minlength: 12,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: AadhaarVerification(
+                                kycTextBox: KYCTextBox(
+                                  fieldKey: GlobalKey(),
+                                  validationPattern:
+                                      'Please enter a valid AadhaarNumber (e.g. 123456789012)',
+                              
+                                  formProps: FormProps(
+                                    formControlName: 'aadhaar',
+                                    label: 'Aadhaar',
+                                    mandatory: true,
+                                    maxLength: 12,
+                                  ),
+                                  styleProps: StyleProps(),
+                                  apiUrl: '',
+                                  buttonProps: ButtonProps(
+                                    label: 'verify',
+                                    foregroundColor: Colors.white,
+                                  ),
+                                  isOffline: true,
+                                  onSuccess: (value) async {
+                                    print('onSuccess ${value.data}');
+                                    context.read<DedupeBloc>().add(ValiateAadharFromPluginEvent(
+                                      responseData: value
+                                    ));
+                                  },
+                                  onError: (value) {
+                                    print(" onerror $value");
+                                  },
+                                  assetPath: AppConstants.aadhaarResponse,
+                                  verificationType: VerificationType.aadhaar,
+                                  kycNumber:
+                                      dedupeForm.controls['aadhaar']?.value != null
+                                          ? dedupeForm.controls['aadhaar']!.value.toString()
+                                          : null,
+                                ),
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            if (state.dedupeResponse?.remarksFlag == false &&
-                                !state.isAadhaarValidated)
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    3,
-                                    9,
-                                    110,
-                                  ),
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 10,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
+                            const SizedBox(width: 5),
+                            // ElevatedButton.icon(
+                            //   icon: Icon(Icons.qr_code_scanner),
+                            //   label: Text('Scan'),
+                            //   onPressed: () => showScannerOptions(context),
+                            // ),
+                            // Center(
+                              // child: 
+                            
+                              Ink(
+                                decoration: ShapeDecoration(
+                                  color: Colors.blue,
+                                  shape: CircleBorder(),
                                 ),
-                                onPressed: () {
-                                  final AadharvalidateRequest
-                                  aadharvalidateRequest = AadharvalidateRequest(
-                                    aadhaarNumber:
-                                        dedupeForm.control('aadhaar').value,
-                                  );
-                                  context.read<DedupeBloc>().add(
-                                    ValiateAadharEvent(
-                                      request: aadharvalidateRequest,
-                                    ),
-                                  );
-                                  print(state.aadharvalidateResponse);
-                                },
-                                child: const Text("Validate"),
-                              ),
+                                child: IconButton(
+                                  onPressed:  () => showScannerOptions(context, 'dedupe'),
+                                  icon: Icon(Icons.qr_code)
+                                ),
+                              )
+                            // )
                           ],
                         ),
                         ElevatedButton(

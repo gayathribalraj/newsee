@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:newsee/AppData/app_api_constants.dart';
 import 'package:newsee/AppData/app_constants.dart';
@@ -18,9 +17,9 @@ void showSuccessBottomSheet({
   required String lead,
   required String message,
   required VoidCallback? onPressedLeftButton,
-  required VoidCallback? onPressedRightButton,
+  VoidCallback? onPressedRightButton,
   required String? leftButtonLabel,
-  required String? rightButtonLabel,
+  String? rightButtonLabel,
   SaveStatus? status,
 }) {
   showModalBottomSheet(
@@ -28,15 +27,16 @@ void showSuccessBottomSheet({
     isScrollControlled: true,
     isDismissible: false,
     backgroundColor: Colors.transparent,
-    builder: (context) => _AnimatedSuccessContent(
-      headerTxt: headerTxt,
-      lead: lead,
-      message: message,
-      onPressedLeftButton: onPressedLeftButton,
-      onPressedRightButton: onPressedRightButton,
-      leftButtonLabel: leftButtonLabel,
-      rightButtonLabel: rightButtonLabel,
-    ),
+    builder:
+        (context) => _AnimatedSuccessContent(
+          headerTxt: headerTxt,
+          lead: lead,
+          message: message,
+          onPressedLeftButton: onPressedLeftButton,
+          onPressedRightButton: onPressedRightButton,
+          leftButtonLabel: leftButtonLabel,
+          rightButtonLabel: rightButtonLabel,
+        ),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -59,7 +59,7 @@ class _AnimatedSuccessContent extends StatefulWidget {
     required this.onPressedLeftButton,
     required this.onPressedRightButton,
     required this.leftButtonLabel,
-    required this.rightButtonLabel,
+    this.rightButtonLabel,
   });
 
   @override
@@ -156,9 +156,8 @@ class _AnimatedSuccessContentState extends State<_AnimatedSuccessContent>
                   Flexible(
                     flex: 4,
                     child: ElevatedButton(
-                      onPressed: 
-                                               widget.onPressedRightButton,
-                      
+                      onPressed: widget.onPressedRightButton,
+
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.all(8),
                         minimumSize: Size(

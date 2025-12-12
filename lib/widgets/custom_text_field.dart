@@ -5,6 +5,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -14,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   bool? autoCapitalize;
   int? maxlength;
   final Key? fieldKey;
+  final List<TextInputFormatter>? inputFormatters;
   CustomTextField({
     this.fieldKey,
     required this.controlName,
@@ -21,6 +23,7 @@ class CustomTextField extends StatelessWidget {
     required this.mantatory,
     this.autoCapitalize,
     this.maxlength,
+    this.inputFormatters,
   });
 
   @override
@@ -32,6 +35,7 @@ class CustomTextField extends StatelessWidget {
         autofocus: false,
         formControlName: controlName,
         maxLength: maxlength,
+        inputFormatters: inputFormatters,
         textCapitalization:
             autoCapitalize == true
                 ? TextCapitalization.characters
@@ -39,6 +43,7 @@ class CustomTextField extends StatelessWidget {
         validationMessages: {
           ValidationMessage.required: (error) => '$label is required',
           ValidationMessage.email: (error) => 'Enter valid $label',
+          ValidationMessage.pattern: (_) => 'Enter valid $label',
         },
         decoration: InputDecoration(
           label: RichText(

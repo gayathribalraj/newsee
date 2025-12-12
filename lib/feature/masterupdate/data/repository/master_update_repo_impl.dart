@@ -11,25 +11,31 @@ import 'package:newsee/feature/masterupdate/domain/repository/master_update_repo
 
 class MasterUpdateRepoImpl implements MasterUpdateRepository {
   @override
-  Future<AsyncResponseHandler<Failure, Map<String, dynamic>>> getMastersVersion() async {
+  Future<AsyncResponseHandler<Failure, Map<String, dynamic>>>
+  getMastersVersion() async {
     try {
       final payload = {
         "vertical": ApiConfig.VERTICAL,
-        "token": ApiConfig.AUTH_TOKEN
+        "token": ApiConfig.AUTH_TOKEN,
       };
       print("payload-LandHoldingRespositoryImpl => $payload");
       final response = await MasterUpdateDatasource(
         dio: ApiClient().getDio(),
       ).downloadMasterVersion(payload);
       if (response.data[ApiConfig.API_RESPONSE_SUCCESS_KEY]) {
-        final Map<String, dynamic> masterdetail = response.data['responseData']['MasterDetails'];
+        final Map<String, dynamic> masterdetail =
+            response.data['responseData']['MasterDetails'];
         Globalconfig.masterVersionMapper = masterdetail;
-        print('Globalconfig.masterVersionMapper => ${Globalconfig.masterVersionMapper}');;
+        print(
+          'Globalconfig.masterVersionMapper => ${Globalconfig.masterVersionMapper}',
+        );
         return AsyncResponseHandler.right(masterdetail);
       } else {
         var errorMessage = response.data['ErrorMessage'] ?? "Unknown error";
         print('Land Holding error => $errorMessage');
-        return AsyncResponseHandler.left(HttpConnectionFailure(message: errorMessage));
+        return AsyncResponseHandler.left(
+          HttpConnectionFailure(message: errorMessage),
+        );
       }
     } on DioException catch (e) {
       HttpConnectionFailure failure =

@@ -55,7 +55,7 @@ class ToolbarView extends StatelessWidget {
                   // ),
                   leading: IconButton(
                     onPressed: () {
-                      print(Scaffold()!.drawer);
+                      print(Scaffold().drawer);
                       // if (ScaffoldState().isDrawerOpen) {
                       //   ScaffoldState().closeDrawer();
                       // } else {

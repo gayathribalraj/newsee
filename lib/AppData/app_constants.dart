@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 // ignore: constant_identifier_names
 
 class AppConstants {
@@ -7,7 +6,12 @@ class AppConstants {
     r'[\*\%!$\^.,;:{}\(\)\-_+=\[\]]',
   );
 
+  // static final RegExp Name_Pattern = RegExp(r'^[A-Za-z\s]+$');
+  static final RegExp Name_Pattern = RegExp(r'^[A-Za-z\s/]+$');
   static final RegExp PAN_PATTERN = RegExp(r'^[A-Z]{5}[0-9]{4}[A-Z]$');
+  static final RegExp mobileNumber = RegExp(r'^\d{10}$');
+
+  static final NameInputFormatter = RegExp(r'[A-Za-z\s]');
 
   static final RegExp AADHAAR_PATTERN = RegExp('[0-9]{12}');
 
@@ -22,7 +26,10 @@ class AppConstants {
   static const String GLOBAL_API_ERROR_MESSAGE = 'Something went wrong';
   static const String GLOBAL_NO_DATA_FOUND = 'No Data found';
   static const String GLOBAL_COULD_NOT_LAUNCH = 'Could not launch';
-  static const String FAILED_TO_LOAD_PDF_MESSAGE = 'Failed to load PDF';
+  static const String FAILED_TO_CHECK_CIBIL_MESSAGE =
+      'Failed to check cibil report';
+  static const String FAILED_TO_LOAD_PDF_MESSAGE =
+      'Failed to load cibil report';
   static const String OK = 'OK';
   static const bool SHOW_LOG = true;
 
@@ -38,15 +45,16 @@ class AppConstants {
       'https://www.crifhighmark.com/media/2989/company-credit-reportp-sample.pdf';
   static const String applicantCibilReportFileName = 'ApplicantCIBIL.pdf';
   static const String applicantCrifReportFileName = 'ApplicantCRIF.pdf';
-  static const String coappCibilReportFileName = 'ApplicantCIBIL.pdf';
-  static const String coappCrifReportFileName = 'ApplicantCRIF.pdf';
+  static const String coappCibilReportFileName = 'CoApplicantCIBIL.pdf';
+  static const String coappCrifReportFileName = 'CoApplicantCRIF.pdf';
   static const String mpinRegistrationSuccess = 'MPIN Registered Successfully';
   static const String mpinRegistrationFailure = 'MPIN Registeration Failed';
   static const String mpinLoginSuccess = 'MPIN Login Successfull';
   static const String mpinLoginFailure = 'MPIN Login Failed';
   static const String offlineDatasourceRootPath = 'assets/data/';
   static const String aadhaarResponse = 'assets/data/aadhaar_response.json';
-  static const String cifResponsonse = 'assets/data/cif.json';
+  static const String cifResponsonse = 'assets/data/cifdata.json';
+  static const String cibilResponsonse = 'assets/data/cibil.json';
   static const String cityListResponse = 'assets/data/citylist.json';
   static const String dedupeResponse = 'assets/data/dedupe.json';
   static const String districtResponse = 'assets/data/districtlist.json';
@@ -55,6 +63,16 @@ class AppConstants {
   static const String productSchemaResponse = 'assets/data/productschema.json';
   static const String statecityResponse = 'assets/data/statecity.json';
   static const String documentsResponse = 'assets/data/documents.json';
+  static const String bankName = 'Union Bank of India';
+  static const String moduleName = 'Retail';
+  static const String cibilApiName = 'Cibil_Consumer';
+  static const String cifApiName = 'CIFPULLING_API';
+  static const String module = 'RETAIL';
+  static const String mobilityModule = 'Mobility Module';
+  static const String cropResponsonse = 'assets/data/crop.json';
+  static const String cropGetResponsonse = 'assets/data/get_crop.json';
+  static const String rhIHLandCropResponse =
+      'assets/data/RBIH_LAND_CROP_RESP.json';
 }
 
 class BioMetricResult {

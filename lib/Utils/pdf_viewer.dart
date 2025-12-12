@@ -1,9 +1,6 @@
-import 'package:flutter/foundation.dart'; // Add this import
+import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:newsee/feature/documentupload/presentation/bloc/document_bloc.dart';
-import 'package:newsee/feature/documentupload/presentation/bloc/document_event.dart';
 import 'package:pdfx/pdfx.dart';
 
 class PDFViewerFromBytes extends StatefulWidget {

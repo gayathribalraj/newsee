@@ -17,12 +17,11 @@ import 'package:newsee/feature/loader/presentation/bloc/global_loading_event.dar
 import 'package:newsee/feature/proposal_inbox/domain/modal/application_status_response.dart';
 import 'package:newsee/feature/proposal_inbox/domain/modal/group_proposal_inbox.dart';
 import 'package:newsee/feature/proposal_inbox/presentation/bloc/proposal_inbox_bloc.dart';
-import 'package:newsee/feature/cic_check/cic_check_page.dart';
+import 'package:newsee/feature/cic_check/presentation/cic_check_page.dart';
 import 'package:newsee/widgets/bottom_sheet.dart';
 import 'package:newsee/widgets/options_sheet.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:number_paginator/number_paginator.dart';
-import 'package:newsee/feature/leadInbox/presentation/bloc/lead_bloc.dart';
 import 'package:newsee/widgets/lead_tile_card-shimmer.dart';
 import 'package:newsee/widgets/lead_tile_card.dart';
 
@@ -36,12 +35,12 @@ class ProposalInbox extends StatelessWidget {
       context: context,
       barrierDismissible: false,
       builder:
-        (_) => SysmoAlert.failure(
-          message: message.toString(),
-          onButtonPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+          (_) => SysmoAlert.failure(
+            message: message.toString(),
+            onButtonPressed: () {
+              Navigator.pop(context);
+            },
+          ),
     );
   }
 
@@ -58,8 +57,12 @@ class ProposalInbox extends StatelessWidget {
       child: BlocConsumer<ProposalInboxBloc, ProposalInboxState>(
         listener: (context, state) {
           if (state.applicationStatus == SaveStatus.success) {
-            _showBottomSheet(context, state.currentApplication!, state.applicationStatusResponse!);
-          } else if(state.applicationStatus == SaveStatus.failure) {
+            _showBottomSheet(
+              context,
+              state.currentApplication!,
+              state.applicationStatusResponse!,
+            );
+          } else if (state.applicationStatus == SaveStatus.failure) {
             showAlert(context, state.errorMessage);
           }
         },
@@ -68,7 +71,11 @@ class ProposalInbox extends StatelessWidget {
           Future<void> onRefresh() async {
             context.read<ProposalInboxBloc>().add(
               SearchProposalInboxEvent(
-                request: LeadInboxRequest(userid: '', token: '', pageNo: state.currentPage),
+                request: LeadInboxRequest(
+                  userid: '',
+                  token: '',
+                  pageNo: state.currentPage,
+                ),
               ),
             );
           }
@@ -168,7 +175,7 @@ class ProposalInbox extends StatelessWidget {
                   loanamount: proposal['loanAmount']?.toString() ?? '',
                   onTap: () {
                     context.read<ProposalInboxBloc>().add(
-                      ApplicationStatusCheckEvent(currentApplication: proposal)
+                      ApplicationStatusCheckEvent(currentApplication: proposal),
                     );
                   },
                 );
@@ -273,7 +280,11 @@ class ProposalInbox extends StatelessWidget {
     );
   }
 
-  void _showBottomSheet(BuildContext context, Map<String, dynamic> proposal, ApplicationStatusResponse status) {
+  void _showBottomSheet(
+    BuildContext context,
+    Map<String, dynamic> proposal,
+    ApplicationStatusResponse status,
+  ) {
     openBottomSheet(context, 0.6, 0.4, 0.9, (context, scrollController) {
       return SingleChildScrollView(
         controller: scrollController,
@@ -287,9 +298,18 @@ class ProposalInbox extends StatelessWidget {
               status: status.cibilDetails ? 'completed' : 'pending',
               onTap: () {
                 context.pop();
+                print('selectedProp: $proposal');
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CicCheckPage()),
+                  MaterialPageRoute(
+                    builder:
+                        (context) => CicCheckPage(
+                          selectedProp: proposal,
+                          applicantName: proposal['applicantName'],
+                          isApplicantCibilCheck: status.cibilDetails,
+                          isLandCompleted: status.landHoldingDetails,
+                        ),
+                  ),
                 );
               },
             ),
@@ -305,6 +325,8 @@ class ProposalInbox extends StatelessWidget {
                   extra: {
                     'applicantName': proposal['applicantName'],
                     'proposalNumber': proposal['propNo'],
+                    'isCompleted': status.landHoldingDetails,
+                    'custId': proposal['borrCustId'],
                   },
                 );
               },
@@ -315,8 +337,30 @@ class ProposalInbox extends StatelessWidget {
               subtitle: "View your Crop Details here",
               status: status.ProposedCropDetails ? 'completed' : 'pending',
               onTap: () {
-                context.pop();
-                context.pushNamed('cropdetails', extra: proposal['propNo']);
+                if (status.landHoldingDetails == true) {
+                  context.pop();
+                  context.pushNamed(
+                    'cropdetails',
+                    extra: {
+                      'proposal': proposal['propNo'],
+                      'isCompleted': status.ProposedCropDetails,
+                    },
+                  );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder:
+                        (_) => SysmoAlert(
+                          message: 'Please submit landholding details.',
+                          icon: Icons.error_outline,
+                          iconColor: Colors.red,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black,
+                          buttonText: AppConstants.OK,
+                          onButtonPressed: () => Navigator.pop(context),
+                        ),
+                  );
+                }
               },
             ),
             OptionsSheet(

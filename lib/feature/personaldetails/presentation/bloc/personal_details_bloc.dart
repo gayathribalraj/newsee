@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/AppData/app_constants.dart';
+import 'package:newsee/Model/liveliness_details.dart';
 import 'package:newsee/Model/personal_data.dart';
+import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/core/db/db_config.dart';
 import 'package:newsee/feature/aadharvalidation/data/repository/aadhar_validate_impl.dart';
 import 'package:newsee/feature/aadharvalidation/domain/modal/aadharvalidate_request.dart';
@@ -40,8 +42,8 @@ final class PersonalDetailsBloc
     PersonalDetailsInitEvent event,
     Emitter emit,
   ) async {
-    Database _db = await DBConfig().database;
-    List<Lov> listOfLov = await LovCrudRepo(_db).getAll();
+    Database db = await DBConfig().database;
+    List<Lov> listOfLov = await LovCrudRepo(db).getAll();
     print('listOfLov => $listOfLov');
     emit(
       PersonalDetailsState(
@@ -80,9 +82,13 @@ final class PersonalDetailsBloc
   personalDraftData(personalData) async {
     print('personalData: $personalData');
     final draftService = DraftService();
+    final personalMap = personalData.toMap();
+    personalMap['borrowerLivelinessDet'] =
+        personalData.borrowerLivelinessDet?.toMap();
+
     await draftService.saveOrUpdateTabData(
       tabKey: 'personal',
-      tabData: personalData.toMap(),
+      tabData: personalMap,
     );
   }
 
@@ -133,10 +139,11 @@ final class PersonalDetailsBloc
     Emitter emit,
   ) async {
     try {
-      Database _db = await DBConfig().database;
-      List<Lov> listOfLov = await LovCrudRepo(_db).getAll();
+      Database db = await DBConfig().database;
+      List<Lov> listOfLov = await LovCrudRepo(db).getAll();
       print('personalDatad => ${event.leadDetails}');
-      print(PersonalData.fromMap(event.leadDetails!));
+
+      print(event.leadDetails!);
       PersonalData? personalData =
           event.leadDetails!.containsKey('lleadtitle')
               ? PersonalData(
@@ -144,7 +151,7 @@ final class PersonalDetailsBloc
                 firstName: event.leadDetails!['lleadfrstname'],
                 middleName: event.leadDetails!['lleadmidname'],
                 lastName: event.leadDetails!['lleadlastname'],
-                dob: event.leadDetails!['lleaddob'],
+                dob: getDateFormat(event.leadDetails!['lleaddob']),
                 residentialStatus: event.leadDetails!['lldResidentialStatus'],
                 primaryMobileNumber: event.leadDetails!['lleadmobno'],
                 secondaryMobileNumber: event.leadDetails!['lleadSecMobNo'],
@@ -165,11 +172,20 @@ final class PersonalDetailsBloc
                 sourceid: event.leadDetails!['lleadsourid'],
                 sourcename: event.leadDetails!['lleadsourname'],
                 subActivity: event.leadDetails!['lldSubActivity'],
+                // borrowerLivelinessDet:
+                //     event.leadDetails!['lleadborrowerLivelinessDet'],
               )
               : event.leadDetails != null
               ? PersonalData.fromMap(event.leadDetails!)
               : null;
-
+      print('personalData: $personalData');
+      if (event.leadDetails!.containsKey('borrowerLivelinessDet')) {
+        final borrowerLivelinessDet = LiveLinessDetails.fromMap(
+          event.leadDetails!['borrowerLivelinessDet'],
+        );
+        PersonalData(borrowerLivelinessDet: borrowerLivelinessDet);
+      }
+      print(personalData);
       emit(
         state.copyWith(
           lovList: listOfLov,

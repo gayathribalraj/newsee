@@ -6,8 +6,6 @@
             {String status} - master downloaded status (success or failure)
 */
 
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'master_version.g.dart';

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:newsee/AppData/globalconfig.dart';
@@ -39,6 +40,7 @@ class AuthRepositoryImpl implements AuthRepository {
     LoginRequest req,
   ) async {
     try {
+      String fcmToken = await getFcmToken();
       Map<String, dynamic> payload = {
         "Loginuser": req.username,
         "Loginpasswd": req.password,
@@ -48,9 +50,18 @@ class AuthRepositoryImpl implements AuthRepository {
         "Brach_code": "",
         "PdTab": "N",
         "Module": "AGRI",
+        "fcmToken": fcmToken,
       };
 
       print('auth request payload => $payload');
+      // SharedPreferences preferences = await SharedPreferences.getInstance();
+
+      // if (preferences.getString('fcmToken') == null) {
+      //   fcmToken = await getFcmToken();
+      //   await preferences.setString('fcmToken', fcmToken);
+      // } else {
+      //   fcmToken = preferences.getString('fcmToken') ?? 'empty';
+      // }
       var response = await authRemoteDatasource.loginWithUserAccount(payload);
       // process api response if it's success
       if (response.data['Success']) {
@@ -61,9 +72,7 @@ class AuthRepositoryImpl implements AuthRepository {
         final Map<String, dynamic> masterdetail =
             response.data['responseData']['MasterDetails'];
         Globalconfig.masterVersionMapper = masterdetail;
-
-        
-
+        print('masterdetail: $masterdetail');
 
         print('AuthResponseModel.fromJson() => ${authResponse.toString()}');
         print("Auth Response from login: => $response");
@@ -72,9 +81,7 @@ class AuthRepositoryImpl implements AuthRepository {
           "masterResponse response from login, => ${Globalconfig.masterVersionMapper}",
         );
 
-        var loginDetails = UserDetails.fromJson(
-          response.data['responseData'],
-        );
+        var loginDetails = UserDetails.fromJson(response.data['responseData']);
 
         print('loginDetails.fromJson() => $loginDetails');
 
@@ -83,11 +90,8 @@ class AuthRepositoryImpl implements AuthRepository {
         print('jsonString => $jsonString');
 
         final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
-        await asyncPrefs.setString(
-          "userdetails", jsonString
-        );
+        await asyncPrefs.setString("userdetails", jsonString);
 
-        
         return AsyncResponseHandler.right(authResponse);
       } else {
         // api response success : false , process error message
@@ -95,26 +99,32 @@ class AuthRepositoryImpl implements AuthRepository {
         print('on Error request.data["ErrorMessage"] => $errorMessage');
         return AsyncResponseHandler.left(AuthFailure(message: errorMessage));
       }
-    // } on DioException catch (e) {
-    //   // exception handler for server down
-    //   if (e.error is SocketException) {
-    //     return AsyncResponseHandler.left(
-    //       AuthFailure(
-    //         message: "Could not reach Server , Please try again in sometimes.",
-    //       ),
-    //     );
-    //   }
-    //   return AsyncResponseHandler.left(
-    //     AuthFailure(message: "Exception Occured"),
-    //   );
+      // } on DioException catch (e) {
+      //   // exception handler for server down
+      //   if (e.error is SocketException) {
+      //     return AsyncResponseHandler.left(
+      //       AuthFailure(
+      //         message: "Could not reach Server , Please try again in sometimes.",
+      //       ),
+      //     );
+      //   }
+      //   return AsyncResponseHandler.left(
+      //     AuthFailure(message: "Exception Occured"),
+      //   );
     } on DioException catch (e) {
       HttpConnectionFailure failure =
           DioHttpExceptionParser(exception: e).parse();
       return AsyncResponseHandler.left(failure);
-    } on Exception catch (e) {
+    } on Exception {
       return AsyncResponseHandler.left(
         AuthFailure(message: 'Authentication Failure'),
       );
     }
   }
+}
+
+Future<String> getFcmToken() async {
+  String? token = await FirebaseMessaging.instance.getToken();
+  print("When login sending FCM Token to server: $token");
+  return token!;
 }

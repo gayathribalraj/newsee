@@ -3,7 +3,6 @@ import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/Utils/masterversioncheck.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
-import 'package:newsee/feature/masters/domain/modal/master_request.dart';
 import 'package:equatable/equatable.dart';
 import 'package:newsee/feature/masters/domain/modal/master_version.dart';
 import 'package:newsee/feature/masterupdate/data/repository/master_update_repo_impl.dart';
@@ -13,7 +12,7 @@ part 'master_update_event.dart';
 part 'master_update_state.dart';
 
 class MasterUpdateBloc extends Bloc<MasterUpdateEvent, MasterUpdateState> {
-  MasterUpdateBloc():super(MasterUpdateState.init()) {
+  MasterUpdateBloc() : super(MasterUpdateState.init()) {
     on<MasterVersionCheck>(masterVersionCheck);
   }
 
@@ -22,16 +21,17 @@ class MasterUpdateBloc extends Bloc<MasterUpdateEvent, MasterUpdateState> {
       if (Globalconfig.masterUpdate) {
         Globalconfig.masterUpdate = false;
         emit(
-            state.copyWith(
-              status: SaveStatus.init,
-              masterDifferent: false,
-              listOfMaster: [],
-            )
-          );
+          state.copyWith(
+            status: SaveStatus.init,
+            masterDifferent: false,
+            listOfMaster: [],
+          ),
+        );
       } else {
         emit(state.copyWith(status: SaveStatus.loading));
         MasterUpdateRepository masterUpdateRepository = MasterUpdateRepoImpl();
-        var masterVersionResponse = await masterUpdateRepository.getMastersVersion();
+        var masterVersionResponse =
+            await masterUpdateRepository.getMastersVersion();
         if (masterVersionResponse.isRight()) {
           AsyncResponseHandler<bool, List<MasterVersion>>
           masterVersionCheckResponseHandler = await compareVersions(
@@ -44,16 +44,16 @@ class MasterUpdateBloc extends Bloc<MasterUpdateEvent, MasterUpdateState> {
                 state.copyWith(
                   status: SaveStatus.success,
                   masterDifferent: true,
-                  listOfMaster: masterVersionCheckResponseHandler.right
-                )
+                  listOfMaster: masterVersionCheckResponseHandler.right,
+                ),
               );
             } else {
               emit(
                 state.copyWith(
                   status: SaveStatus.success,
                   masterDifferent: false,
-                  listOfMaster: []
-                )
+                  listOfMaster: [],
+                ),
               );
             }
           } else {
@@ -61,19 +61,18 @@ class MasterUpdateBloc extends Bloc<MasterUpdateEvent, MasterUpdateState> {
               state.copyWith(
                 status: SaveStatus.success,
                 masterDifferent: false,
-                listOfMaster: []
-              )
+                listOfMaster: [],
+              ),
             );
           }
-        
         } else {
           emit(
             state.copyWith(
               status: SaveStatus.failure,
               masterDifferent: false,
               listOfMaster: [],
-              errorMessage: masterVersionResponse.left.message
-            )
+              errorMessage: masterVersionResponse.left.message,
+            ),
           );
         }
       }
@@ -83,8 +82,8 @@ class MasterUpdateBloc extends Bloc<MasterUpdateEvent, MasterUpdateState> {
           status: SaveStatus.failure,
           masterDifferent: false,
           listOfMaster: [],
-          errorMessage: error.toString()
-        )
+          errorMessage: error.toString(),
+        ),
       );
     }
   }

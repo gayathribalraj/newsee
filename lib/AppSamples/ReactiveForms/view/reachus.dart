@@ -55,13 +55,13 @@ void reachUsActionSheet(
               onPressed: () async {
                 //  whasapp();
                 final phoneNumber = "919940362579";
-                final Uri _url = Uri.parse('https://wa.me/sms:$phoneNumber');
+                final Uri url = Uri.parse('https://wa.me/sms:$phoneNumber');
                 // final Uri _url = Uri.parse('https://flutter.dev');
 
-                if (!await canLaunchUrl(_url)) {
-                  throw 'Could not launch $_url';
+                if (!await canLaunchUrl(url)) {
+                  throw 'Could not launch $url';
                 } else {
-                  await launchUrl(_url);
+                  await launchUrl(url);
                 }
                 Navigator.pop(context);
               },

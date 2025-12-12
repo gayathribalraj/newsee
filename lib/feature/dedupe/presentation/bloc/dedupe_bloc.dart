@@ -24,6 +24,8 @@ class DedupeBloc extends Bloc<DedupeEvent, DedupeState> {
     on<OpenSheetEvent>(openbottomsheet);
     on<DedupeDraftResponseFetch>(dedupeDraftResponse);
     on<DedupeDetailsInitEvent>(initDedupeDetails);
+    on<ValiateAadharFromPluginEvent>(onValidateAadharFromPlugin);
+    on<ScannerDedupeEvent>(onQRScan);
   }
 
   Future<void> initDedupeDetails(
@@ -131,6 +133,50 @@ class DedupeBloc extends Bloc<DedupeEvent, DedupeState> {
     }
   }
 
+  Future<void> onValidateAadharFromPlugin(
+    ValiateAadharFromPluginEvent event,
+    Emitter emit,
+  ) async {
+    final respone = event.responseData;
+    print("onValidateAadharFromPlugin-response $respone");
+    final dedupeResponse = DedupeResponse(
+      CBS: false,
+      remarksFlag: false,
+      remarks: '',
+    );
+    AadharvalidateResponse aadharvalidateResponse =
+        AadharvalidateResponse.fromMap(respone.data['responseData']['data']);
+    emit(
+      state.copyWith(
+        status: DedupeFetchStatus.success,
+        dedupeResponse: dedupeResponse,
+        aadharvalidateResponse: aadharvalidateResponse,
+        isAadhaarValidated: true,
+      ),
+    );
+  }
+
+  Future<void> onQRScan(ScannerDedupeEvent event, Emitter emit) async {
+    emit(state.copyWith(status: DedupeFetchStatus.loading));
+    String aadhaarId = '';
+    if (event.scannerResponse['aadhaarResponse']['@uid'] != null) {
+      aadhaarId = event.scannerResponse['aadhaarResponse']['@uid'];
+    } else {
+      aadhaarId = event.scannerResponse['aadhaarResponse'];
+    }
+
+    emit(
+      state.copyWith(
+        status: DedupeFetchStatus.scan,
+        dedupeResponse: DedupeResponse(
+          CBS: false,
+          remarksFlag: false,
+          remarks: aadhaarId,
+        ),
+      ),
+    );
+  }
+
   Future onSearchCif(SearchCifEvent event, Emitter emit) async {
     emit(state.copyWith(status: DedupeFetchStatus.loading));
     CifRepository dedupeRepository = CifRepositoryImpl();
@@ -154,12 +200,17 @@ class DedupeBloc extends Bloc<DedupeEvent, DedupeState> {
   }
 
   Future openbottomsheet(OpenSheetEvent event, Emitter emit) async {
-    print("open botton sheet call here");
+    print("open botton sheet call here ${event.request}");
+    // emit(state.copyWith(status: DedupeFetchStatus.init));
+    // // small delay to ensure listener triggers
+    // await Future.delayed(Duration(milliseconds: 50));
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
     emit(
       state.copyWith(
         status: DedupeFetchStatus.change,
         constitution: event.request['constitution'],
         isNewCustomer: event.request['isNewCustomer'],
+        changeTrigger: timestamp,
       ),
     );
   }
