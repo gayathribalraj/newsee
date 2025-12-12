@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/core/api/api_client.dart';
+import 'package:path_provider/path_provider.dart';
 
 /*
   @author     : akshayaa.p
@@ -40,5 +42,40 @@ Future<Response> downloadPDF({
     return response;
   } catch (e) {
     rethrow;
+  }
+}
+
+Future<String> downloadCibilPdf(String htmlBase64) async {
+  try {
+    final pdfPath = await saveBase64Pdf(
+      htmlBase64,
+      AppConstants.applicantCibilReportFileName,
+    );
+    print('pdf saved at: $pdfPath');
+
+    return pdfPath;
+  } catch (e) {
+    print('error saving PDF: $e');
+    return '';
+  }
+}
+
+Future<String> saveBase64Pdf(String base64Data, String fileName) async {
+  try {
+    if (base64Data.contains(',')) {
+      base64Data = base64Data.split(',')[1];
+    }
+    final bytes = base64.decode(base64Data);
+
+    final dir = await getTemporaryDirectory();
+    final filePath = '${dir.path}/$fileName';
+
+    final file = File(filePath);
+    await file.writeAsBytes(bytes, flush: true);
+    print('filapath: $filePath');
+    return filePath;
+  } catch (e) {
+    print('error saveBase64Pdf: $e');
+    throw Exception('Failed to save PDF: $e');
   }
 }
