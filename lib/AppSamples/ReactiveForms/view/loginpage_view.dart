@@ -1,25 +1,15 @@
-import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
-import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/AppSamples/ReactiveForms/view/login-with-account.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:newsee/Utils/local_biometric.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/Utils/utils.dart';
-import 'package:newsee/core/api/api_client.dart';
 import 'package:newsee/feature/globalconfig/bloc/global_config_bloc.dart';
-import 'package:newsee/feature/pdf_viewer/presentation/pages/pdf_viewer_page.dart';
-import 'package:newsee/widgets/bottom_sheet.dart';
 import 'package:newsee/widgets/options_sheet.dart';
-import 'package:newsee/widgets/sysmo_alert.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import '../../../feature/forgetmpin/presentation/page/forgetpassword.dart';
 import 'maintain.dart';
 import 'reachus.dart';

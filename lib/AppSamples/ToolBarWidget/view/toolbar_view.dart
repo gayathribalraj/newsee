@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:newsee/AppData/globalconfig.dart';
-import 'package:newsee/pages/address_page.dart';
-import 'package:newsee/pages/loan_details_page.dart';
-import 'package:newsee/pages/sourcing_page.dart';
-import 'package:newsee/timer/view/timer_view.dart';
 import 'package:newsee/widgets/side_navigation.dart';
 
 class ToolbarView extends StatelessWidget {

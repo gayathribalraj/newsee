@@ -924,17 +924,11 @@ class _LandHoldingPageState extends State<LandHoldingPage> {
                                                   print(
                                                     'calculateDistance----->$value',
                                                   );
-                                                  value != null
-                                                      ? form
+                                                  form
                                                           .control(
                                                             'distanceFromBranch',
                                                           )
-                                                          .updateValue(value)
-                                                      : form
-                                                          .control(
-                                                            'distanceFromBranch',
-                                                          )
-                                                          .updateValue(0);
+                                                          .updateValue(value);
                                                 } else {
                                                   showDialog(
                                                     context: context,

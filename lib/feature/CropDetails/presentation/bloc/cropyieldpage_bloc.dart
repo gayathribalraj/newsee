@@ -115,8 +115,8 @@ class CropyieldpageBloc extends Bloc<CropyieldpageEvent, CropyieldpageState> {
   ) async {
     try {
       emit(state.copyWith(status: SaveStatus.loading));
-      Database _db = await DBConfig().database;
-      List<Lov> listOfLov = await LovCrudRepo(_db).getAll();
+      Database db = await DBConfig().database;
+      List<Lov> listOfLov = await LovCrudRepo(db).getAll();
       print('listOfLov => $listOfLov');
 
       //Get Crop Details

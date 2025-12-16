@@ -835,13 +835,13 @@ class _FaceDetectionPageState extends State<FaceDetectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final _height = MediaQuery.sizeOf(context).height;
-    final _width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
+    final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         title: Text('Liveliness Check'),
         bottom: PreferredSize(
-          preferredSize: Size(_width, 70),
+          preferredSize: Size(width, 70),
           child: SizedBox(
             height: 70,
             child: Row(
@@ -886,8 +886,8 @@ class _FaceDetectionPageState extends State<FaceDetectionPage> {
         children: [
           Card(
             child: SizedBox(
-              width: _width,
-              height: _height-200,
+              width: width,
+              height: height-200,
               child:RegistrationScreen(
                 onRegistrationSuccess: (result){
                   ocrdata = result;
@@ -901,10 +901,10 @@ class _FaceDetectionPageState extends State<FaceDetectionPage> {
 
           Card(
             child: SizedBox(
-              width: _width,
-              height: _height-250,
+              width: width,
+              height: height-250,
               child:          RecognitionScreen(name: '',onVerifed: (imageData){
-                widget.onVerifed!(imageData);
+                widget.onVerifed(imageData);
               },),
 
             ),
@@ -967,9 +967,9 @@ class _FaceDetectionPageState extends State<FaceDetectionPage> {
     );
   }
 
-  void scrollToNext(double _height) {
+  void scrollToNext(double height) {
     _scrollController.animateTo(
-      _scrollController.offset + _height + 20,
+      _scrollController.offset + height + 20,
       duration: const Duration(milliseconds: 200),
       curve: Curves.bounceInOut,
     );

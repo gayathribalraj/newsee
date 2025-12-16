@@ -13,7 +13,7 @@ import 'package:newsee/feature/personaldetails/presentation/bloc/personal_detail
 import 'package:newsee/pages/address.dart';
 import 'package:newsee/pages/lead_submit_page.dart';
 import 'package:newsee/pages/loan.dart';
-import 'package:newsee/pages/personal.dart';
+import 'package:newsee/pages/personal_details_page.dart' as personal_page;
 import 'package:newsee/widgets/side_navigation.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 
@@ -336,7 +336,7 @@ class NewLeadPage extends StatelessWidget {
                     ? [
                       Loan(title: 'loan'),
                       DedupeView(title: 'dedupe'),
-                      Personal(title: 'personal'),
+                      personal_page.PersonalDetailsPage('personal', title: 'personal'),
                       Address(title: 'address'),
                       CoApplicantPage(title: 'Co Applicant Details'),
                       LeadSubmitPage(title: 'Lead Details'),
@@ -345,14 +345,14 @@ class NewLeadPage extends StatelessWidget {
                     ? [
                       Loan(title: 'loan'),
                       DedupeView(title: 'dedupe'),
-                      Personal(title: 'personal'),
+                      personal_page.PersonalDetailsPage('personal', title: 'personal'),
                       Address(title: 'address'),
                       CoApplicantPage(title: 'Co Applicant Details'),
                       LeadSubmitPage(title: 'Lead Details'),
                     ]
                     : [
                       Loan(title: 'loan'),
-                      Personal(title: 'personal'),
+                      personal_page.PersonalDetailsPage('personal', title: 'personal'),
                       Address(title: 'address'),
                       CoApplicantPage(title: 'Co Applicant Details'),
                     ],

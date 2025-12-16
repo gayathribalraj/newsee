@@ -1,24 +1,17 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
-import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/core/api/auth_failure.dart';
 import 'package:newsee/core/api/failure.dart';
 import 'package:newsee/Model/login_request.dart';
-import 'package:newsee/core/api/AsyncResponseHandler.dart';
-import 'package:newsee/core/api/auth_failure.dart';
-import 'package:newsee/core/api/failure.dart';
 import 'package:newsee/core/api/http_connection_failure.dart';
 import 'package:newsee/core/api/http_exception_parser.dart';
 import 'package:newsee/feature/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:newsee/feature/auth/domain/model/user/auth_response_model.dart';
-import 'package:newsee/feature/auth/domain/model/user/user_model.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/feature/auth/domain/repository/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';

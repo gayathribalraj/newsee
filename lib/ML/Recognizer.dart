@@ -12,7 +12,7 @@ class Recognizer {
   static const int WIDTH = 112;
   static const int HEIGHT = 112;
   final dbHelper = DatabaseHelper();
-  Map<String, Recognition> registered = Map();
+  Map<String, Recognition> registered = {};
   String get modelName => 'assets/ml_models/mobile_face_net.tflite';
 
   // Add this as a static/utility function or inside your class
@@ -95,7 +95,7 @@ class Recognizer {
 
   List<dynamic> imageToArray(img.Image inputImage) {
     img.Image resizedImage = img.copyResize(
-      inputImage!,
+      inputImage,
       width: WIDTH,
       height: HEIGHT,
     );

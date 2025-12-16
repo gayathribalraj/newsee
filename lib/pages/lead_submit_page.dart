@@ -3,11 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:newsee/AppData/app_api_constants.dart';
 import 'package:newsee/AppData/app_constants.dart';
-import 'package:newsee/AppData/app_route_constants.dart';
 import 'package:newsee/Model/address_data.dart';
 import 'package:newsee/Model/personal_data.dart';
-import 'package:newsee/Utils/proposal_utils.dart';
-import 'package:newsee/Utils/shared_preference_handler.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/feature/addressdetails/presentation/bloc/address_details_bloc.dart';
@@ -25,11 +22,9 @@ import 'package:newsee/feature/masters/domain/modal/product_master.dart';
 import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
 import 'package:newsee/widgets/application_card.dart';
 import 'package:newsee/widgets/bottom_sheet.dart';
-import 'package:newsee/widgets/productcard.dart';
 import 'package:newsee/widgets/success_bottom_sheet.dart';
 import 'package:newsee/widgets/sysmo_notification_card.dart';
 import 'package:newsee/widgets/sysmo_title.dart';
-import 'package:newsee/widgets/sysmo_title1.dart';
 
 class LeadSubmitPage extends StatelessWidget {
   final String title;

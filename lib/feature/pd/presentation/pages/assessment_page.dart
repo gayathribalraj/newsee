@@ -516,7 +516,7 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
         ApiConfig.PD_SCORECARD_ENDPOINT,
         data: {
           "proposalNumber": widget.proposalNumber,
-          "userId": userDetails!.LPuserID,
+          "userId": userDetails.LPuserID,
           "token": ApiConstants.api_qa_token,
           "scoreCardVal": scoreCardValues,
         },

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:newsee/AppData/app_api_constants.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
@@ -123,6 +124,37 @@ class PDInboxBloc extends Bloc<PDInboxEvent, PDInboxState> {
     // check if response i success and contains valid data , success status is emitted
 
     if (response.isRight()) {
+      final updateDetails = response.right.proposalDetails.map((res) async {
+        final updatedData = Map<String, dynamic>.from(res.finalList);
+        if (updatedData['polygonDetails'] != null &&
+            updatedData['polygonDetails'] is List) {
+          final polygrons = updatedData['polygonDetails'] as List<dynamic>;
+          final firstPolygron = polygrons[0] as Map<String, dynamic>;
+
+          final latitude = firstPolygron['lppLatitude'] as double?;
+          final longitude = firstPolygron['lppLongitude'] as double?;
+
+          if (latitude != null && longitude != null) {
+            final Position currentPosition =
+                await Geolocator.getCurrentPosition(
+                  locationSettings: const LocationSettings(
+                    accuracy: LocationAccuracy.high,
+                    distanceFilter: 0,
+                  ),
+                );
+
+            double calculateDistance = Geolocator.distanceBetween(
+              currentPosition.latitude,
+              currentPosition.longitude,
+              latitude,
+              longitude,
+            );
+            updatedData['distance'] = calculateDistance;
+          }
+        }return GroupProposalInbox(finalList: updatedData);
+      }
+           
+      );
       emit(
         state.copyWith(
           status: PDInboxStatus.success,

@@ -106,7 +106,7 @@ class CicCheckPage extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            '${AppConstants.appLabelApplicant}',
+                                            AppConstants.appLabelApplicant,
                                             style: const TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.w500,

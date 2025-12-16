@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:newsee/AppSamples/RouterApp/routerapp.dart';
 import 'package:newsee/Utils/injectiondependency.dart';
-import 'package:newsee/core/db/db_config.dart';
 import 'package:newsee/firebase_options.dart';
 
 void main() async {

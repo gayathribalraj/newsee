@@ -95,31 +95,25 @@ class _ConsoultFormState extends State<ConsentForm> {
                             isLoading = false;
                           });
 
-                          if (response != null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("OTP Send Successfully!!!"),
-                              ),
-                            );
-                            await Future.delayed(const Duration(seconds: 2));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("OTP Send Successfully!!!"),
+                            ),
+                          );
+                          await Future.delayed(const Duration(seconds: 2));
 
-                            final optionOTPSheet = await showOtpBottomSheet(
-                              context,
-                              widget.assetPath,
-                              widget.url,
-                            );
-                            await Future.delayed(const Duration(seconds: 1));
+                          final optionOTPSheet = await showOtpBottomSheet(
+                            context,
+                            widget.assetPath,
+                            widget.url,
+                          );
+                          await Future.delayed(const Duration(seconds: 1));
 
-                            setState(() {
-                              isLoading = false;
-                            });
-                            debugPrint("final OTPSheet Data $optionOTPSheet");
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("OTP Generate failed!!!")),
-                            );
-                          }
-
+                          setState(() {
+                            isLoading = false;
+                          });
+                          debugPrint("final OTPSheet Data $optionOTPSheet");
+                        
                           // Navigator.pop(context);
                         }
                       },

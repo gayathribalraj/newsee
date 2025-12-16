@@ -5,7 +5,6 @@ import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/feature/leadInbox/domain/modal/lead_request.dart';
-import 'package:newsee/feature/pd/domain/modal/pd_inbox_request.dart';
 import 'package:newsee/feature/proposal_inbox/data/repository/proposal_inbox_repository_impl.dart';
 import 'package:newsee/feature/proposal_inbox/domain/modal/application_status_response.dart';
 import 'package:newsee/feature/proposal_inbox/domain/modal/group_proposal_inbox.dart';

@@ -51,7 +51,7 @@ class DraftLead {
             ? (json['coapplicant'] as List)
                 .whereType<Map<String, dynamic>>()
                 .map(
-                  (e) => Map<String, dynamic>.from(e as Map<String, dynamic>),
+                  (e) => Map<String, dynamic>.from(e),
                 )
                 .toList()
             : [],

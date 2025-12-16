@@ -32,10 +32,10 @@ class AsyncResponseHandler<L, R> {
 
   // getter for left variable
   L get left =>
-      this._left != null ? _left : throw StateError("called left on Right");
+      _left != null ? _left : throw StateError("called left on Right");
 
   R get right =>
-      this._right != null ? _right : throw StateError("called right on Left");
+      _right != null ? _right : throw StateError("called right on Left");
 
   bool isLeft() => _left != null;
 

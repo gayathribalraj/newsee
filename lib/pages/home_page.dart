@@ -5,7 +5,6 @@
 */
 
 import 'package:flutter/material.dart';
-import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/feature/masterupdate/presentation/page/master_update.dart';
 import 'package:newsee/feature/pd/presentation/pages/pd_inbox.dart';
 import 'package:newsee/feature/queryInbox/presentation/page/query_inbox.dart';

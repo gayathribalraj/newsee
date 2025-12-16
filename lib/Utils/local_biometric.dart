@@ -1,6 +1,5 @@
 import 'package:biometric_signature/android_config.dart';
 import 'package:biometric_signature/biometric_signature.dart';
-import 'package:biometric_signature/ios_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
