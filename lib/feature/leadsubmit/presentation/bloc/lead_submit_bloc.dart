@@ -20,8 +20,6 @@ import 'package:newsee/feature/leadsubmit/domain/modal/lead_submit_request.dart'
 import 'package:newsee/feature/leadsubmit/domain/modal/loan_product.dart';
 import 'package:newsee/feature/leadsubmit/domain/modal/loan_type.dart';
 import 'package:newsee/feature/leadsubmit/domain/modal/proposal_creation_request.dart';
-import 'package:newsee/feature/leadsubmit/domain/repository/lead_submit_repo.dart';
-import 'package:newsee/feature/leadsubmit/domain/repository/proposal_submit_repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part './lead_submit_event.dart';

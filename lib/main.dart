@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:newsee/AppSamples/RouterApp/routerapp.dart';
 import 'package:newsee/Utils/injectiondependency.dart';
-import 'package:newsee/core/db/db_config.dart';
 import 'package:newsee/firebase_options.dart';
 
 void main() async {

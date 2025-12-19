@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:pdfx/pdfx.dart';
 
 class PdfViewerPage extends StatefulWidget {
   final String? path;

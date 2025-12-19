@@ -14,7 +14,7 @@ import '../../ML/Recognizer.dart';
 class RecognitionScreen extends StatefulWidget {
   final String name;
   final Function(Uint8List imageArray) onVerifed;
-  const RecognitionScreen({Key? key , required this.name , required this.onVerifed}) : super(key: key);
+  const RecognitionScreen({super.key , required this.name , required this.onVerifed});
 
   @override
   State<RecognitionScreen> createState() => _RecognitionScreenState();
@@ -102,7 +102,7 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
 
       //TODO crop face
       final bytes = _image!.readAsBytesSync();//await File(cropedFace!.path).readAsBytes();
-      img.Image? faceImg = img.decodeImage(bytes!);
+      img.Image? faceImg = img.decodeImage(bytes);
       img.Image croppedFace = img.copyCrop(faceImg!,x:left.toInt(),y:top.toInt(),width:width.toInt(),height:height.toInt());
       croppedImage = croppedFace;
       final recognition = recognizer.recognize(croppedFace, faceRect);
@@ -150,7 +150,7 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
   //TODO remove rotation of camera images
   removeRotation(File inputImage) async {
     final img.Image? capturedImage = img.decodeImage(
-        await File(inputImage!.path).readAsBytes());
+        await File(inputImage.path).readAsBytes());
     final img.Image orientedImage = img.bakeOrientation(capturedImage!);
     return await File(_image!.path).writeAsBytes(img.encodeJpg(orientedImage));
   }
@@ -255,9 +255,9 @@ class _RecognitionScreenState extends State<RecognitionScreen> {
                         ),
                         ElevatedButton(
                             onPressed: () {
-                              if (croppedImage != null && widget.onVerifed != null) {
+                              if (croppedImage != null) {
                                 final imageData = Uint8List.fromList(img.encodePng(croppedImage!));
-                                widget.onVerifed!(imageData); // now safe to use !
+                                widget.onVerifed(imageData); // now safe to use !
                                 Navigator.pop(context);
                               } else {
                                 // Optional: show a message if nothing to verify

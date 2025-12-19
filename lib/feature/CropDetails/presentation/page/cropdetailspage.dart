@@ -413,10 +413,10 @@ class _CropDetailsPageState extends State<CropDetailsPage> {
                               ),
                             ),
                             style: ButtonStyle(
-                              minimumSize: MaterialStateProperty.all(
+                              minimumSize: WidgetStateProperty.all(
                                 Size(double.infinity, 50),
                               ),
-                              backgroundColor: MaterialStateProperty.all(
+                              backgroundColor: WidgetStateProperty.all(
                                 const Color.fromARGB(255, 75, 33, 83),
                               ),
                             ),

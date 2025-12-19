@@ -13,7 +13,6 @@ import 'package:newsee/feature/cif/domain/model/user/cif_response_model.dart';
 import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
 import 'package:newsee/feature/masters/domain/repository/lov_crud_repo.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 part './personal_details_event.dart';

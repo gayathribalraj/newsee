@@ -52,7 +52,7 @@ class DraftService {
             tabData
                 .whereType<Map<String, dynamic>>()
                 .map(
-                  (e) => Map<String, dynamic>.from(e as Map<String, dynamic>),
+                  (e) => Map<String, dynamic>.from(e),
                 )
                 .toList();
         print('drafsavecoapp: ${currentData[tabKey]}');

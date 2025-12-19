@@ -4,7 +4,6 @@ import 'package:newsee/feature/queryInbox/domain/modal/queryInbox_request_modal.
 import 'package:newsee/feature/queryInbox/domain/modal/queryInbox_response_modal.dart';
 import 'package:newsee/feature/queryInbox/domain/modal/query_request_modal.dart';
 import 'package:newsee/feature/queryInbox/domain/modal/query_response_modal.dart';
-import 'package:newsee/feature/queryInbox/presentation/page/query_inbox.dart';
 
 abstract class QueryRepository {
   Future<AsyncResponseHandler<Failure, QueryInboxResponseModal>>

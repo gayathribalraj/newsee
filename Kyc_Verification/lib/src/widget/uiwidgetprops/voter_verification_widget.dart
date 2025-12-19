@@ -41,7 +41,7 @@ enum VerificationType { voter, aadhaar, pan }
 
 class VoterVerification extends StatefulWidget {
   final KYCTextBox kycTextBox;
-  VoterVerification({super.key, required this.kycTextBox}) {}
+  VoterVerification({super.key, required this.kycTextBox});
 
   @override
   State<StatefulWidget> createState() => _VoterVerificationState();
@@ -57,7 +57,7 @@ class _VoterVerificationState extends State<VoterVerification> {
 // Aadhaar Verification UI A wrapper widget for Aadhaar  verification input using KYCTextBox
 class AadhaarVerification extends StatefulWidget {
   final KYCTextBox kycTextBox;
-  AadhaarVerification({super.key, required this.kycTextBox}) {}
+  AadhaarVerification({super.key, required this.kycTextBox});
 
   @override
   State<StatefulWidget> createState() => _AadhaarVerificationState();
@@ -72,7 +72,7 @@ class _AadhaarVerificationState extends State<AadhaarVerification> {
 
 class PanVerification extends StatefulWidget {
   final KYCTextBox kycTextBox;
-  PanVerification({super.key, required this.kycTextBox}) {}
+  PanVerification({super.key, required this.kycTextBox});
 
   @override
   State<StatefulWidget> createState() => _PanVerificationState();
@@ -103,7 +103,7 @@ class KYCTextBox extends StatefulWidget {
 
   final ReactiveFormFieldCallback<String>? onChange;
   bool showVerifyButton;
-  KYCTextBox({
+  KYCTextBox({super.key, 
     this.fieldKey,
     required this.formProps,
     required this.styleProps,
@@ -232,6 +232,7 @@ class _KYCTextBoxState extends State<KYCTextBox> with VerificationMixin {
   @override
   Future<Response> verifyOnline(String url) async => ApiClient().callGet(url);
 
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(16),
@@ -325,14 +326,14 @@ class _KYCTextBoxState extends State<KYCTextBox> with VerificationMixin {
           //Verify Button
           ElevatedButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+              backgroundColor: WidgetStateProperty.resolveWith<Color?>(
                 (states) => buttonBackgroundColor(),
               ),
-              foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+              foregroundColor: WidgetStateProperty.resolveWith<Color?>(
                 (states) => widget.buttonProps.foregroundColor,
               ),
-              padding: MaterialStateProperty.all(widget.buttonProps.padding),
-              shape: MaterialStateProperty.all(
+              padding: WidgetStateProperty.all(widget.buttonProps.padding),
+              shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                     widget.buttonProps.borderRadius,

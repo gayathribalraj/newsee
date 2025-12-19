@@ -8,13 +8,13 @@ class QueryDetails extends StatelessWidget {
   final num proposalNo;
   final String status;
   const QueryDetails({
-    Key? key,
+    super.key,
     required this.userName,
     required this.queryType,
     required this.queryId,
     required this.proposalNo,
     required this.status,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

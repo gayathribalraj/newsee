@@ -1,13 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:newsee/Utils/shared_preference_utils.dart';
-import 'package:newsee/core/db/db_config.dart';
-import 'package:newsee/feature/auth/domain/model/user_details.dart';
-import 'package:newsee/feature/cic_check/domain/modals/cibil_report_table_model.dart';
-import 'package:newsee/feature/cic_check/domain/repository/cibilreports_crud_repo.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqlite_api.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 /*

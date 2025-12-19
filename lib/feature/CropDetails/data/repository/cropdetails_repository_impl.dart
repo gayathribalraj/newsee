@@ -52,6 +52,7 @@ class CropDetailsRepositoryImpl implements CropDetailsRepository {
     }
   }
 
+  @override
   Future<AsyncResponseHandler<Failure, CropGetResponse>> getCrop(
     String proposalNumber
   ) async {
@@ -93,6 +94,7 @@ class CropDetailsRepositoryImpl implements CropDetailsRepository {
     }
   }
 
+  @override
   Future<AsyncResponseHandler<Failure, String>> deleteCrop(
     CropDeleteRequest req
   ) async {

@@ -362,7 +362,7 @@ final class LandHoldingBloc extends Bloc<LandHoldingEvent, LandHoldingState> {
               .toList() ??
           [];
       List<LandData> landDataList =
-          ownerData!.map((ownerDetail) {
+          ownerData.map((ownerDetail) {
             int tot = parseToInt(ownerDetail['landParcel']['totarea']);
             String formerCat;
             if (tot < 5) {

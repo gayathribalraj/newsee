@@ -1,22 +1,14 @@
 import 'dart:convert';
 
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/Utils/offline_data_provider.dart';
-import 'package:newsee/Utils/offline_data_provider.dart';
-import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/core/api/api_config.dart';
-import 'package:newsee/core/db/db_config.dart';
-import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/feature/cic_check/domain/modals/cibil_report_table_model.dart';
-import 'package:newsee/feature/cic_check/domain/modals/cibil_report_table_model.dart';
-import 'package:newsee/feature/cic_check/domain/repository/cibilreports_crud_repo.dart';
 import 'package:newsee/feature/cic_check/presentation/bloc/cic_check_bloc.dart';
 import 'package:newsee/widgets/cibil_html_viewer.dart';
-import 'package:newsee/widgets/loader.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 
 Future<void> viewCibilHtml(

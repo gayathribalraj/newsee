@@ -79,7 +79,7 @@ class QueryInboxState extends State<QueryInbox> {
           queryData.queryList.sort((a, b) => b.date.compareTo(a.date));
           isLoading = false;
         });
-        print('objects: ${queryData}');
+        print('objects: $queryData');
       } else {
         final errorMessage = responseData['ErrorMessage'] ?? "Unknown error";
         print('Error: $errorMessage');

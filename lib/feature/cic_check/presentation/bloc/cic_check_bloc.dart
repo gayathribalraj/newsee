@@ -137,7 +137,7 @@ final class CicCheckBloc extends Bloc<CicCheckEvent, CicCheckState> {
 
         final dir = await getApplicationDocumentsDirectory();
         final filePath =
-            '${dir.path}/${applicant}_${reportType}_${propNo}.html';
+            '${dir.path}/${applicant}_${reportType}_$propNo.html';
         final file = File(filePath);
         await file.writeAsString(htmlContent);
 

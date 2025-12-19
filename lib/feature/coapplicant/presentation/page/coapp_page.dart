@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,7 +87,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Co-Applicants/Guarantors"),
+        title: const Text("Co-Applicants/Gurantors"),
         automaticallyImplyLeading: false,
       ),
       body: Padding(
@@ -99,7 +98,8 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Whether do you want to add Co-Applicant/Guarantor Details?',
+                  'Whether do you want to add member Details?',
+                  // 'Whether do you want to add Co-Applicant/Guarantor Details?',
                   style: TextStyle(fontSize: 16),
                 ),
                 Row(
@@ -150,7 +150,7 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                             ),
                             Text(
                               "(${type == 'C' ? 'Co-Applicant' : 'Guarantor'})",
-                              style: const TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 12),
                             ),
                           ],
                         ),
@@ -250,16 +250,17 @@ class _CoApplicantPageState extends State<CoApplicantPage> {
                           value: 'C',
                           child: ListTile(
                             leading: Icon(Icons.person_add),
-                            title: Text('Co-Applicant'),
+                            title: Text('Members'),
+                            // title: Text('Co-Applicant'),
                           ),
                         ),
-                        PopupMenuItem(
-                          value: 'G',
-                          child: ListTile(
-                            leading: Icon(Icons.person_add),
-                            title: Text('Guarantor'),
-                          ),
-                        ),
+                        // PopupMenuItem(
+                        //   value: 'G',
+                        //   child: ListTile(
+                        //     leading: Icon(Icons.person_add),
+                        //     title: Text('Guarantor'),
+                        //   ),
+                        // ),
                       ],
                 ),
               )

@@ -1,4 +1,4 @@
-library kyc_validation;
+library;
 
 export 'src/widget/uiwidgetprops/voter_verification_widget.dart';
 export 'src/widget/uiwidgetprops/consent_form.dart';

@@ -60,16 +60,16 @@ class CifRepositoryImpl implements CifRepository {
         String cifFlag =
             response.data[ApiConfig.API_RESPONSE_RESPONSE_KEY]['cifFlag'];
 
-        CifResponse _cifresponse = cifResponse.copyWith(
+        CifResponse cifresponse = cifResponse.copyWith(
           cifFlag: cifFlag,
           liabilityCount: liabilityCount,
           liabilityAmount: liabilityAmount,
           depositCount: depositCount,
           depositAmount: depositAmount,
         );
-        print('ChifResponseModel => ${_cifresponse.toString()}');
+        print('ChifResponseModel => ${cifresponse.toString()}');
 
-        return AsyncResponseHandler.right(_cifresponse);
+        return AsyncResponseHandler.right(cifresponse);
       } else {
         final String errorMessage =
             data[ApiConfig.API_RESPONSE_ERRORMESSAGE_KEY] ?? 'Unknown error';

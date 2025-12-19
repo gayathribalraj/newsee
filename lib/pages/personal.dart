@@ -1,1059 +1,289 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:newsee/AppData/app_constants.dart';
-import 'package:newsee/AppData/app_forms.dart';
-import 'package:newsee/AppSamples/FaceDetection/RegistrationScreen.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:newsee/Model/liveliness_details.dart';
-import 'package:newsee/Model/personal_data.dart';
-import 'package:newsee/Utils/qr_nav_utils.dart';
-import 'package:newsee/Utils/utils.dart';
-import 'package:newsee/feature/aadharvalidation/domain/modal/aadharvalidate_request.dart';
-import 'package:newsee/feature/cif/domain/model/user/cif_response.dart';
-import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
-import 'package:newsee/feature/draft/draft_service.dart';
-import 'package:newsee/feature/facedetection/presentation/page/face_detection.dart';
-import 'package:newsee/feature/masters/domain/modal/lov.dart';
-import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
-import 'package:newsee/widgets/SearchableMultiSelectDropdown.dart';
-import 'package:newsee/widgets/k_willpopscope.dart';
-import 'package:newsee/widgets/sysmo_alert.dart';
-import 'package:newsee/widgets/custom_text_field.dart';
-import 'package:newsee/widgets/integer_text_field.dart';
-import 'package:newsee/widgets/searchable_drop_down.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 
-// Kyc verification Plugin Imports
-import 'package:kyc_verification/kyc_validation.dart';
-import 'package:kyc_verification/src/widget/uiwidgetprops/button_props.dart';
-import 'package:kyc_verification/src/widget/uiwidgetprops/form_props.dart';
-import 'package:kyc_verification/src/widget/uiwidgetprops/style_props.dart';
+class PersonalData {
+  final String? title;
+  final String? firstName;
+  final String? middleName;
+  final String? lastName;
+  final String? dob;
+  final String? residentialStatus;
+  final String? primaryMobileNumber;
+  final String? secondaryMobileNumber;
+  final String? email;
+  final String? panNumber;
+  final String? aadharRefNo;
+  final String? passportNumber;
+  final String? loanAmountRequested;
+  final String? natureOfActivity;
+  final String? occupationType;
+  final String? agriculturistType;
+  final String? farmerCategory;
+  final String? farmerType;
+  final String? religion;
+  final String? caste;
+  final String? gender;
+  final String? sourceid;
+  final String? sourcename;
+  final String? subActivity;
+  final LiveLinessDetails? borrowerLivelinessDet;
+  PersonalData({
+    this.title,
+    this.firstName,
+    this.middleName,
+    this.lastName,
+    this.dob,
+    this.residentialStatus,
+    this.primaryMobileNumber,
+    this.secondaryMobileNumber,
+    this.email,
+    this.panNumber,
+    this.aadharRefNo,
+    this.passportNumber,
+    this.loanAmountRequested,
+    this.natureOfActivity,
+    this.occupationType,
+    this.agriculturistType,
+    this.farmerCategory,
+    this.farmerType,
+    this.religion,
+    this.caste,
+    this.gender,
+    this.sourceid,
+    this.sourcename,
+    this.subActivity,
+    this.borrowerLivelinessDet,
+  });
 
-class Personal extends StatefulWidget {
-  final String title;
-  // scrollcontroller is required to scroll to errorformfield
-
-  Personal({required this.title, super.key});
-
-  @override
-  State<Personal> createState() => _PersonalState();
-}
-
-class _PersonalState extends State<Personal> {
-  Uint8List? cropedFace;
-  final _scrollController = ScrollController();
-
-  final FormGroup form = AppForms.GET_PERSONAL_DETAILS_FORM();
-  final _titleKey = GlobalKey();
-  final _firstNameKey = GlobalKey();
-  final _middleNameKey = GlobalKey();
-  final _lastNameKey = GlobalKey();
-  final _dobKey = GlobalKey();
-  final _residentialStatusKey = GlobalKey();
-  final _primaryMobileNumberKey = GlobalKey();
-  final _secondaryMobileNumberKey = GlobalKey();
-  final _emailKey = GlobalKey();
-  final _aadhaarKey = GlobalKey();
-  final _panNumberKey = GlobalKey();
-  // final _aadharRefNoKey = GlobalKey();
-  final _loanAmountRequestedKey = GlobalKey();
-  final _natureOfActivityKey = GlobalKey();
-  final _occupationTypeKey = GlobalKey();
-  final _agriculturistTypeKey = GlobalKey();
-  final _farmerCategoryKey = GlobalKey();
-  final _farmerTypeKey = GlobalKey();
-  final _religionKey = GlobalKey();
-  final _casteKey = GlobalKey();
-  final _genderKey = GlobalKey();
-  final _subActivityKey = GlobalKey();
-  bool refAadhaar = true;
-
-  /* 
-    @author     : latha  3/11/2025
-    @desc       : map Aadhaar response in personal form and disabled fields if value is not null
-    @param      : {AadharvalidateResponse val} - aadhaar response
-  */
-  mapAadhaarData(val) {
-    try {
-      if (val != null) {
-        // form.control('aadharRefNo').updateValue(val?.referenceId);
-        form.control('aadhaar').updateValue(val?.referenceId);
-        refAadhaar = true;
-        nameSeperate(val.name);
-
-        setControl('primaryMobileNumber', val?.mobile);
-        final formattedDate =
-            val.dateOfBirth != null
-                ? getCorrectDateFormat(val.dateOfBirth!)
-                : null;
-
-        print('formattedDate in personal page => $formattedDate');
-        setControl('dob', formattedDate);
-        setControl('email', val?.email);
-        setControl('residentialStatus', '1');
-      }
-    } catch (error) {
-      print("autoPopulateData-catch-error $error");
-    }
-  }
-
-  // If the first name is null, extract the name from the 'name' property of the Aadhar
-  //or CIF response.
-  void nameSeperate(val) {
-    print('nameapp: $val');
-    if (val != null) {
-      String fullname = val;
-      List getNameArray = fullname.split(' ');
-      if (getNameArray.length > 2) {
-        String fullname = getNameArray.sublist(2).join();
-        setControl('firstName', getNameArray[0]);
-        setControl('middleName', getNameArray[1]);
-        setControl('lastName', fullname);
-      } else if (getNameArray.length == 2) {
-        setControl('firstName', getNameArray[0]);
-        setControl('lastName', getNameArray[1]);
-      } else if (getNameArray.length == 1) {
-        setControl('firstName', getNameArray[0]);
-      }
-    }
-  }
-
-  void setControl(String controlName, dynamic value) {
-    final control = form.control(controlName);
-    if (value != null && value.toString().trim().isNotEmpty) {
-      control.updateValue(value);
-      control.markAsDisabled();
-    } else {
-      control.markAsEnabled();
-    }
-  }
-
-  /* 
-    @author     : lathamani.m  30/11/2025
-    @desc       : map cif response in personal form and diabled field if value not null
-    @param      : {CifResponse val} - cifresponse
-  */
-  mapCifDate(val, lovList) {
-    datamapperCif(val, lovList);
-  }
-
-  void datamapperCif(CifResponse val, List<Lov>? lovList) {
-    try {
-      String? formatMobile(String? phoneNum) {
-        if (phoneNum == null || phoneNum.isEmpty) return null;
-        return (phoneNum.length == 12 && phoneNum.startsWith("91"))
-            ? phoneNum.substring(2)
-            : phoneNum;
-      }
-
-      Lov? findLov(String header, String? target) {
-        if (lovList == null || target == null || target.isEmpty) return null;
-        return lovList.firstWhere(
-          (lov) =>
-              lov.Header == header &&
-              (lov.optvalue.toUpperCase() == target.toUpperCase() ||
-                  lov.optDesc.toUpperCase() == target.toUpperCase() ||
-                  lov.optCode.toUpperCase() == target.toUpperCase()),
-          orElse:
-              () => Lov(Header: header, optvalue: '', optDesc: '', optCode: ''),
-        );
-      }
-
-      final mobile = formatMobile(val.lleadmobno);
-      // get find values from list
-      final religionLov = findLov('Religion', val.lldReligion);
-      final casteLov = findLov('Caste', val.lldCaste);
-      final genderLov = findLov('Gender', val.lldGender);
-
-      // set values to form controls
-      if (val.lleadfrstname != null && val.lleadfrstname!.isNotEmpty) {
-        setControl('firstName', val.lleadfrstname);
-        setControl('middleName', val.lleadmidname);
-        setControl('lastName', val.lleadlastname);
-      } else {
-        nameSeperate(val.lleadfrstname);
-      }
-
-      setControl(
-        'dob',
-        val.lleaddob != null ? getDateFormat(val.lleaddob!) : null,
-      );
-      setControl('primaryMobileNumber', mobile);
-      setControl('email', val.lleademailid);
-      setControl('panNumber', val.lleadpanno);
-      // setControl('aadharRefNo', val.aadharNum);
-      setControl('aadhaar', val.lleadadharno);
-      setControl('religion', religionLov?.optvalue);
-      setControl('caste', casteLov?.optvalue);
-      setControl('gender', genderLov?.optvalue);
-      setControl('residentialStatus', '1');
-
-      // aadhaar flag
-      refAadhaar = val.lleadadharno?.isNotEmpty == true;
-    } catch (error, stack) {
-      print("autoPopulateData-catch-error: $error");
-      print(stack);
-    }
-  }
-
-  mapPersonalData(val, [String? type]) {
-    print('mapPersonalData $type, $val');
-    try {
-      form.control('title').updateValue(val['title']);
-      form.control('firstName').updateValue(val['firstName']);
-      form.control('middleName').updateValue(val['middleName']);
-      form.control('lastName').updateValue(val['lastName']);
-      form.control('dob').updateValue(getDateFormat(val['dob']));
-      form.control('residentialStatus').updateValue(val['residentialStatus']);
-      form
-          .control('primaryMobileNumber')
-          .updateValue(val['primaryMobileNumber']);
-      form
-          .control('secondaryMobileNumber')
-          .updateValue(val['secondaryMobileNumber']);
-      form.control('email').updateValue(val['email']);
-      form.control('panNumber').updateValue(val['panNumber']);
-      // form.control('aadharRefNo').updateValue(val['aadharRefNo']);
-      form.control('aadhaar').updateValue(val['aadharRefNo']);
-      form
-          .control('secondaryMobileNumber')
-          .updateValue(val['secondaryMobileNumber']);
-      form
-          .control('loanAmountRequested')
-          .updateValue(formatAmount(val['loanAmountRequested'], 'currency'));
-      form.control('natureOfActivity').updateValue(val['natureOfActivity']);
-      form.control('occupationType').updateValue(val['occupationType']);
-      form.control('agriculturistType').updateValue(val['agriculturistType']);
-      form.control('farmerCategory').updateValue(val['farmerCategory']);
-      form.control('farmerType').updateValue(val['farmerType']);
-      form.control('religion').updateValue(val['religion']);
-      form.control('caste').updateValue(val['caste']);
-      form.control('gender').updateValue(val['gender']);
-      form.control('subActivity').updateValue(val['subActivity']);
-      final leadref = DraftService().getCurrentLeadRef();
-      print('leadrefDraft: $leadref');
-      // if (leadref == '' && leadref.isEmpty) {
-      if (type == 'draft') {
-        form.markAsEnabled();
-      } else {
-        form.markAsDisabled();
-      }
-    } catch (error) {
-      print("mapPersonalData-catch-error $error");
-    }
-  }
-
-  /* 
-    @author : karthick.d  
-    @desc   : scroll to error field which identified first in the widget tree
-              
-   */
-
-  void scrollToErrorField() async {
-    final fields = [
-      {'key': _titleKey, 'controlName': 'title'},
-      {'key': _firstNameKey, 'controlName': 'firstName'},
-      {'key': _middleNameKey, 'controlName': 'middleName'},
-      {'key': _lastNameKey, 'controlName': 'lastName'},
-      {'key': _dobKey, 'controlName': 'dob'},
-      {'key': _primaryMobileNumberKey, 'controlName': 'primaryMobileNumber'},
-      {
-        'key': _secondaryMobileNumberKey,
-        'controlName': 'secondaryMobileNumber',
-      },
-      {'key': _emailKey, 'controlName': 'email'},
-      {'key': _panNumberKey, 'controlName': 'panNumber'},
-      {'key': _aadhaarKey, 'controlName': 'aadhaar'},
-      // {'key': _aadharRefNoKey, 'controlName': 'aadharRefNo'},
-      {'key': _loanAmountRequestedKey, 'controlName': 'loanAmountRequested'},
-      {'key': _residentialStatusKey, 'controlName': 'residentialStatus'},
-      {'key': _natureOfActivityKey, 'controlName': 'natureOfActivity'},
-      {'key': _occupationTypeKey, 'controlName': 'occupationType'},
-      {'key': _agriculturistTypeKey, 'controlName': 'agriculturistType'},
-      {'key': _farmerCategoryKey, 'controlName': 'farmerCategory'},
-      {'key': _farmerTypeKey, 'controlName': 'farmerType'},
-      {'key': _religionKey, 'controlName': 'religion'},
-      {'key': _casteKey, 'controlName': 'caste'},
-      {'key': _genderKey, 'controlName': 'gender'},
-    ];
-
-    for (var field in fields) {
-      final control = form.control(field['controlName'] as String);
-      if (control.invalid && control.touched) {
-        final context = (field['key'] as GlobalKey).currentContext;
-        if (context != null) {
-          await Scrollable.ensureVisible(
-            context,
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            alignment: 0.1,
-          );
-          control.focus();
-          break;
-        }
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Kwillpopscope(
-      routeContext: context,
-      form: form,
-      widget: Scaffold(
-        appBar: AppBar(
-          title: Text("Personal Details"),
-          automaticallyImplyLeading: false,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (context) => FaceDetectionPage(
-                            onVerifed: (imageArray) {
-                              cropedFace = imageArray;
-                              setState(() {});
-                            },
-                          ),
-                      // (context)=>RegistrationScreen()
-                    ),
-                  );
-                },
-                child: CircleAvatar(
-                  radius: 50,
-                  child:
-                      cropedFace != null
-                          ? Image.memory(
-                            cropedFace!,
-                            width: 80,
-                            height: 80,
-                            fit: BoxFit.fill,
-                          )
-                          : Image.asset('assets/logo.jpg'),
-                ),
-              ),
-            ),
-          ],
-        ),
-
-        body: BlocConsumer<PersonalDetailsBloc, PersonalDetailsState>(
-          listener: (context, state) {
-            print(
-              'personaldetail::BlocConsumer:listen => ${state.personalData} ${state.status}',
-            );
-            if (state.status == SaveStatus.success &&
-                (state.getLead == false || state.getLead == null)) {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder:
-                    (_) => SysmoAlert.success(
-                      message: "Personal Details Saved Successfully",
-                      onButtonPressed: () {
-                        Navigator.pop(context);
-                        goToNextTab(context: context);
-                      },
-                    ),
-              );
-            } else if (state.status == SaveStatus.failure) {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder:
-                    (_) => SysmoAlert.failure(
-                      message: "Failed to save Loan Details",
-                      onButtonPressed: () => Navigator.pop(context),
-                    ),
-              );
-            }
-          },
-          builder: (context, state) {
-            DedupeState? dedupeState;
-            print(
-              'state.status: ${state.status}, ${state.personalData}, ${state.getLead}',
-            );
-            if (state.status == SaveStatus.init && state.aadhaarData != null) {
-              mapAadhaarData(state.aadhaarData);
-            } else if (state.status == SaveStatus.init) {
-              dedupeState = context.watch<DedupeBloc>().state;
-              if (dedupeState.cifResponse != null) {
-                print(
-                  'cif response title => ${dedupeState.cifResponse?.lleadtitle}',
-                );
-                print('state.lovList =>${state.lovList}');
-                mapCifDate(dedupeState.cifResponse, state.lovList);
-              } else if (dedupeState.aadharvalidateResponse != null) {
-                mapAadhaarData(dedupeState.aadharvalidateResponse);
-              }
-            } else if (state.status == SaveStatus.success &&
-                state.getLead == false) {
-              print('saved personal data =>${state.personalData}');
-              Map<String, dynamic> personalDetails =
-                  state.personalData!.toMap();
-              mapPersonalData(personalDetails, 'draft');
-            } else if (state.status == SaveStatus.success &&
-                state.getLead == true) {
-              Map<String, dynamic> personalDetails =
-                  state.personalData!.toMap();
-              mapPersonalData(personalDetails);
-            }
-            return ReactiveForm(
-              formGroup: form,
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Column(
-                    children: [
-                      SearchableDropdown(
-                        fieldKey: _titleKey,
-                        controlName: 'title',
-                        label: 'Title',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'Title')
-                                .toList(),
-                        selItem: () {
-                          if (dedupeState?.cifResponse != null) {
-                            Lov? lov = state.lovList?.firstWhere(
-                              (lov) =>
-                                  lov.Header == 'Title' &&
-                                  (lov.optvalue.toUpperCase() ==
-                                          dedupeState?.cifResponse?.lleadtitle
-                                              ?.toUpperCase() ||
-                                      lov.optDesc.toUpperCase() ==
-                                          dedupeState?.cifResponse?.lleadtitle
-                                              ?.toUpperCase()),
-                              orElse:
-                                  () => Lov(
-                                    Header: 'Title',
-                                    optvalue: '',
-                                    optDesc: '',
-                                    optCode: '',
-                                  ),
-                            );
-                            form.controls['title']?.updateValue(lov?.optvalue);
-                            return lov;
-                          } else if (state.personalData != null) {
-                            Lov? lov = state.lovList?.firstWhere(
-                              (lov) =>
-                                  lov.Header == 'Title' &&
-                                  lov.optvalue == state.personalData?.title,
-                              orElse:
-                                  () => Lov(
-                                    Header: 'Title',
-                                    optvalue: '',
-                                    optDesc: '',
-                                    optCode: '',
-                                  ),
-                            );
-                            form.controls['title']?.updateValue(lov?.optvalue);
-                            return lov;
-                          } else {
-                            return null;
-                          }
-                        },
-                        onChangeListener:
-                            (Lov val) => form.controls['title']?.updateValue(
-                              val.optvalue,
-                            ),
-                      ),
-                      CustomTextField(
-                        fieldKey: _firstNameKey,
-                        controlName: 'firstName',
-                        label: 'First Name',
-                        mantatory: true,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            AppConstants.NameInputFormatter,
-                          ),
-                        ],
-                      ),
-                      CustomTextField(
-                        fieldKey: _middleNameKey,
-                        controlName: 'middleName',
-                        label: 'Middle Name',
-                        mantatory: false,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            AppConstants.NameInputFormatter,
-                          ),
-                        ],
-                      ),
-                      CustomTextField(
-                        fieldKey: _lastNameKey,
-                        controlName: 'lastName',
-                        label: 'Last Name',
-                        mantatory: true,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            AppConstants.NameInputFormatter,
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: ReactiveTextField<String>(
-                          key: _dobKey,
-                          formControlName: 'dob',
-                          validationMessages: {
-                            ValidationMessage.required:
-                                (error) => 'Date of Birth is required',
-                          },
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: 'Date of Birth',
-                            suffixIcon: Icon(Icons.calendar_today),
-                          ),
-                          onTap: (control) async {
-                            final DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now().subtract(
-                                Duration(days: 365 * 18),
-                              ),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime.now(),
-                            );
-                            if (pickedDate != null) {
-                              final formatted =
-                                  "${pickedDate.year}-"
-                                  "${pickedDate.month.toString().padLeft(2, '0')}-"
-                                  "${pickedDate.day.toString().padLeft(2, '0')}";
-                              form.control('dob').value = formatted;
-                            }
-                          },
-                        ),
-                      ),
-
-                      IntegerTextField(
-                        fieldKey: _primaryMobileNumberKey,
-                        controlName: 'primaryMobileNumber',
-                        label: 'Primary Mobile Number',
-                        mantatory: true,
-                        maxlength: 10,
-                        minlength: 10,
-                      ),
-                      IntegerTextField(
-                        fieldKey: _secondaryMobileNumberKey,
-                        controlName: 'secondaryMobileNumber',
-                        label: 'Secondary Mobile Number',
-                        mantatory: false,
-                        maxlength: 10,
-                        minlength: 10,
-                      ),
-                      CustomTextField(
-                        fieldKey: _emailKey,
-                        controlName: 'email',
-                        label: 'Email ID',
-                        mantatory: false,
-                      ),
-                      CustomTextField(
-                        fieldKey: _panNumberKey,
-                        controlName: 'panNumber',
-                        label: 'Pan No.',
-                        mantatory: true,
-                        autoCapitalize: true,
-                        maxlength: 10,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'[A-Z0-9]'),
-                          ),
-                        ],
-                      ),
-
-                      // refAadhaar
-                      //     ? Row(
-                      //       children: [
-                      //         Expanded(
-                      //           child: IntegerTextField(
-                      //             fieldKey: _aadharRefNoKey,
-                      //             controlName: 'aadharRefNo',
-                      //             label: 'Aadhaar No.',
-                      //             mantatory: true,
-                      //             maxlength: 12,
-                      //             minlength: 12,
-                      //           ),
-                      //         ),
-                      //         const SizedBox(width: 8),
-                      //         ElevatedButton.icon(
-                      //           icon: Icon(Icons.qr_code_scanner),
-                      //           label: Text('Scan'),
-                      //           onPressed: () => showScannerOptions(context),
-                      //         ),
-                      //       ],
-                      //     )
-                      //     : Row(
-                      //       crossAxisAlignment: CrossAxisAlignment.center,
-                      //       children: [
-                      //         Expanded(
-                      //           child: IntegerTextField(
-                      //             fieldKey: _aadhaarKey,
-                      //             controlName: 'aadhaar',
-                      //             label: 'Aadhaar No.',
-                      //             mantatory: true,
-                      //             maxlength: 12,
-                      //             minlength: 12,
-                      //           ),
-                      //         ),
-                      //         const SizedBox(width: 8),
-                      //         ElevatedButton(
-                      //           style: ElevatedButton.styleFrom(
-                      //             backgroundColor: const Color.fromARGB(
-                      //               255,
-                      //               3,
-                      //               9,
-                      //               110,
-                      //             ),
-                      //             foregroundColor: Colors.white,
-                      //             padding: const EdgeInsets.symmetric(
-                      //               horizontal: 16,
-                      //               vertical: 10,
-                      //             ),
-                      //             shape: RoundedRectangleBorder(
-                      //               borderRadius: BorderRadius.circular(8),
-                      //             ),
-                      //           ),
-                      //           onPressed: () {
-                      //             final AadharvalidateRequest
-                      //             aadharvalidateRequest = AadharvalidateRequest(
-                      //               aadhaarNumber:
-                      //                   form.control('aadhaar').value,
-                      //             );
-                      //             context.read<PersonalDetailsBloc>().add(
-                      //               AadhaarValidateEvent(
-                      //                 request: aadharvalidateRequest,
-                      //               ),
-                      //             );
-                      //           },
-                      //           child:
-                      //               state.status == SaveStatus.loading
-                      //                   ? CircularProgressIndicator()
-                      //                   : const Text("Validate"),
-                      //         ),
-                      //       ],
-                      //     ),
-                      AadhaarVerification(
-                        kycTextBox: KYCTextBox(
-                          fieldKey: _aadhaarKey,
-                          validationPattern:
-                              'Please enter a valid AadhaarNumber (e.g. 123456789012)',
-
-                          formProps: FormProps(
-                            formControlName: 'aadhaar',
-                            label: 'Aadhaar',
-                            mandatory: true,
-                            maxLength: 12,
-                          ),
-                          styleProps: StyleProps(),
-                          apiUrl: '',
-                          buttonProps: ButtonProps(
-                            label: 'verify',
-                            foregroundColor: Colors.white,
-                          ),
-                          isOffline: true,
-                          onSuccess: (value) async {
-                            print('onSuccess ${value.data}');
-                          },
-                          onError: (value) {
-                            print(" onerror $value");
-                          },
-                          assetPath: AppConstants.aadhaarResponse,
-                          verificationType: VerificationType.aadhaar,
-                          kycNumber:
-                              form.controls['aadhaar']?.value != null
-                                  ? form.controls['aadhaar']!.value.toString()
-                                  : null,
-                        ),
-                      ),
-                      IntegerTextField(
-                        fieldKey: _loanAmountRequestedKey,
-                        controlName: 'loanAmountRequested',
-                        label: 'Loan Amount Required (₹)',
-                        mantatory: true,
-                        isRupeeFormat: true,
-                      ),
-                      SearchableDropdown<Lov>(
-                        fieldKey: _residentialStatusKey,
-                        controlName: 'residentialStatus',
-                        label: 'Residential Status',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'ResidentialStatus')
-                                .toList(),
-                        onChangeListener: (Lov val) {
-                          form.controls['residentialStatus']?.updateValue(
-                            val.optvalue,
-                          );
-                        },
-                        selItem: () {
-                          final value = form.control('residentialStatus').value;
-                          if (value.toString().isEmpty) {
-                            return null;
-                          }
-                          return state.lovList!
-                              .where((v) => v.Header == 'ResidentialStatus')
-                              .firstWhere(
-                                (lov) => lov.optvalue == '1',
-                                orElse:
-                                    () => Lov(
-                                      Header: 'ResidentialStatus',
-                                      optvalue: '',
-                                      optDesc: '',
-                                      optCode: '',
-                                    ),
-                              );
-                        },
-                      ),
-
-                      SearchableDropdown<Lov>(
-                        fieldKey: _natureOfActivityKey,
-                        controlName: 'natureOfActivity',
-                        label: 'Nature of Activity',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'NatureOfActivity')
-                                .toList(),
-                        onChangeListener: (Lov val) {
-                          form.controls['natureOfActivity']?.updateValue(
-                            val.optvalue,
-                          );
-                        },
-                        selItem: () {
-                          final value = form.control('natureOfActivity').value;
-                          if (value == null || value.toString().isEmpty) {
-                            return null;
-                          }
-                          return state.lovList!
-                              .where((v) => v.Header == 'NatureOfActivity')
-                              .firstWhere(
-                                (lov) => lov.optvalue == value,
-                                orElse:
-                                    () => Lov(
-                                      Header: 'NatureOfActivity',
-                                      optDesc: '',
-                                      optvalue: '',
-                                      optCode: '',
-                                    ),
-                              );
-                        },
-                      ),
-                      SearchableDropdown<Lov>(
-                        fieldKey: _occupationTypeKey,
-                        controlName: 'occupationType',
-                        label: 'Occupation Type',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'OccupationType')
-                                .toList(),
-                        onChangeListener: (Lov val) {
-                          form.controls['occupationType']?.updateValue(
-                            val.optvalue,
-                          );
-                        },
-                        selItem: () {
-                          final value = form.control('occupationType').value;
-                          if (value == null || value.toString().isEmpty) {
-                            return null;
-                          }
-                          return state.lovList!
-                              .where((v) => v.Header == 'OccupationType')
-                              .firstWhere(
-                                (lov) => lov.optvalue == value,
-                                orElse:
-                                    () => Lov(
-                                      Header: 'OccupationType',
-                                      optvalue: '',
-                                      optDesc: '',
-                                      optCode: '',
-                                    ),
-                              );
-                        },
-                      ),
-                      SearchableDropdown<Lov>(
-                        fieldKey: _agriculturistTypeKey,
-                        controlName: 'agriculturistType',
-                        label: 'Agriculturist Type',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'AgricultType')
-                                .toList(),
-                        onChangeListener: (Lov val) {
-                          form.controls['agriculturistType']?.updateValue(
-                            val.optvalue,
-                          );
-                        },
-                        selItem: () {
-                          final value = form.control('agriculturistType').value;
-                          if (value == null || value.toString().isEmpty) {
-                            return null;
-                          }
-                          return state.lovList!
-                              .where((v) => v.Header == 'AgricultType')
-                              .firstWhere(
-                                (lov) => lov.optvalue == value,
-                                orElse:
-                                    () => Lov(
-                                      Header: 'AgricultType',
-                                      optvalue: '',
-                                      optDesc: '',
-                                      optCode: '',
-                                    ),
-                              );
-                        },
-                      ),
-                      SearchableDropdown<Lov>(
-                        fieldKey: _farmerCategoryKey,
-                        controlName: 'farmerCategory',
-                        label: 'Farmer Category',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'FarmerCategory')
-                                .toList(),
-                        onChangeListener: (Lov val) {
-                          form.controls['farmerCategory']?.updateValue(
-                            val.optvalue,
-                          );
-                        },
-                        selItem: () {
-                          final value = form.control('farmerCategory').value;
-                          if (value == null || value.toString().isEmpty) {
-                            return null;
-                          }
-                          return state.lovList!
-                              .where((v) => v.Header == 'FarmerCategory')
-                              .firstWhere(
-                                (lov) => lov.optvalue == value,
-                                orElse:
-                                    () => Lov(
-                                      Header: 'FarmerCategory',
-                                      optvalue: '',
-                                      optDesc: '',
-                                      optCode: '',
-                                    ),
-                              );
-                        },
-                      ),
-                      SearchableDropdown<Lov>(
-                        fieldKey: _farmerTypeKey,
-                        controlName: 'farmerType',
-                        label: 'Farmer Type',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'FarmerType')
-                                .toList(),
-                        onChangeListener: (Lov val) {
-                          form.controls['farmerType']?.updateValue(
-                            val.optvalue,
-                          );
-                        },
-                        selItem: () {
-                          final value = form.control('farmerType').value;
-                          if (value == null || value.toString().isEmpty) {
-                            return null;
-                          }
-                          return state.lovList!
-                              .where((v) => v.Header == 'FarmerType')
-                              .firstWhere(
-                                (lov) => lov.optvalue == value,
-                                orElse:
-                                    () => Lov(
-                                      Header: 'FarmerType',
-                                      optvalue: '',
-                                      optDesc: '',
-                                      optCode: '',
-                                    ),
-                              );
-                        },
-                      ),
-                      SearchableDropdown<Lov>(
-                        fieldKey: _religionKey,
-                        controlName: 'religion',
-                        label: 'Religion',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'Religion')
-                                .toList(),
-                        onChangeListener: (Lov val) {
-                          form.controls['religion']?.updateValue(val.optvalue);
-                        },
-                        selItem: () {
-                          final value = form.control('religion').value;
-                          if (value == null || value.toString().isEmpty) {
-                            return null;
-                          }
-                          return state.lovList!
-                              .where((v) => v.Header == 'Religion')
-                              .firstWhere(
-                                (lov) => lov.optvalue == value,
-                                orElse:
-                                    () => Lov(
-                                      Header: 'Religion',
-                                      optvalue: '',
-                                      optDesc: '',
-                                      optCode: '',
-                                    ),
-                              );
-                        },
-                      ),
-                      SearchableDropdown<Lov>(
-                        fieldKey: _casteKey,
-                        controlName: 'caste',
-                        label: 'Caste',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'Caste')
-                                .toList(),
-                        onChangeListener: (Lov val) {
-                          form.controls['caste']?.updateValue(val.optvalue);
-                        },
-
-                        selItem: () {
-                          final value = form.control('caste').value;
-                          if (value == null || value.toString().isEmpty) {
-                            return null;
-                          }
-                          return state.lovList!
-                              .where((v) => v.Header == 'Caste')
-                              .firstWhere(
-                                (lov) => lov.optvalue == value,
-                                orElse:
-                                    () => Lov(
-                                      Header: 'Caste',
-                                      optvalue: '',
-                                      optDesc: '',
-                                      optCode: '',
-                                    ),
-                              );
-                        },
-                      ),
-                      SearchableDropdown<Lov>(
-                        fieldKey: _genderKey,
-                        controlName: 'gender',
-                        label: 'Gender',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'Gender')
-                                .toList(),
-                        onChangeListener: (Lov val) {
-                          form.controls['gender']?.updateValue(val.optvalue);
-                        },
-                        selItem: () {
-                          final value = form.control('gender').value;
-                          if (value == null || value.toString().isEmpty) {
-                            return null;
-                          }
-                          return state.lovList!
-                              .where((v) => v.Header == 'Gender')
-                              .firstWhere(
-                                (lov) => lov.optvalue == value,
-                                orElse:
-                                    () => Lov(
-                                      Header: 'Gender',
-                                      optvalue: '',
-                                      optDesc: '',
-                                      optCode: '',
-                                    ),
-                              );
-                        },
-                      ),
-
-                      SearchableMultiSelectDropdown<Lov>(
-                        fieldKey: _subActivityKey,
-                        controlName: 'subActivity',
-                        label: 'Sub Activity',
-                        items:
-                            state.lovList!
-                                .where((v) => v.Header == 'SubActivity')
-                                .toList(),
-                        selItems: () {
-                          final currentValues =
-                              form.control('subActivity').value;
-                          if (currentValues == null || currentValues.isEmpty) {
-                            return <Lov>[];
-                          }
-                          return state.lovList!
-                              .where(
-                                (v) =>
-                                    v.Header == 'SubActivity' &&
-                                    currentValues.contains(v.optvalue),
-                              )
-                              .toList();
-                        },
-                        onChangeListener: (List<Lov>? selectedItems) {
-                          final selectedValues =
-                              selectedItems?.map((e) => e.optvalue).toList() ??
-                              [];
-                          String subactivities = selectedValues.join(',');
-                          form.controls['subActivity']?.updateValue(
-                            subactivities,
-                          );
-                        },
-                      ),
-                      SizedBox(height: 20),
-
-                      Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 3, 9, 110),
-                            foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 12,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          onPressed: () {
-                            if (state.getLead == null ||
-                                state.getLead == false) {
-                              if (form.valid) {
-                                final aadhaarNumber =
-                                    form.control('aadhaar').value;
-                                form
-                                    .control('aadharRefNo')
-                                    .updateValue(aadhaarNumber);
-                                PersonalData personalData =
-                                    PersonalData.fromMap(form.rawValue);
-                                PersonalData personalDataFormatted =
-                                    personalData.copyWith(
-                                      dob: getDateFormatedByProvided(
-                                        personalData.dob,
-                                        from: AppConstants.Format_dd_MM_yyyy,
-                                        to: AppConstants.Format_yyyy_MM_dd,
-                                      ),
-                                      borrowerLivelinessDet: LiveLinessDetails(
-                                        verifyFlag: false,
-                                        livelinessDoc: "",
-                                        livelinessKycDoc: "",
-                                      ),
-                                    );
-
-                                context.read<PersonalDetailsBloc>().add(
-                                  PersonalDetailsSaveEvent(
-                                    personalData: personalDataFormatted,
-                                  ),
-                                );
-                              } else {
-                                form.markAllAsTouched();
-                                scrollToErrorField();
-                              }
-                            }
-                          },
-                          child: Text('Next'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
+  PersonalData copyWith({
+    String? title,
+    String? firstName,
+    String? middleName,
+    String? lastName,
+    String? dob,
+    String? residentialStatus,
+    String? primaryMobileNumber,
+    String? secondaryMobileNumber,
+    String? email,
+    String? panNumber,
+    String? aadharRefNo,
+    String? passportNumber,
+    String? loanAmountRequested,
+    String? natureOfActivity,
+    String? occupationType,
+    String? agriculturistType,
+    String? farmerCategory,
+    String? farmerType,
+    String? religion,
+    String? caste,
+    String? gender,
+    String? cityDistrict,
+    String? sourceid,
+    String? sourcename,
+    String? subActivity,
+    LiveLinessDetails? borrowerLivelinessDet,
+  }) {
+    return PersonalData(
+      title: title ?? this.title,
+      firstName: firstName ?? this.firstName,
+      middleName: middleName ?? this.middleName,
+      lastName: lastName ?? this.lastName,
+      dob: dob ?? this.dob,
+      residentialStatus: residentialStatus ?? this.residentialStatus,
+      primaryMobileNumber: primaryMobileNumber ?? this.primaryMobileNumber,
+      secondaryMobileNumber:
+          secondaryMobileNumber ?? this.secondaryMobileNumber,
+      email: email ?? this.email,
+      panNumber: panNumber ?? this.panNumber,
+      aadharRefNo: aadharRefNo ?? this.aadharRefNo,
+      passportNumber: passportNumber ?? this.passportNumber,
+      loanAmountRequested: loanAmountRequested ?? this.loanAmountRequested,
+      natureOfActivity: natureOfActivity ?? this.natureOfActivity,
+      occupationType: occupationType ?? this.occupationType,
+      agriculturistType: agriculturistType ?? this.agriculturistType,
+      farmerCategory: farmerCategory ?? this.farmerCategory,
+      farmerType: farmerType ?? this.farmerType,
+      religion: religion ?? this.religion,
+      caste: caste ?? this.caste,
+      gender: gender ?? this.gender,
+      sourceid: sourceid ?? this.sourceid,
+      sourcename: sourcename ?? this.sourcename,
+      subActivity: subActivity ?? this.subActivity,
+      borrowerLivelinessDet:
+          borrowerLivelinessDet ?? this.borrowerLivelinessDet,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'title': title,
+      'firstName': firstName,
+      'middleName': middleName,
+      'lastName': lastName,
+      'dob': dob,
+      'residentialStatus': residentialStatus,
+      'primaryMobileNumber': primaryMobileNumber,
+      'secondaryMobileNumber': secondaryMobileNumber,
+      'email': email,
+      'panNumber': panNumber,
+      'aadharRefNo': aadharRefNo,
+      'passportNumber': passportNumber,
+      'loanAmountRequested': loanAmountRequested,
+      'natureOfActivity': natureOfActivity,
+      'occupationType': occupationType,
+      'agriculturistType': agriculturistType,
+      'farmerCategory': farmerCategory,
+      'farmerType': farmerType,
+      'religion': religion,
+      'caste': caste,
+      'gender': gender,
+      'sourceid': sourceid,
+      'sourcename': sourcename,
+      'subActivity': subActivity,
+      'borrowerLivelinessDet': borrowerLivelinessDet?.toMap(),
+    };
+  }
+
+  factory PersonalData.fromMap(Map<String, dynamic> map) {
+    return PersonalData(
+      title: map['title'] != null ? map['title'] as String : null,
+      firstName: map['firstName'] != null ? map['firstName'] as String : null,
+      middleName:
+          map['middleName'] != null ? map['middleName'] as String : null,
+      lastName: map['lastName'] != null ? map['lastName'] as String : null,
+      dob: map['dob'] != null ? map['dob'] as String : null,
+      residentialStatus:
+          map['residentialStatus'] != null
+              ? map['residentialStatus'] as String
+              : null,
+      primaryMobileNumber:
+          map['primaryMobileNumber'] != null
+              ? map['primaryMobileNumber'] as String
+              : null,
+      secondaryMobileNumber:
+          map['secondaryMobileNumber'] != null
+              ? map['secondaryMobileNumber'] as String
+              : null,
+      email: map['email'] != null ? map['email'] as String : null,
+      panNumber: map['panNumber'] != null ? map['panNumber'] as String : null,
+      aadharRefNo:
+          map['aadharRefNo'] != null ? map['aadharRefNo'] as String : null,
+      passportNumber:
+          map['passportNumber'] != null
+              ? map['passportNumber'] as String
+              : null,
+      loanAmountRequested:
+          map['loanAmountRequested'] != null
+              ? map['loanAmountRequested'] as String
+              : null,
+      natureOfActivity:
+          map['natureOfActivity'] != null
+              ? map['natureOfActivity'] as String
+              : null,
+      occupationType:
+          map['occupationType'] != null
+              ? map['occupationType'] as String
+              : null,
+      agriculturistType:
+          map['agriculturistType'] != null
+              ? map['agriculturistType'] as String
+              : null,
+      farmerCategory:
+          map['farmerCategory'] != null
+              ? map['farmerCategory'] as String
+              : null,
+      farmerType:
+          map['farmerType'] != null ? map['farmerType'] as String : null,
+      religion: map['religion'] != null ? map['religion'] as String : null,
+      caste: map['caste'] != null ? map['caste'] as String : null,
+      gender: map['gender'] != null ? map['gender'] as String : null,
+      sourceid: map['sourceid'] != null ? map['sourceid'] as String : null,
+      sourcename:
+          map['sourcename'] != null ? map['sourcename'] as String : null,
+      subActivity:
+          map['subActivity'] != null ? map['subActivity'] as String : null,
+      borrowerLivelinessDet:
+          map['borrowerLivelinessDet'] != null
+              ? LiveLinessDetails.fromMap(map['borrowerLivelinessDet'])
+              : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory PersonalData.fromJson(String source) =>
+      PersonalData.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'PersonalData(title: $title, firstName: $firstName, middleName: $middleName, lastName: $lastName, dob: $dob, residentialStatus: $residentialStatus, primaryMobileNumber: $primaryMobileNumber, secondaryMobileNumber: $secondaryMobileNumber, email: $email, panNumber: $panNumber, aadharRefNo: $aadharRefNo, passportNumber: $passportNumber, loanAmountRequested: $loanAmountRequested, natureOfActivity: $natureOfActivity, occupationType: $occupationType, agriculturistType: $agriculturistType, farmerCategory: $farmerCategory, farmerType: $farmerType, religion: $religion, caste: $caste, sourceid: $sourceid, sourcename: $sourcename, subActivity: $subActivity, borrowerLivelinessDet: $borrowerLivelinessDet)';
+  }
+
+  @override
+  bool operator ==(covariant PersonalData other) {
+    if (identical(this, other)) return true;
+
+    return other.title == title &&
+        other.firstName == firstName &&
+        other.middleName == middleName &&
+        other.lastName == lastName &&
+        other.dob == dob &&
+        other.residentialStatus == residentialStatus &&
+        other.primaryMobileNumber == primaryMobileNumber &&
+        other.secondaryMobileNumber == secondaryMobileNumber &&
+        other.email == email &&
+        other.panNumber == panNumber &&
+        other.aadharRefNo == aadharRefNo &&
+        other.passportNumber == passportNumber &&
+        other.loanAmountRequested == loanAmountRequested &&
+        other.natureOfActivity == natureOfActivity &&
+        other.occupationType == occupationType &&
+        other.agriculturistType == agriculturistType &&
+        other.farmerCategory == farmerCategory &&
+        other.farmerType == farmerType &&
+        other.religion == religion &&
+        other.caste == caste &&
+        other.gender == gender &&
+        other.sourceid == sourceid &&
+        other.sourcename == sourcename &&
+        other.subActivity == subActivity &&
+        other.borrowerLivelinessDet == borrowerLivelinessDet;
+  }
+
+  @override
+  int get hashCode {
+    return title.hashCode ^
+        firstName.hashCode ^
+        middleName.hashCode ^
+        lastName.hashCode ^
+        dob.hashCode ^
+        residentialStatus.hashCode ^
+        primaryMobileNumber.hashCode ^
+        secondaryMobileNumber.hashCode ^
+        email.hashCode ^
+        panNumber.hashCode ^
+        aadharRefNo.hashCode ^
+        passportNumber.hashCode ^
+        loanAmountRequested.hashCode ^
+        natureOfActivity.hashCode ^
+        occupationType.hashCode ^
+        agriculturistType.hashCode ^
+        farmerCategory.hashCode ^
+        farmerType.hashCode ^
+        religion.hashCode ^
+        caste.hashCode ^
+        gender.hashCode ^
+        sourceid.hashCode ^
+        sourcename.hashCode ^
+        subActivity.hashCode ^
+        borrowerLivelinessDet.hashCode;
+  }
+
+  // Map<String, dynamic> toMapWithoutLiveliness() {
+  //   final map = toMap();
+  //   map.remove('borrowerLivelinessDet');
+  //   return map;
+  // }
 }

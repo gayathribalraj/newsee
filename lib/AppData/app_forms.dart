@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -81,23 +80,11 @@ class AppForms {
 
   static FormGroup GET_PERSONAL_DETAILS_FORM() => FormGroup({
     'title': FormControl<String>(validators: [Validators.required]),
-    'firstName': FormControl<String>(
-      validators: [
-        Validators.required,
-        Validators.pattern(AppConstants.Name_Pattern),
-      ],
-    ),
-    'middleName': FormControl<String>(
-      validators: [Validators.pattern(AppConstants.Name_Pattern)],
-    ),
-    'lastName': FormControl<String>(
-      validators: [
-        Validators.required,
-        Validators.pattern(AppConstants.Name_Pattern),
-      ],
-    ),
+    'firstName': FormControl<String>(validators: [Validators.required]),
+    'middleName': FormControl<String>(validators: [Validators.required]),
+    'lastName': FormControl<String>(validators: [Validators.required]),
     'dob': FormControl<String>(validators: [Validators.required]),
-    'residentialStatus': FormControl<String>(validators: [Validators.required]),
+    'residentialStatus': FormControl<String>(validators: []),
     'primaryMobileNumber': FormControl<String>(
       validators: [
         Validators.required,
@@ -168,25 +155,6 @@ class AppForms {
         }),
       ],
     ),
-
-    // 'loanAmountRequested': FormControl<String>(
-    //   validators: [Validators.required],
-    //   asyncValidators: [
-    //     Validators.delegateAsync((control) async {
-    //       String val = control.value as String;
-    //       int loanAmountEntered = int.parse(
-    //         val.replaceAll(RegExp(r'[^\d]'), ''),
-    //       );
-    //       if (loanAmountEntered > Globalconfig.loanAmountMaximum) {
-    //         print(
-    //           'loanAmountRequested::delegateAsync => ${Globalconfig.loanAmountMaximum}',
-    //         );
-    //         return {'max': '${Globalconfig.loanAmountMaximum}'};
-    //       }
-    //       return null;
-    //     }),
-    //   ],
-    // ),
     'natureOfActivity': FormControl<String>(validators: [Validators.required]),
     'occupationType': FormControl<String>(validators: [Validators.required]),
     'agriculturistType': FormControl<String>(validators: [Validators.required]),
@@ -199,41 +167,20 @@ class AppForms {
   });
 
   static final FormGroup COAPPLICANT_DETAILS_FORM = FormGroup({
-    'customertype': FormControl<String>(validators: [Validators.required]),
-    'constitution': FormControl<String>(validators: [Validators.required]),
+    'customertype': FormControl<String>(validators: []),
+    'constitution': FormControl<String>(validators: []),
     'cifNumber': FormControl<String>(validators: []),
     'title': FormControl<String>(validators: [Validators.required]),
-    'firstName': FormControl<String>(
-      validators: [
-        Validators.required,
-        Validators.pattern(AppConstants.Name_Pattern),
-      ],
-    ),
-    'middleName': FormControl<String>(
-      validators: [Validators.pattern(AppConstants.Name_Pattern)],
-    ),
-    'lastName': FormControl<String>(
-      validators: [
-        Validators.required,
-        Validators.pattern(AppConstants.Name_Pattern),
-      ],
-    ),
+    'firstName': FormControl<String>(validators: [Validators.required]),
+    'middleName': FormControl<String>(validators: [Validators.required]),
+    'lastName': FormControl<String>(validators: [Validators.required]),
     'relationshipFirm': FormControl<String>(validators: [Validators.required]),
     'dob': FormControl<String>(validators: [Validators.required]),
     'primaryMobileNumber': FormControl<String>(
-      validators: [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(10),
-        Validators.pattern(AppConstants.mobileNumber),
-      ],
+      validators: [Validators.required, Validators.minLength(10)],
     ),
     'secondaryMobileNumber': FormControl<String>(
-      validators: [
-        Validators.minLength(10),
-        Validators.maxLength(10),
-        Validators.pattern(AppConstants.mobileNumber),
-      ],
+      validators: [Validators.minLength(10)],
     ),
     'email': FormControl<String>(validators: [Validators.email]),
     'aadhaar': FormControl<String>(
@@ -255,21 +202,20 @@ class AppForms {
         Validators.minLength(10),
       ],
     ),
-    'gender': FormControl<String>(validators: [Validators.required]),
     'address1': FormControl<String>(validators: [Validators.required]),
     'address2': FormControl<String>(validators: [Validators.required]),
-    'address3': FormControl<String>(validators: [Validators.required]),
+    'address3': FormControl<String>(validators: []),
     'state': FormControl<String>(validators: [Validators.required]),
     'cityDistrict': FormControl<String>(validators: [Validators.required]),
     'pincode': FormControl<String>(validators: [Validators.required]),
     'loanLiabilityCount': FormControl<String>(
-      validators: [Validators.required],
+      validators: [],
     ),
     'loanLiabilityAmount': FormControl<String>(
-      validators: [Validators.required],
+      validators: [],
     ),
-    'depositCount': FormControl<String>(validators: [Validators.required]),
-    'depositAmount': FormControl<String>(validators: [Validators.required]),
+    'depositCount': FormControl<String>(validators: []),
+    'depositAmount': FormControl<String>(validators: []),
   });
 
   static FormGroup buildLandHoldingDetailsForm() {

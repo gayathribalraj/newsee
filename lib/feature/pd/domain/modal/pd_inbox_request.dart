@@ -27,7 +27,7 @@ class PdInboxRequest {
     List<String>? orgId,
   }) {
     return PdInboxRequest(
-      userId: userId ?? this.userId,
+      userId: userId ?? userId,
       token: token ?? this.token,
       pageNo: pageNo ?? this.pageNo,
       pageCount: pageCount ?? this.pageCount,

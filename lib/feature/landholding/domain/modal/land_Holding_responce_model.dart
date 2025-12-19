@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:newsee/feature/landholding/domain/modal/LandData.dart';
 
 class LandHoldingResponceModel {

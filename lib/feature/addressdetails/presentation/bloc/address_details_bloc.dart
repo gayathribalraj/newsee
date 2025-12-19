@@ -10,7 +10,6 @@ import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/Model/address_data.dart';
 import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
-import 'package:newsee/core/api/failure.dart';
 import 'package:newsee/core/db/db_config.dart';
 import 'package:newsee/feature/addressdetails/data/repository/citylist_repo_impl.dart';
 import 'package:newsee/feature/addressdetails/domain/model/citydistrictrequest.dart';
@@ -19,10 +18,8 @@ import 'package:newsee/feature/cif/domain/model/user/cif_response_model.dart';
 import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/feature/masters/domain/modal/geography_master.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
-import 'package:newsee/feature/masters/domain/modal/statecitymaster.dart';
 import 'package:newsee/feature/masters/domain/repository/geographymaster_crud_repo.dart';
 import 'package:newsee/feature/masters/domain/repository/lov_crud_repo.dart';
-import 'package:newsee/feature/masters/domain/repository/statecity_master_crud_repo.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 part './address_details_event.dart';

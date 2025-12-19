@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/feature/addressdetails/presentation/bloc/address_details_bloc.dart';
