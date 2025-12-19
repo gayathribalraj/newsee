@@ -1,7 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:newsee/AppData/app_api_constants.dart';
 import 'package:newsee/AppData/app_constants.dart';
+import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
 import 'package:newsee/feature/leadInbox/domain/modal/lead_request.dart';
@@ -123,10 +126,66 @@ class PDInboxBloc extends Bloc<PDInboxEvent, PDInboxState> {
     // check if response i success and contains valid data , success status is emitted
 
     if (response.isRight()) {
+      final updateDetails = await Future.wait(
+        response.right.proposalDetails.map((res) async {
+          final updatedData = Map<String, dynamic>.from(res.finalList);
+
+          print("polygonDetails: ${updatedData['polygonDetails']}");
+          print("userLocation: ${Globalconfig.userLocation}");
+
+          if (updatedData['polygonDetails'] != null &&
+              updatedData['polygonDetails'] is List &&
+              (updatedData['polygonDetails'] as List).isNotEmpty &&
+              Globalconfig.userLocation != null) {
+            final polygons = updatedData['polygonDetails'] as List<dynamic>;
+            final firstpolygon = polygons[0] as Map<String, dynamic>;
+
+            // Cast from num to double safely
+            final latitude = firstpolygon['lppLatitude'] as double?;
+            final longitude =
+                firstpolygon['lppLongitude'] as double? ;
+
+            // final latitude = firstpolygon['lppLongitude'] as double?;
+            // final longitude =
+            //     firstpolygon['lppLatitude'] as double? ;
+
+            print("Polygon Lat: $latitude, Long: $longitude");
+
+            if (latitude != null && longitude != null) {
+              // get current location
+              try {
+                print("Before distanceBetween calculation");
+                
+                double calculateDistance = Geolocator.distanceBetween(
+                  Globalconfig.userLocation!.latitude,
+                  Globalconfig.userLocation!.longitude,
+                  latitude,
+                  longitude,
+                );
+                print('calculateDistance: $calculateDistance');
+                updatedData['distance'] = calculateDistance;
+                
+                // Store distance in SharedPreferences with proposal ID
+                final proposalId = res.finalList['propNo'] ?? updatedData['propNo'];
+                if (proposalId != null) {
+                  final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync();
+                  await asyncPrefs.setDouble('distance$proposalId', calculateDistance);
+                  print('Distance saved to SharedPreferences for ID: $proposalId');
+                }
+              } catch (e) {
+                print('Error calculating distance: $e');
+                updatedData['distance'] = null;
+              }
+            }
+          }
+          return GroupProposalInbox(finalList: updatedData);
+        }).toList()
+      );
+
       emit(
         state.copyWith(
           status: PDInboxStatus.success,
-          proposalResponseModel: response.right.proposalDetails,
+          proposalResponseModel: updateDetails,
           currentPage: event.request.pageNo,
           totalProposalApplication: response.right.totalProposals,
         ),

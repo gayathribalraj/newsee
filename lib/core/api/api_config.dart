@@ -1,5 +1,5 @@
 class ApiConfig {
-  static const String BASE_URL = "http://192.168.0.19:19085/lendmobility/"; //qa
+  static const String BASE_URL = "http://10.100.0.247:19085/lendmobility/"; //qa
 
   static const String BASE_URL_AWS =
       "http://10.100.0.247:19085/lendmobility/"; //aws qa url

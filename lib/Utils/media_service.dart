@@ -36,7 +36,7 @@ class MediaService {
 @return data     :   Current Cooridnate like latitude and longitude value returned
  */
 
-  Future<LocationResponse> getLocation(BuildContext context) async {
+  Future<LocationResponse> getLocation() async {
     try {
       final bool locationEnabled = await checkIsLocationServiceEnabled();
       // if (!locationEnabled) {

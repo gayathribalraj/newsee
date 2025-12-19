@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:newsee/feature/masters/domain/modal/master_version.dart';
 
 class Globalconfig {
@@ -13,6 +14,7 @@ class Globalconfig {
   static bool masterUpdate = false;
   static int loanAmountMaximum = 0;
   static bool isOffline = false;
+  static Position? userLocation;
   final OperationNetwork _operationNetwork;
 
   Globalconfig._(this._operationNetwork);

@@ -157,7 +157,10 @@ class PDInbox extends StatelessWidget {
                   product: proposal['schemeName'] ?? 'N/A',
                   phone: proposal['mobileNumber'] ?? 'N/A',
                   createdon: proposal['createdDate'] ?? 'N/A',
-                  location: proposal['branchName'] ?? 'N/A',
+                  // location: proposal['branchName'] ?? 'N/A',
+                  location: proposal['distance'] != null 
+                      ? '${(proposal['distance'] / 1000).toStringAsFixed(2)} km away'
+                      : 'N/A',
                   loanamount: proposal['loanAmount']?.toString() ?? '',
                   onTap: () {
                     // context.read<PDInboxBloc>().add(

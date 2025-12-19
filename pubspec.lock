@@ -1224,7 +1224,7 @@ packages:
   kyc_verification:
     dependency: "direct main"
     description:
-      path: "D:/FlutterApps/newsee/Kyc_Verification"
+      path: "C:\\Users\\gayathri.b\\Videos\\newsee_run\\Kyc_Verification"
       relative: false
     source: path
     version: "0.0.1"

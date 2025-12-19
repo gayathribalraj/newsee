@@ -31,7 +31,7 @@ class ProfilePageState extends State<ProfilePage> {
   return value    :   it retun the bytes(Unit8List) data
   */
   Future<Uint8List?> onCameraTap(BuildContext context) async {
-    final curposition = await getit.getLocation(context);
+    final curposition = await getit.getLocation();
     setState(() {
       geoPosition = curposition.position;
     });

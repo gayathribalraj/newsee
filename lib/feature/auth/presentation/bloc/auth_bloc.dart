@@ -6,7 +6,10 @@
 
  */
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newsee/AppData/globalconfig.dart';
+import 'package:newsee/Utils/media_service.dart';
 import 'package:newsee/core/api/AsyncResponseHandler.dart';
 import 'package:newsee/Model/login_request.dart';
 import 'package:newsee/feature/auth/domain/model/user/auth_response_model.dart';
@@ -38,6 +41,21 @@ final class AuthBloc extends Bloc<AuthEvent, AuthState> {
           authResponseModel: response.right,
         ),
       );
+      // Fetch and store location globally after successful login
+
+      final location = await MediaService().getLocation();
+      print("location $location");
+      if (location.position != null) {
+        final lat = location.position!.latitude;
+        final long = location.position!.longitude;
+        print("latitude $lat longitude $long");
+
+        // Store location globally 
+        Globalconfig.userLocation = location.position;
+        print("Location saved globally: ${Globalconfig.userLocation}");
+      } else {
+        print("Failed to get location: ${location.error}");
+      }
     } else {
       print('auth failure response.left ');
       emit(

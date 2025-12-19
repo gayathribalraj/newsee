@@ -224,9 +224,7 @@ class _VideoCaptureState extends State<VideoCapture> {
                         ? () async => await stopRecording()
                         : () async {
                           // get current location
-                          final location = await MediaService().getLocation(
-                            context,
-                          );
+                          final location = await MediaService().getLocation();
                           // get location details
                           final placeMark = await MediaService()
                               .getLocationDetails(

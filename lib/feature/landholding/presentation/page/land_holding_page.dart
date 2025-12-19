@@ -86,7 +86,7 @@ class _LandHoldingPageState extends State<LandHoldingPage> {
         pointsList =
             points
                 .map<Map<String, dynamic>>(
-                  (p) => {"longitude": p[0], "latitude": p[1]},
+                  (p) => {"latitude": p[0], "longitude": p[1]},
                 )
                 .toList();
 
@@ -882,7 +882,7 @@ class _LandHoldingPageState extends State<LandHoldingPage> {
                                               try {
                                                 final curposition =
                                                     await MediaService()
-                                                        .getLocation(context);
+                                                        .getLocation();
                                                 globalLoadingBloc.add(
                                                   HideLoading(),
                                                 );

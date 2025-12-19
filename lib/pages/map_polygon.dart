@@ -31,7 +31,7 @@ class MapPolygonState extends State<MapPolygon> {
 
   getInitPosition() async {
     try {
-      final curposition = await MediaService().getLocation(context);
+      final curposition = await MediaService().getLocation();
       final lat = curposition.position!.latitude;
       final long = curposition.position!.longitude;
       setState(() {
