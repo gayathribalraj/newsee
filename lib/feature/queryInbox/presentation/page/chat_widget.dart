@@ -10,6 +10,7 @@ import 'package:flyer_chat_text_message/flyer_chat_text_message.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cross_cache/cross_cache.dart';
 import 'package:flyer_chat_image_message/flyer_chat_image_message.dart';
+import 'package:newsee/core/api/api_client.dart';
 import 'package:newsee/core/api/api_config.dart';
 import 'package:newsee/core/api/http_exception_parser.dart';
 import 'package:newsee/feature/queryInbox/presentation/page/pdf_viewer.dart';
@@ -696,18 +697,7 @@ class ChatWidgetState extends State<ChatWidget> {
   loadImagesFromAPI() async {
     try {
       print('came here');
-      Dio dio = Dio();
-
-      dio.options
-        ..baseUrl = ApiConfig.BASE_URL
-        ..connectTimeout = Duration(seconds: 50)
-        ..receiveTimeout = Duration(seconds: 50);
-
-      dio.options.headers = {
-        'token': ApiConfig.AUTH_TOKEN,
-        'deviceId': ApiConfig.DEVICE_ID,
-        'userid': 'IOB3',
-      };
+      Dio dio = ApiClient().getDio();
 
       dio.interceptors.add(
         LogInterceptor(
@@ -910,13 +900,7 @@ class ChatWidgetState extends State<ChatWidget> {
     safeShowSnack("Fetching attachment...");
 
     try {
-      Dio dio = Dio();
-      dio.options.baseUrl = ApiConfig.BASE_URL;
-      dio.options.headers = {
-        'token': ApiConfig.AUTH_TOKEN,
-        'deviceId': ApiConfig.DEVICE_ID,
-        'userid': 'IOB3',
-      };
+      Dio dio = ApiClient().getDio();
 
       final response = await dio.post(
         ApiConfig.GET_SINGLEDOCUMENT_IMAGE,
@@ -1111,28 +1095,7 @@ class ChatWidgetState extends State<ChatWidget> {
   loadImagesFromAPINew() async {
     try {
       print('came here');
-      Dio dio = Dio();
-
-      dio.options
-        ..baseUrl = ApiConfig.BASE_URL
-        ..connectTimeout = Duration(seconds: 50)
-        ..receiveTimeout = Duration(seconds: 50);
-
-      dio.options.headers = {
-        'token': ApiConfig.AUTH_TOKEN,
-        'deviceId': ApiConfig.DEVICE_ID,
-        'userid': 'IOB3',
-      };
-
-      dio.interceptors.add(
-        LogInterceptor(
-          request: true,
-          requestHeader: true,
-          responseHeader: true,
-          responseBody: true,
-          error: true,
-        ),
-      );
+      Dio dio = ApiClient().getDio();
 
       final endPoint = ApiConfig.GET_QUERYDETAILS_IMG;
 
