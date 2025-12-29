@@ -538,7 +538,7 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_chat_ui
-      sha256: cfbaac38f429beb33d9cc1ca920ae7ccbadbed282c99335d590d61306d3a3d0f
+      sha256: "599a19e8a2df47c34647eb63794131fd4c4a4654b364a9f9ecdd7c99c1e562c7"
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
@@ -1224,7 +1224,7 @@ packages:
   kyc_verification:
     dependency: "direct main"
     description:
-      path: "D:/FlutterApps/newsee/Kyc_Verification"
+      path: "D:\\Flutter\\newsee\\Kyc_Verification"
       relative: false
     source: path
     version: "0.0.1"

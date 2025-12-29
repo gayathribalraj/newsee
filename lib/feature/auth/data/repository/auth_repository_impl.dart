@@ -40,7 +40,7 @@ class AuthRepositoryImpl implements AuthRepository {
     LoginRequest req,
   ) async {
     try {
-      String fcmToken = await getFcmToken();
+      // String fcmToken = await getFcmToken();
       Map<String, dynamic> payload = {
         "Loginuser": req.username,
         "Loginpasswd": req.password,
@@ -50,7 +50,7 @@ class AuthRepositoryImpl implements AuthRepository {
         "Brach_code": "",
         "PdTab": "N",
         "Module": "AGRI",
-        "fcmToken": fcmToken,
+        "fcmToken": "iugyuy87t7689ytfyuoitryu7dsyu7tryu",
       };
 
       print('auth request payload => $payload');

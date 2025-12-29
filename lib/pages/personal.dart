@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/app_forms.dart';
+import 'package:newsee/Model/liveliness_details.dart';
 import 'package:newsee/Model/personal_data.dart';
 import 'package:newsee/Utils/qr_nav_utils.dart';
 import 'package:newsee/Utils/utils.dart';
@@ -11,6 +12,8 @@ import 'package:newsee/feature/cif/domain/model/user/cif_response.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
 import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/feature/draft/presentation/pages/draft_inbox.dart';
+import 'package:newsee/feature/facedetection/presentation/page/face_detection.dart';
+import 'package:newsee/feature/loanproductdetails/presentation/bloc/loanproduct_bloc.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
 import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
 import 'package:newsee/widgets/SearchableMultiSelectDropdown.dart';
@@ -552,77 +555,77 @@ class _PersonalState extends State<Personal> {
                         autoCapitalize: true,
                         maxlength: 10,
                       ),
-                      refAadhaar
-                          ? Row(
-                            children: [
-                              Expanded(
-                                child: IntegerTextField(
-                                  fieldKey: _aadharRefNoKey,
-                                  controlName: 'aadharRefNo',
-                                  label: 'Aadhaar No',
-                                  mantatory: true,
-                                  maxlength: 12,
-                                  minlength: 12,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              ElevatedButton.icon(
-                                icon: Icon(Icons.qr_code_scanner),
-                                label: Text('Scan'),
-                                onPressed: () => showScannerOptions(context),
-                              ),
-                            ],
-                          )
-                          : Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: IntegerTextField(
-                                  fieldKey: _aadhaarKey,
-                                  controlName: 'aadhaar',
-                                  label: 'Aadhaar Number',
-                                  mantatory: true,
-                                  maxlength: 12,
-                                  minlength: 12,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    3,
-                                    9,
-                                    110,
-                                  ),
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 10,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  final AadharvalidateRequest
-                                  aadharvalidateRequest = AadharvalidateRequest(
-                                    aadhaarNumber:
-                                        form.control('aadhaar').value,
-                                  );
-                                  context.read<PersonalDetailsBloc>().add(
-                                    AadhaarValidateEvent(
-                                      request: aadharvalidateRequest,
-                                    ),
-                                  );
-                                },
-                                child:
-                                    state.status == SaveStatus.loading
-                                        ? CircularProgressIndicator()
-                                        : const Text("Validate"),
-                              ),
-                            ],
-                          ),
+                      //  refAadhaar
+                      //     ? Row(
+                      //       children: [
+                      //         Expanded(
+                      //           child: IntegerTextField(
+                      //             fieldKey: _aadhaarKey,
+                      //             controlName: 'aadharRefNo',
+                      //             label: 'Aadhaar No',
+                      //             mantatory: true,
+                      //             maxlength: 12,
+                      //             minlength: 12,
+                      //           ),
+                      //         ),
+                      //         const SizedBox(width: 8),
+                      //         ElevatedButton.icon(
+                      //           icon: Icon(Icons.qr_code_scanner),
+                      //           label: Text('Scan'),
+                      //           onPressed: () => showScannerOptions()
+                      //         ),
+                      //       ],
+                      //     )
+                      //     : Row(
+                      //       crossAxisAlignment: CrossAxisAlignment.center,
+                      //       children: [
+                      //         Expanded(
+                      //           child: IntegerTextField(
+                      //             fieldKey: _aadhaarKey,
+                      //             controlName: 'aadhaar',
+                      //             label: 'Aadhaar Number',
+                      //             mantatory: true,
+                      //             maxlength: 12,
+                      //             minlength: 12,
+                      //           ),
+                      //         ),
+                      //         const SizedBox(width: 8),
+                      //         ElevatedButton(
+                      //           style: ElevatedButton.styleFrom(
+                      //             backgroundColor: const Color.fromARGB(
+                      //               255,
+                      //               3,
+                      //               9,
+                      //               110,
+                      //             ),
+                      //             foregroundColor: Colors.white,
+                      //             padding: const EdgeInsets.symmetric(
+                      //               horizontal: 16,
+                      //               vertical: 10,
+                      //             ),
+                      //             shape: RoundedRectangleBorder(
+                      //               borderRadius: BorderRadius.circular(8),
+                      //             ),
+                      //           ),
+                      //           onPressed: () {
+                      //             final AadharvalidateRequest
+                      //             aadharvalidateRequest = AadharvalidateRequest(
+                      //               aadhaarNumber:
+                      //                   form.control('aadhaar').value,
+                      //             );
+                      //             context.read<PersonalDetailsBloc>().add(
+                      //               AadhaarValidateEvent(
+                      //                 request: aadharvalidateRequest,
+                      //               ),
+                      //             );
+                      //           },
+                      //           child:
+                      //               state.status == SaveStatus.loading
+                      //                   ? CircularProgressIndicator()
+                      //                   : const Text("Validate"),
+                      //         ),
+                      //       ],
+                      //     ),
                       IntegerTextField(
                         fieldKey: _loanAmountRequestedKey,
                         controlName: 'loanAmountRequested',

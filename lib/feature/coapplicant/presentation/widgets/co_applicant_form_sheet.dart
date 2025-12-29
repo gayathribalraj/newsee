@@ -660,49 +660,51 @@ class _CoApplicantFormBottomSheetState
                                   ShowLoading(message: "Fetching city..."),
                                 );
 
-                            context.read<CoappDetailsBloc>().add(
-                              OnStateCityChangeEvent(stateCode: val.code),
-                            );
-                          },
-                          selItem: () {
-                            final value =
-                                coAppAndGurantorForm.control('state').value;
-                            if (value == null || value.toString().isEmpty) {
-                              return null;
-                            }
-                            if (state.selectedCoApp?.state != null) {
-                              String? stateCode = state.selectedCoApp?.state;
+                                context.read<CoappDetailsBloc>().add(
+                                  OnStateCityChangeEvent(stateCode: val.code),
+                                );
+                              },
+                              selItem: () {
+                                final value =
+                                    coAppAndGurantorForm.control('state').value;
+                                if (value == null || value.toString().isEmpty) {
+                                  return null;
+                                }
+                                if (state.selectedCoApp?.state != null) {
+                                  String? stateCode = state.selectedCoApp?.state;
 
-                              GeographyMaster? geographyMaster = state
-                                  .stateCityMaster
-                                  ?.firstWhere((val) => val.code == stateCode);
-                              print(geographyMaster);
-                              if (geographyMaster != null) {
-                                coAppAndGurantorForm.controls['state']
-                                    ?.updateValue(geographyMaster.code);
-                                return geographyMaster;
-                              } else {
-                                return <GeographyMaster>[];
-                              }
-                            } else if (state.stateCityMaster!.isEmpty) {
-                              coAppAndGurantorForm.controls['state']
-                                  ?.updateValue("");
-                              return <GeographyMaster>[];
-                            } else if (state.getLead) {
-                              String? stateCode = widget.existingData!.state;
+                                  GeographyMaster? geographyMaster = state
+                                      .stateCityMaster
+                                      ?.firstWhere((val) => val.code == stateCode);
+                                  print(geographyMaster);
+                                  if (geographyMaster != null) {
+                                    coAppAndGurantorForm.controls['state']
+                                        ?.updateValue(geographyMaster.code);
+                                    return geographyMaster;
+                                  } else {
+                                    return <GeographyMaster>[];
+                                  }
+                                } else if (state.stateCityMaster!.isEmpty) {
+                                  coAppAndGurantorForm.controls['state']
+                                      ?.updateValue("");
+                                  return <GeographyMaster>[];
+                                } else if (state.getLead) {
+                                  String? stateCode = widget.existingData!.state;
 
-                              GeographyMaster? geographyMaster = state
-                                  .stateCityMaster
-                                  ?.firstWhere((val) => val.code == stateCode);
-                              if (geographyMaster != null) {
-                                coAppAndGurantorForm.controls['state']
-                                    ?.updateValue(geographyMaster.code);
-                                return geographyMaster;
-                              } else {
-                                return <GeographyMaster>[];
-                              }
-                            }
-                          },
+                                  GeographyMaster? geographyMaster = state
+                                      .stateCityMaster
+                                      ?.firstWhere((val) => val.code == stateCode);
+                                  if (geographyMaster != null) {
+                                    coAppAndGurantorForm.controls['state']
+                                        ?.updateValue(geographyMaster.code);
+                                    return geographyMaster;
+                                  } else {
+                                    return <GeographyMaster>[];
+                                  }
+                                }
+                              },
+                            )
+                          )
                         ),
                         SearchableDropdown(
                           controlName: 'cityDistrict',
