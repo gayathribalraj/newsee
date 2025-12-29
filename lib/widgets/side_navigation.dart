@@ -105,7 +105,7 @@ class Sidenavigationbar extends StatelessWidget {
           buildGradientTile(
             context: sidemenucontext,
             icon: Icons.audio_file_rounded,
-            title: "Audio Logs",
+            title: "Audit Logs",
             onTap: () {
               Navigator.push(
                 sidemenucontext,

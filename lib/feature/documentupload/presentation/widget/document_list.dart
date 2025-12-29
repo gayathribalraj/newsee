@@ -8,7 +8,8 @@ import 'package:newsee/feature/documentupload/presentation/widget/show_files_vie
 import 'package:newsee/feature/videocapturing/video_capture.dart';
 
 class DocumentList extends StatelessWidget {
-  const DocumentList({super.key});
+  final String fromPage;
+  const DocumentList({super.key, this.fromPage = 'proposal'});
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +63,9 @@ class DocumentList extends StatelessWidget {
                           );
                         }
                         final doc = state.documentsList[index];
+                        if (fromPage == 'pd') {
+                          doc.copyWith(lpdDocDesc: 'PD');
+                        }
                         return DocumentItem(doc: doc, index: index);
                       },
                     ),

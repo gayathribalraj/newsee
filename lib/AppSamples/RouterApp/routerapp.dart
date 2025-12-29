@@ -15,9 +15,13 @@ class RouterApp extends StatefulWidget {
 }
 
 class _RouterAppState extends State<RouterApp> {
-  void getFcmToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    print("FCM Token: $token");
+  Future<void> getFcmToken() async {
+    try {
+      String? token = await FirebaseMessaging.instance.getToken();
+      print("FCM Token: $token");
+    } catch (e) {
+      debugPrint("FCM token error (safe): $e");
+    }
   }
 
   void requestPermission() async {
@@ -36,7 +40,9 @@ class _RouterAppState extends State<RouterApp> {
   void initState() {
     super.initState();
     requestPermission();
-    getFcmToken();
+    Future.delayed(const Duration(seconds: 3), () {
+      getFcmToken();
+    });
     setupInteractedMessage();
     // when app is in open state
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {

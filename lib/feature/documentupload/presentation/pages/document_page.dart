@@ -9,8 +9,12 @@ import 'package:newsee/feature/documentupload/presentation/widget/document_list.
 
 class DocumentPage extends StatefulWidget {
   final String proposalnumber;
-
-  const DocumentPage({super.key, required this.proposalnumber});
+  final String fromPage;
+  const DocumentPage({
+    super.key,
+    required this.proposalnumber,
+    required this.fromPage,
+  });
 
   @override
   State<DocumentPage> createState() => _DocumentPageState();

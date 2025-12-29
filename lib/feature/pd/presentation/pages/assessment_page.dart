@@ -104,11 +104,11 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
           "QuestionId": "5205497",
 
           "options": [
-            {"text": "10+ years", "score": 5, "optionId": "208"},
-            {"text": "6–10 years", "score": 4, "optionId": "207"},
-            {"text": "3–5 years", "score": 3, "optionId": "206"},
-            {"text": "0–2 years", "score": 2, "optionId": "205"},
-            {"text": "< 1 year", "score": 0, "optionId": "204"},
+            {"text": "10+ years", "score": 5, "optionId": "1737"},
+            {"text": "6–10 years", "score": 4, "optionId": "1736"},
+            {"text": "3–5 years", "score": 3, "optionId": "1735"},
+            {"text": "0–2 years", "score": 2, "optionId": "1752"},
+            {"text": "< 1 year", "score": 0, "optionId": "1753"},
           ],
         },
         {
@@ -116,11 +116,11 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
           "QuestionId": "5205501",
 
           "options": [
-            {"text": "Excellent understanding", "score": 5, "optionId": "213"},
-            {"text": "Good understanding", "score": 4, "optionId": "212"},
-            {"text": "Average", "score": 3, "optionId": "211"},
-            {"text": "Poor", "score": 2, "optionId": "210"},
-            {"text": "Very poor", "score": 0, "optionId": "209"},
+            {"text": "Excellent understanding", "score": 5, "optionId": "1681"},
+            {"text": "Good understanding", "score": 4, "optionId": "1680"},
+            {"text": "Average", "score": 3, "optionId": "1679"},
+            {"text": "Poor", "score": 2, "optionId": "1678"},
+            {"text": "Very poor", "score": 0, "optionId": "1677"},
           ],
         },
         {
@@ -128,11 +128,11 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
           "QuestionId": "5205508",
 
           "options": [
-            {"text": "Very clear", "score": 5, "optionId": "218"},
-            {"text": "Clear", "score": 4, "optionId": "217"},
-            {"text": "Somewhat clear", "score": 3, "optionId": "216"},
-            {"text": "Unclear", "score": 2, "optionId": "215"},
-            {"text": "Confusing", "score": 0, "optionId": "214"},
+            {"text": "Very clear", "score": 5, "optionId": "1693"},
+            {"text": "Clear", "score": 4, "optionId": "1692"},
+            {"text": "Somewhat clear", "score": 3, "optionId": "1691"},
+            {"text": "Unclear", "score": 2, "optionId": "1719"},
+            {"text": "Confusing", "score": 0, "optionId": "1718"},
           ],
         },
         {
@@ -140,11 +140,11 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
           "QuestionId": "5205512",
 
           "options": [
-            {"text": "Strong risk awareness", "score": 5, "optionId": "223"},
-            {"text": "Good awareness", "score": 4, "optionId": "222"},
-            {"text": "Moderate", "score": 3, "optionId": "221"},
-            {"text": "Low", "score": 2, "optionId": "220"},
-            {"text": "No awareness", "score": 0, "optionId": "219"},
+            {"text": "Strong risk awareness", "score": 5, "optionId": "1724"},
+            {"text": "Good awareness", "score": 4, "optionId": "1723"},
+            {"text": "Moderate", "score": 3, "optionId": "1722"},
+            {"text": "Low", "score": 2, "optionId": "1721"},
+            {"text": "No awareness", "score": 0, "optionId": "1720"},
           ],
         },
       ],
@@ -160,10 +160,14 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
           "QuestionId": "5205537",
 
           "options": [
-            {"text": "Good Reliable (Canal)", "score": 5, "optionId": "227"},
-            {"text": "Reliable (Drip/Borewell)", "score": 4, "optionId": "226"},
-            {"text": "Partially reliable", "score": 3, "optionId": "225"},
-            {"text": "Rainfed only", "score": 0, "optionId": "224"},
+            {"text": "Good Reliable (Canal)", "score": 5, "optionId": "1685"},
+            {
+              "text": "Reliable (Drip/Borewell)",
+              "score": 4,
+              "optionId": "1684",
+            },
+            {"text": "Partially reliable", "score": 3, "optionId": "1683"},
+            {"text": "Rainfed only", "score": 0, "optionId": "1682"},
           ],
         },
         {
@@ -171,10 +175,10 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
           "QuestionId": "5205558",
 
           "options": [
-            {"text": "Healthy", "score": 5, "optionId": "231"},
-            {"text": "Average", "score": 4, "optionId": "230"},
-            {"text": "Weak/Pest", "score": 2, "optionId": "229"},
-            {"text": "No Activity", "score": 0, "optionId": "228"},
+            {"text": "Healthy", "score": 5, "optionId": "1741"},
+            {"text": "Average", "score": 4, "optionId": "1740"},
+            {"text": "Weak/Pest", "score": 2, "optionId": "1739"},
+            {"text": "No Activity", "score": 0, "optionId": "1738"},
           ],
         },
         {
@@ -185,12 +189,12 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
             {
               "text": "Full Facilitated Excellent",
               "score": 5,
-              "optionId": "236",
+              "optionId": "1698",
             },
-            {"text": "Good Facilitated", "score": 4, "optionId": "235"},
-            {"text": "Average Facilitated", "score": 3, "optionId": "234"},
-            {"text": "Poor Facilitated", "score": 2, "optionId": "233"},
-            {"text": "Not Facility", "score": 0, "optionId": "232"},
+            {"text": "Good Facilitated", "score": 4, "optionId": "1697"},
+            {"text": "Average Facilitated", "score": 3, "optionId": "1696"},
+            {"text": "Poor Facilitated", "score": 2, "optionId": "1695"},
+            {"text": "Not Facility", "score": 0, "optionId": "1694"},
           ],
         },
         {
@@ -198,11 +202,11 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
           "QuestionId": "5205574",
 
           "options": [
-            {"text": "Excellent", "score": 5, "optionId": "241"},
-            {"text": "Good", "score": 4, "optionId": "240"},
-            {"text": "Average", "score": 3, "optionId": "239"},
-            {"text": "Poor", "score": 2, "optionId": "238"},
-            {"text": "Not Facility", "score": 0, "optionId": "237"},
+            {"text": "Excellent", "score": 5, "optionId": "1703"},
+            {"text": "Good", "score": 4, "optionId": "1702"},
+            {"text": "Average", "score": 3, "optionId": "1701"},
+            {"text": "Poor", "score": 2, "optionId": "1700"},
+            {"text": "Not Facility", "score": 0, "optionId": "1699"},
           ],
         },
       ],
@@ -222,29 +226,29 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
               "text":
                   "Income stable for the last 3 years (consistent yield + good marketability)",
               "score": 5,
-              "optionId": "246",
+              "optionId": "1746",
             },
             {
               "text":
                   "Income stable for last 2 years (normal fluctuations only)",
               "score": 4,
-              "optionId": "245",
+              "optionId": "1745",
             },
             {
               "text": "Income stable for 2 years BUT marketability is low",
               "score": 3,
-              "optionId": "244",
+              "optionId": "1744",
             },
             {
               "text": "Income is low and unstable (seasonal/weather dependent)",
               "score": 2,
-              "optionId": "243",
+              "optionId": "1743",
             },
             {
               "text":
                   "Crop yield low and marketability poor (high-risk income)",
               "score": 0,
-              "optionId": "242",
+              "optionId": "1742",
             },
           ],
         },
@@ -256,27 +260,27 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
             {
               "text": "Regular & stable for 3 years – strong support",
               "score": 5,
-              "optionId": "251",
+              "optionId": "1707",
             },
             {
               "text": "Stable for last 2 years with predictable inflow",
               "score": 4,
-              "optionId": "250",
+              "optionId": "1707",
             },
             {
               "text": "Exists but moderate/seasonal income",
               "score": 3,
-              "optionId": "249",
+              "optionId": "1706",
             },
             {
               "text": "Low due to poor productivity",
               "score": 2,
-              "optionId": "248",
+              "optionId": "1705",
             },
             {
               "text": "No allied income OR no marketability",
               "score": 0,
-              "optionId": "247",
+              "optionId": "1704",
             },
           ],
         },
@@ -288,16 +292,20 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
             {
               "text": "Stable salary/business for 3+ years with proof",
               "score": 5,
-              "optionId": "256",
+              "optionId": "1712",
             },
-            {"text": "Stable for last 2 years", "score": 4, "optionId": "255"},
-            {"text": "Irregular or small-scale", "score": 3, "optionId": "254"},
+            {"text": "Stable for last 2 years", "score": 4, "optionId": "1711"},
+            {
+              "text": "Irregular or small-scale",
+              "score": 3,
+              "optionId": "1710",
+            },
             {
               "text": "Low and unstable (daily wage)",
               "score": 2,
-              "optionId": "253",
+              "optionId": "1709",
             },
-            {"text": "No non-agri income", "score": 0, "optionId": "252"},
+            {"text": "No non-agri income", "score": 0, "optionId": "1708"},
           ],
         },
         {
@@ -308,27 +316,27 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
             {
               "text": "Excellent control, regular savings",
               "score": 5,
-              "optionId": "261",
+              "optionId": "1751",
             },
             {
               "text": "Good control, some savings",
               "score": 4,
-              "optionId": "260",
+              "optionId": "1750",
             },
             {
               "text": "Average control, limited savings",
               "score": 3,
-              "optionId": "259",
+              "optionId": "1749",
             },
             {
               "text": "Poor control, frequent borrowing",
               "score": 2,
-              "optionId": "258",
+              "optionId": "1748",
             },
             {
               "text": "No control, chronic shortage",
               "score": 0,
-              "optionId": "257",
+              "optionId": "1747",
             },
           ],
         },
@@ -348,27 +356,27 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
             {
               "text": "Excellent repayment; no overdue in last 24 months",
               "score": 5,
-              "optionId": "266",
+              "optionId": "1690",
             },
             {
               "text": "Good; minor delays ≤30 days",
               "score": 4,
-              "optionId": "265",
+              "optionId": "1689",
             },
             {
               "text": "Average; 30–60 days delay observed",
               "score": 3,
-              "optionId": "264",
+              "optionId": "1688",
             },
             {
               "text": "Weak; multiple delays >60 days",
               "score": 2,
-              "optionId": "263",
+              "optionId": "1687",
             },
             {
               "text": "Poor; overdue >90 days or default",
               "score": 0,
-              "optionId": "262",
+              "optionId": "1686",
             },
           ],
         },
@@ -377,14 +385,14 @@ class _AssessmentHomePageState extends State<AssessmentHomePage> {
           "QuestionId": "5205827",
 
           "options": [
-            {"text": "≥ 750 – Very low risk", "score": 5, "optionId": "271"},
-            {"text": "700–749 – Good", "score": 4, "optionId": "270"},
-            {"text": "650–699 – Average", "score": 3, "optionId": "269"},
-            {"text": "600–649 – Weak", "score": 2, "optionId": "268"},
+            {"text": "≥ 750 – Very low risk", "score": 5, "optionId": "1717"},
+            {"text": "700–749 – Good", "score": 4, "optionId": "1716"},
+            {"text": "650–699 – Average", "score": 3, "optionId": "1715"},
+            {"text": "600–649 – Weak", "score": 2, "optionId": "1714"},
             {
               "text": "< 600 OR No hit – Very high risk",
               "score": 0,
-              "optionId": "267",
+              "optionId": "1713",
             },
           ],
         },

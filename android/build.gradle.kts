@@ -3,6 +3,9 @@ allprojects {
         google()
         mavenCentral()
     }
+    tasks.withType<JavaCompile> {
+        options.compilerArgs.addAll(listOf("-Xlint:unchecked"))
+    }
 }
 
 val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()

@@ -302,7 +302,10 @@ class PDInbox extends StatelessWidget {
               status: 'pending',
               onTap: () {
                 context.pop();
-                context.pushNamed('document', extra: proposal);
+                context.pushNamed(
+                  'document',
+                  extra: {'proposal': proposal, 'fromPage': 'pd'},
+                );
               },
             ),
           ],

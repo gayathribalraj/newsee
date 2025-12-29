@@ -44,23 +44,32 @@ class MediaService {
       //   error: 'Location services are disabled. Please enable GPS.',
       // );
       // }
+      print('here loca..');
       await handlePermissions();
-      Position position = await Geolocator.getCurrentPosition();
+      print('here loca1..');
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 10),
+        ),
+      );
+      print('here loca2..');
       print("gelocationdata: $position");
       return LocationResponse(position: position);
     } catch (error) {
+      print('here loca...$error');
       return LocationResponse(error: error.toString());
     }
   }
 
-   Future<List<Placemark>> getLocationDetails(lat, long) async {
-  try {
-    List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
-    return placemarks;
-  } catch (error) {
-    return [];
+  Future<List<Placemark>> getLocationDetails(lat, long) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
+      return placemarks;
+    } catch (error) {
+      return [];
+    }
   }
-}
 
   Future<bool> checkIsLocationServiceEnabled() async {
     return await Geolocator.isLocationServiceEnabled();

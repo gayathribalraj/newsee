@@ -174,15 +174,13 @@ final routes = GoRouter(
         final body = data?['body'] ?? "No Body";
         final queryId = data?['queryId'] ?? "";
         final proposalNo = num.tryParse("${data?['proposalNo']}") ?? 0;
-        final queryType = data?['queryType'] ?? "";
-        final userName = data?['userName'] ?? "";
 
         return ChatWidget(
           queryId: queryId,
           status: 'Open',
           proposalNo: proposalNo,
           queryType: body,
-          userName: userName,
+          userName: title,
         );
       },
     ),
@@ -262,8 +260,11 @@ final routes = GoRouter(
       path: AppRouteConstants.DOCUMENT_PAGE['path']!,
       name: AppRouteConstants.DOCUMENT_PAGE['name'],
       builder: (context, state) {
-        final extra = state.extra as String?;
-        final proposalNumber = extra ?? '';
+        final extra = state.extra as Map<String, dynamic>;
+
+        final proposalNumber = extra['proposal'] ?? '';
+
+        final fromPage = extra['fromPage'] ?? 'proposal';
 
         return PopScope(
           canPop: false,
@@ -296,7 +297,10 @@ final routes = GoRouter(
           },
           child: BlocProvider(
             create: (_) => DocumentBloc(mediaService: MediaService()),
-            child: DocumentPage(proposalnumber: proposalNumber),
+            child: DocumentPage(
+              proposalnumber: proposalNumber,
+              fromPage: fromPage,
+            ),
           ),
         );
       },

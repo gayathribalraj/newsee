@@ -7,8 +7,8 @@ plugins {
 }
 
 android {
-    namespace = "com.ubi.agri"
-    compileSdk = 35
+    namespace = "com.example.newsee"
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -30,6 +30,15 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+    }
+
+    signingConfigs {
+        create("release") {
+            keyAlias = "upload"
+            keyPassword = "sysarc@123"
+            storeFile = file("C:\\Users\\karthick.d\\upload-keystore.jks.")
+            storePassword = "sysarc@123"
+        }
     }
 
     buildTypes {
