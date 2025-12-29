@@ -7,6 +7,9 @@ import 'package:newsee/feature/loanproductdetails/presentation/bloc/loanproduct_
 import 'package:newsee/feature/masters/domain/modal/product.dart';
 import 'package:newsee/feature/masters/domain/modal/product_master.dart';
 import 'package:newsee/feature/masters/domain/modal/productschema.dart';
+import 'package:newsee/feature/schemes/scheme_bloc.dart';
+import 'package:newsee/feature/schemes/scheme_event.dart';
+import 'package:newsee/pages/productscheme_entry.dart';
 import 'package:newsee/widgets/k_willpopscope.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:newsee/widgets/bottom_sheet.dart';
@@ -189,6 +192,11 @@ class Loan extends StatelessWidget {
 
                           context.read<LoanproductBloc>().add(
                             LoanProductDropdownChange(field: val),
+                          );
+                          final schemeType = mapToSchemeType(val);
+                          // print(schemeType);
+                          context.read<SchemeBloc>().add(
+                            SelectSchemeEvent(schemeType),
                           );
                         },
                         selItem: () {

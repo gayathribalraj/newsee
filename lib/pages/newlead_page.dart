@@ -11,10 +11,12 @@ import 'package:newsee/feature/leadInbox/domain/modal/get_lead_response.dart';
 import 'package:newsee/feature/leadsubmit/presentation/bloc/lead_submit_bloc.dart';
 import 'package:newsee/feature/loanproductdetails/presentation/bloc/loanproduct_bloc.dart';
 import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
+import 'package:newsee/feature/schemes/scheme_bloc.dart';
 import 'package:newsee/pages/address.dart';
 import 'package:newsee/pages/lead_submit_page.dart';
 import 'package:newsee/pages/loan.dart';
 import 'package:newsee/pages/personal.dart';
+import 'package:newsee/pages/productscheme_entry.dart';
 import 'package:newsee/widgets/side_navigation.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 
@@ -46,6 +48,7 @@ class NewLeadPage extends StatelessWidget {
                         ),
                   ),
         ),
+        BlocProvider<SchemeBloc>(create: (_) => SchemeBloc()),
         BlocProvider(
           create:
               (context) =>
@@ -335,7 +338,8 @@ class NewLeadPage extends StatelessWidget {
                     ? [
                       Loan(title: 'loan'),
                       DedupeView(title: 'dedupe'),
-                      Personal(title: 'personal'),
+                      // Personal(title: 'personal'),
+                      PersonalEntryPage(),
                       Address(title: 'address'),
                       CoApplicantPage(title: 'Co Applicant Details'),
                       LeadSubmitPage(title: 'Lead Details'),
@@ -344,14 +348,16 @@ class NewLeadPage extends StatelessWidget {
                     ? [
                       Loan(title: 'loan'),
                       DedupeView(title: 'dedupe'),
-                      Personal(title: 'personal'),
+                      // Personal(title: 'personal'),
+                      PersonalEntryPage(),
                       Address(title: 'address'),
                       CoApplicantPage(title: 'Co Applicant Details'),
                       LeadSubmitPage(title: 'Lead Details'),
                     ]
                     : [
                       Loan(title: 'loan'),
-                      Personal(title: 'personal'),
+                      // Personal(title: 'personal'),
+                      PersonalEntryPage(),
                       Address(title: 'address'),
                       CoApplicantPage(title: 'Co Applicant Details'),
                     ],

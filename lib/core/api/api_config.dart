@@ -1,5 +1,7 @@
 class ApiConfig {
   static const String BASE_URL = "http://192.168.0.19:19084/lendperfect/";
+  static const String BASE_URL_AWS =
+      "http://10.100.0.247:19085/lendmobility/"; //aws qa url
 
   static const String AUTH_TOKEN =
       'U2FsdGVkX1/Wa6+JeCIOVLl8LTr8WUocMz8kIGXVbEI9Q32v7zRLrnnvAIeJIVV3';
@@ -55,10 +57,15 @@ class ApiConfig {
   static const String UPLOAD_DOCUMENT = 'MobileService/getDocumentUpload';
   static const String FETCH_UPLOAD_DOCUMENT = 'MobileService/getUploadDocument';
   static const String DELETE_UPLOAD_DOCUMENT = 'MobileService/deleteUploadFile';
-  static const String GET_LAND_CROP_STATUS = 'MobileService/getLandAndCropStatus';
+  static const String GET_LAND_CROP_STATUS =
+      'MobileService/getLandAndCropStatus';
   static const String mpinRegisterEndpoint = 'MobileService/registerMPIN';
   static const String mpinValidateEndPoint = 'MobileService/validateMPINLogin';
   static const String module = 'AGRI';
   static const String encKey = 'sysarc@1234INFO@';
   static const String GET_LEAD_DETAILS = 'MobileService/getLeadDetails';
+  static const bool isUAT = false; // for uat set true
+  static const bool isAWS = true; // for aws set true
+  static const String BASE_URL_UAT =
+      "https://103.98.54.19:443/lendmobility/"; //uat
 }

@@ -6,8 +6,17 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class ApiClient {
   Dio getDio() {
     Dio dio = Dio();
-    dio.options.baseUrl = ApiConfig.BASE_URL;
-
+ if (ApiConfig.isUAT == true) {
+        dio.options.baseUrl = ApiConfig.BASE_URL_UAT;
+      } else {
+        if (ApiConfig.isAWS == true) {
+          // AWS QA URL
+          dio.options.baseUrl = ApiConfig.BASE_URL_AWS;
+        } else {
+          // local QA URL
+          dio.options.baseUrl = ApiConfig.BASE_URL;
+        }
+      }
     dio.options.headers = {
       'token': ApiConfig.AUTH_TOKEN,
       'deviceId': ApiConfig.DEVICE_ID,

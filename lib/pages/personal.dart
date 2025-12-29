@@ -2,21 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/app_forms.dart';
-import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/Model/personal_data.dart';
 import 'package:newsee/Utils/qr_nav_utils.dart';
 import 'package:newsee/Utils/utils.dart';
 import 'package:newsee/feature/aadharvalidation/domain/modal/aadharvalidate_request.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
 import 'package:newsee/feature/draft/draft_service.dart';
-import 'package:newsee/feature/draft/presentation/pages/draft_inbox.dart';
-import 'package:newsee/feature/loanproductdetails/presentation/bloc/loanproduct_bloc.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
 import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
+import 'package:newsee/feature/schemes/scheme_bloc.dart';
+import 'package:newsee/feature/schemes/scheme_type.dart';
 import 'package:newsee/widgets/SearchableMultiSelectDropdown.dart';
-import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/k_willpopscope.dart';
-import 'package:newsee/widgets/radio.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
@@ -257,8 +254,14 @@ class Personal extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            final loanBloc = context.watch<LoanproductBloc>().state;
-            final loanTypeLabel = loanBloc.selectedProductScheme == null ? "SHG" : loanBloc.selectedProductScheme!.optionValue == "61" ? "SHG" : "JLG" ;
+            // final loanBloc = context.watch<LoanproductBloc>().state;
+            final loanBloc =  context.watch<SchemeBloc>().state;
+            final loanTypeLabel = loanBloc.selectedScheme== SchemeType.shg
+                ? "SHG"
+                : loanBloc.selectedScheme== SchemeType.jlg
+                    ? "JLG"
+                    : "Other";
+            // final loanTypeLabel = loanBloc.selectedProductScheme == null ? "SHG" : loanBloc.selectedProductScheme!.optionValue == "61" ? "SHG" : "JLG" ;
             DedupeState? dedupeState;
             if (state.status == SaveStatus.init && state.aadhaarData != null) {
               mapAadhaarData(state.aadhaarData);
