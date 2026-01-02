@@ -5,21 +5,16 @@ import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/AppData/app_forms.dart';
 import 'package:newsee/Model/liveliness_details.dart';
 import 'package:newsee/Model/personal_data.dart';
-import 'package:newsee/Utils/qr_nav_utils.dart';
 import 'package:newsee/Utils/utils.dart';
-import 'package:newsee/feature/aadharvalidation/domain/modal/aadharvalidate_request.dart';
 import 'package:newsee/feature/cif/domain/model/user/cif_response.dart';
 import 'package:newsee/feature/dedupe/presentation/bloc/dedupe_bloc.dart';
 import 'package:newsee/feature/draft/draft_service.dart';
-import 'package:newsee/feature/draft/presentation/pages/draft_inbox.dart';
 import 'package:newsee/feature/facedetection/presentation/page/face_detection.dart';
 import 'package:newsee/feature/loanproductdetails/presentation/bloc/loanproduct_bloc.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
 import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
 import 'package:newsee/widgets/SearchableMultiSelectDropdown.dart';
-import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/k_willpopscope.dart';
-import 'package:newsee/widgets/radio.dart';
 import 'package:newsee/widgets/sysmo_alert.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
@@ -27,10 +22,10 @@ import 'package:newsee/widgets/searchable_drop_down.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 // Kyc verification Plugin Imports
-import 'package:kyc_verification/kyc_validation.dart';
-import 'package:kyc_verification/src/widget/uiwidgetprops/button_props.dart';
-import 'package:kyc_verification/src/widget/uiwidgetprops/form_props.dart';
-import 'package:kyc_verification/src/widget/uiwidgetprops/style_props.dart';
+// import 'package:kyc_verification/kyc_validation.dart';
+// import 'package:kyc_verification/src/widget/uiwidgetprops/button_props.dart';
+// import 'package:kyc_verification/src/widget/uiwidgetprops/form_props.dart';
+// import 'package:kyc_verification/src/widget/uiwidgetprops/style_props.dart';
 
 class Personal extends StatefulWidget {
   final String title;

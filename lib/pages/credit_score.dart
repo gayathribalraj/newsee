@@ -179,7 +179,13 @@ class CreditScore extends StatelessWidget {
         ),
         const SizedBox(height: 12),
 
-        Row(
+        GridView.count(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          childAspectRatio: 0.9,
           children: [
             factorCard(
               icon: Icons.access_time,
@@ -189,7 +195,6 @@ class CreditScore extends StatelessWidget {
               status: "EXCELLENT",
               statusColor: Colors.green,
             ),
-            const SizedBox(width: 12),
             factorCard(
               icon: Icons.credit_card,
               value: "29%",
@@ -198,13 +203,6 @@ class CreditScore extends StatelessWidget {
               status: "VERY GOOD",
               statusColor: Colors.lightGreen,
             ),
-          ],
-        ),
-
-        const SizedBox(height: 12),
-
-        Row(
-          children: [
             factorCard(
               icon: Icons.calendar_today,
               value: "9y 1m",
@@ -213,7 +211,6 @@ class CreditScore extends StatelessWidget {
               status: "EXCELLENT",
               statusColor: Colors.green,
             ),
-            const SizedBox(width: 12),
             factorCard(
               icon: Icons.search,
               value: "0",
@@ -236,100 +233,46 @@ class CreditScore extends StatelessWidget {
     required String status,
     required Color statusColor,
   }) {
-    return Expanded(
-      child: GridView.builder(
-        itemCount: 4,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        itemBuilder: (builder, context) {
-          return Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(14),
-              boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8),
-              ],
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: Colors.grey),
+          const SizedBox(height: 10),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 4),
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+          const SizedBox(height: 4),
+          Text(
+            impact,
+            style: const TextStyle(color: Colors.grey, fontSize: 12),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            status,
+            style: TextStyle(
+              color: statusColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(icon, color: Colors.grey),
-                const SizedBox(height: 10),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  title,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  impact,
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  status,
-                  style: TextStyle(
-                    color: statusColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
 }
 
-//  Container(
-//   padding: const EdgeInsets.all(16),
-//   decoration: BoxDecoration(
-//     color: Colors.white,
-//     borderRadius: BorderRadius.circular(14),
-//     boxShadow: [
-//       BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8),
-//     ],
-//   ),
-// child: Column(
-//   crossAxisAlignment: CrossAxisAlignment.start,
-//   children: [
-//     Icon(icon, color: Colors.grey),
-//     const SizedBox(height: 10),
-//     Text(
-//       value,
-//       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//     ),
-//     const SizedBox(height: 4),
-//     Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-//     const SizedBox(height: 4),
-//     Text(
-//       impact,
-//       style: const TextStyle(color: Colors.grey, fontSize: 12),
-//     ),
-//     const SizedBox(height: 8),
-//     Text(
-//       status,
-//       style: TextStyle(
-//         color: statusColor,
-//         fontWeight: FontWeight.bold,
-//         fontSize: 12,
-//       ),
-//     ),
-//   ],
-// ),
-//   ),
-// );
 
 // CustomPainter
 class CreditScoreCircle extends CustomPainter {
