@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:newsee/Utils/shared_preference_utils.dart';
 import 'package:newsee/feature/audit_logs/presentation/page/audit_log_page.dart';
 import 'package:newsee/feature/auth/domain/model/user_details.dart';
-import 'package:newsee/pages/credit_score_ui.dart';
+import 'package:newsee/pages/credit_score.dart';
 import 'package:newsee/pages/home_page.dart';
 
 class Sidenavigationbar extends StatelessWidget {
@@ -79,7 +79,7 @@ class Sidenavigationbar extends StatelessWidget {
               onTabSelected?.call(0);
               Navigator.push(
                 sidemenucontext,
-                MaterialPageRoute(builder: (context) => CreditsPage()),
+                MaterialPageRoute(builder: (context) => CreditScore()),
               );
             },
           ),
