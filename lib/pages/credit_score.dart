@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 
 class CreditScore extends StatelessWidget {
   const CreditScore({super.key});
@@ -32,7 +31,7 @@ class CreditScore extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            creditScore(),
+            creditScore(creditScore: 819),
             const SizedBox(height: 24),
             accountSummary(),
             const SizedBox(height: 24),
@@ -44,7 +43,9 @@ class CreditScore extends StatelessWidget {
   }
 
   // Credit score
-  Widget creditScore() {
+  Widget creditScore({required int creditScore}) {
+    double progress = (creditScore - 300) / 600;
+
     return Column(
       children: [
         SizedBox(
@@ -53,27 +54,48 @@ class CreditScore extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              CustomPaint(
-                size: const Size(180, 180),
-                painter: CreditScoreCircle(progress: (819 - 300) / 600),
+              // Animate the progress 
+              TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0, end: progress),
+                duration: const Duration(seconds: 1),
+                curve: Curves.easeOut,
+                builder: (context, value, child) {
+                  return CustomPaint(
+                    size: const Size(180, 180),
+                    painter: CreditScoreCircle(progress: value),
+                  );
+                },
               ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Text(
-                    "819",
-                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "Excellent",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
+
+              // Animate the number 
+              TweenAnimationBuilder<int>(
+                tween: IntTween(begin: 0, end: creditScore),
+                duration: const Duration(seconds: 1),
+                builder: (context, value, child) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "$value",
+                        style: const TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        "Excellent",
+
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
+
               Positioned(
                 bottom: 0,
                 child: Row(
@@ -273,7 +295,6 @@ class CreditScore extends StatelessWidget {
   }
 }
 
-
 // CustomPainter
 class CreditScoreCircle extends CustomPainter {
   final double progress;
@@ -284,13 +305,13 @@ class CreditScoreCircle extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2 - 16;
-
+// background circle
     final bgPaint =
         Paint()
           ..color = Colors.grey.shade200
           ..style = PaintingStyle.stroke
           ..strokeWidth = 20;
-
+// foreground arc
     final fgPaint =
         Paint()
           ..shader = const LinearGradient(
@@ -299,13 +320,13 @@ class CreditScoreCircle extends CustomPainter {
           ..style = PaintingStyle.stroke
           ..strokeWidth = 14
           ..strokeCap = StrokeCap.round;
-
+// draw background circle
     canvas.drawCircle(center, radius, bgPaint);
 
     double sweepAngle = 2 * pi * progress;
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      -pi / 2,
+      pi / 2,
       sweepAngle,
       false,
       fgPaint,
