@@ -704,6 +704,8 @@ class _CoApplicantFormBottomSheetState
                             }
                           },
                         ),
+                          ),
+                        ),
                         SearchableDropdown(
                           controlName: 'cityDistrict',
                           label: 'City',
