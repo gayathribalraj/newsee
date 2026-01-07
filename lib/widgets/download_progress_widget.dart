@@ -54,9 +54,11 @@ class DownloadProgressWidget extends StatelessWidget {
                                 ? 'Master Download Success'
                                 : 'Downloading Master...',
                             style: const TextStyle(
-                              color: Color.fromRGBO(214, 24, 24, 1),
-                              fontSize: 16,
+                              color:Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
                               decoration: TextDecoration.none,
+                              
                             ),
                           ),
                         ],

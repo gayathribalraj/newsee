@@ -53,19 +53,14 @@ void reachUsActionSheet(
             //List of  First Whatsapp
             CupertinoActionSheetAction(
               onPressed: () async {
-                //  whasapp();
                 final phoneNumber = "919940362579";
-                final Uri url = Uri.parse('https://wa.me/sms:$phoneNumber');
-                // final Uri _url = Uri.parse('https://flutter.dev');
+                final Uri url = Uri.parse('https://wa.me/$phoneNumber');
 
-                if (!await canLaunchUrl(url)) {
-                  throw 'Could not launch $url';
-                } else {
-                  await launchUrl(url);
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url, mode: LaunchMode.externalApplication);
                 }
                 Navigator.pop(context);
               },
-
               //set icon svg for whatsapp
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -123,29 +118,7 @@ void reachUsActionSheet(
                 ],
               ),
             ),
-            // //location
-            // CupertinoActionSheetAction(
-            //   onPressed: () {
-            //     Navigator.pop(context);
-            //   },
-            //   child: Row(
-            //     children: [
-            //       Icon(
-            //         icon3,
-            //         color: const Color.fromARGB(255, 3, 9, 110),
-            //         size: 35,
-            //       ),
-            //       SizedBox(width: 20),
-            //       Padding(
-            //         padding: const EdgeInsets.all(10),
-            //         child: Text(
-            //           heading3,
-            //           style: TextStyle(color: Colors.black, fontSize: 20),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+          
           ],
         ),
   );

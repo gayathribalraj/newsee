@@ -79,7 +79,7 @@ final routes = GoRouter(
             //     child: LoginpageView(),
             //   ),
             // ),
-            child: Scaffold(body: HomePage()),
+            child: Scaffold(body: LoginpageView()),
           ),
     ),
     GoRoute(

@@ -47,13 +47,15 @@ void loginActionSheet(
           child: Container(
             //It uses a gradient background
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color.fromARGB(126, 1, 1, 129),
-                  const Color.fromARGB(64, 1, 1, 129),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 15,
+                  offset: Offset(0, 5),
+                ),
+              ],
             ),
             padding: EdgeInsets.all(10),
             width: screenwidth * 1.0,
@@ -176,122 +178,122 @@ class LoginpageWithAC extends StatelessWidget {
             'in build function isPasswordHidden=> ${state.isPasswordHidden}',
           );
           return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.all(25),
             // login form implemented using the `ReactiveForms` package and Bloc pattern
             child: SingleChildScrollView(
-              child: Container(
-                child: ReactiveForm(
-                  formGroup: loginFormgroup,
-                  child: Center(
-                    child: Container(
-                      width: 300,
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 20, top: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Login Account",
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.start,
-                                ),
-                              ],
-                            ),
-                          ),
-                          ReactiveTextField(
-                            formControlName: 'username',
-                            autofocus: true,
-                            decoration: InputDecoration(
-                              labelText: 'Username',
-                              suffixIcon: Icon(Icons.person),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            validationMessages: {
-                              ValidationMessage.required:
-                                  (error) => 'UserName is Required',
-                              ValidationMessage.contains:
-                                  (error) => error as String,
-                            },
-                          ),
-                          SizedBox(height: 10.0),
-
-                          ReactiveTextField(
-                            formControlName: 'password',
-                            obscureText: state.isPasswordHidden,
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  state.isPasswordHidden
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                ),
-                                onPressed: () {
-                                  context.read<AuthBloc>().add(
-                                    PasswordSecure(),
-                                  );
-                                },
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            validationMessages: {
-                              ValidationMessage.required:
-                                  (error) => 'Password is Required',
-                              ValidationMessage.contains:
-                                  (error) => error as String,
-                            },
-                          ),
-                          SizedBox(height: 10),
-                          ElevatedButton(
-                            style: const ButtonStyle(
-                              backgroundColor: WidgetStatePropertyAll<Color>(
-                                Color.fromARGB(255, 2, 59, 105),
-                              ),
-                              foregroundColor: WidgetStatePropertyAll(
-                                Colors.white,
-                              ),
-                              minimumSize: WidgetStatePropertyAll(
-                                Size(230, 40),
-                              ),
-                            ),
-                            onPressed:
-                                isLoading
-                                    ? null
-                                    : () {
-                                      print('network => $network');
-                                      switch (network) {
-                                        case OperationNetwork.offline:
-                                          offlineLogin();
-                                        case OperationNetwork.online:
-                                          login(state);
-                                      }
-                                    },
-                            child:
-                                isLoading
-                                    ? const SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2.0,
-                                      ),
-                                    )
-                                    : const Text("Login"),
-                          ),
-                        ],
+              child: ReactiveForm(
+                formGroup: loginFormgroup,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Header
+                    Text(
+                      "Welcome to our platform!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0A3D62),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 6),
+                    Text(
+                      "Let's get started",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                    ),
+                    const SizedBox(height: 25),
+
+                    // Username Input
+                    ReactiveTextField(
+                      formControlName: 'username',
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        hintText: "@username",
+                        prefixIcon: Icon(Icons.person_outline),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      validationMessages: {
+                        ValidationMessage.required:
+                            (_) => 'Username is Required',
+                      },
+                    ),
+                    const SizedBox(height: 25),
+
+                    // Password Input
+                    ReactiveTextField(
+                      formControlName: 'password',
+                      obscureText: isPasswordHidden,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        prefixIcon: Icon(Icons.lock_outline),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            isPasswordHidden
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            context.read<AuthBloc>().add(PasswordSecure());
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      validationMessages: {
+                        ValidationMessage.required:
+                            (_) => 'Password is Required',
+                      },
+                    ),
+                    const SizedBox(height: 25),
+
+                    // Login Button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 3, 9, 110),
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        onPressed:
+                            isLoading
+                                ? null
+                                : () {
+                                  switch (network) {
+                                    case OperationNetwork.offline:
+                                      offlineLogin();
+                                    case OperationNetwork.online:
+                                      login(state);
+                                  }
+                                },
+                        child:
+                            isLoading
+                                ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                                : const Text(
+                                  "Login",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
