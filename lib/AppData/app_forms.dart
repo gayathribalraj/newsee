@@ -112,6 +112,78 @@ class AppForms {
     'gender': FormControl<String>(validators: []),
     'subActivity': FormControl<String>(validators: []),
   });
+  static FormGroup SHG_DETAILS_FORM() => FormGroup({
+    'title': FormControl<String>(validators: [Validators.required]),
+    'firstName': FormControl<String>(validators: [Validators.required]),
+    'dob': FormControl<String>(validators: [Validators.required]),
+    'primaryMobileNumber': FormControl<String>(
+      validators: [Validators.required, Validators.minLength(10)],
+    ),
+    'secondaryMobileNumber': FormControl<String>(
+      validators: [Validators.required, Validators.minLength(10)],
+    ),
+    'email': FormControl<String>(validators: [Validators.email]),
+
+    'loanAmountRequested': FormControl<String>(
+      validators: [Validators.required],
+      asyncValidators: [
+        Validators.delegateAsync((control) async {
+          String val = control.value as String;
+          int loanAmountEntered = int.parse(
+            val.replaceAll(RegExp(r'[^\d]'), ''),
+          );
+          if (loanAmountEntered > Globalconfig.loanAmountMaximum) {
+            print(
+              'loanAmountRequested::delegateAsync => ${Globalconfig.loanAmountMaximum}',
+            );
+            return {'max': '${Globalconfig.loanAmountMaximum}'};
+          }
+          return null;
+        }),
+      ],
+    ),
+    'residentialStatus': FormControl<String>(validators: []),
+
+    'natureOfActivity': FormControl<String>(validators: []),
+    'agriculturistType': FormControl<String>(validators: []),
+    'religion': FormControl<String>(validators: []),
+    'gender': FormControl<String>(validators: []),
+  });
+  static FormGroup JLG_DETAILS_FORM() => FormGroup({
+    'title': FormControl<String>(validators: [Validators.required]),
+    'firstName': FormControl<String>(validators: [Validators.required]),
+    'dob': FormControl<String>(validators: [Validators.required]),
+    'primaryMobileNumber': FormControl<String>(
+      validators: [Validators.required, Validators.minLength(10)],
+    ),
+    'secondaryMobileNumber': FormControl<String>(
+      validators: [Validators.required, Validators.minLength(10)],
+    ),
+    'email': FormControl<String>(validators: [Validators.email]),
+    'residentialStatus': FormControl<String>(validators: []),
+
+    'loanAmountRequested': FormControl<String>(
+      validators: [Validators.required],
+      asyncValidators: [
+        Validators.delegateAsync((control) async {
+          String val = control.value as String;
+          int loanAmountEntered = int.parse(
+            val.replaceAll(RegExp(r'[^\d]'), ''),
+          );
+          if (loanAmountEntered > Globalconfig.loanAmountMaximum) {
+            print(
+              'loanAmountRequested::delegateAsync => ${Globalconfig.loanAmountMaximum}',
+            );
+            return {'max': '${Globalconfig.loanAmountMaximum}'};
+          }
+          return null;
+        }),
+      ],
+    ),
+    'natureOfActivity': FormControl<String>(validators: []),
+    'agriculturistType': FormControl<String>(validators: []),
+    'gender': FormControl<String>(validators: []),
+  });
 
   static final FormGroup COAPPLICANT_DETAILS_FORM = FormGroup({
     'customertype': FormControl<String>(validators: []),
@@ -126,9 +198,7 @@ class AppForms {
     'primaryMobileNumber': FormControl<String>(
       validators: [Validators.minLength(10)],
     ),
-    'secondaryMobileNumber': FormControl<String>(
-      validators: [],
-    ),
+    'secondaryMobileNumber': FormControl<String>(validators: []),
     'email': FormControl<String>(validators: [Validators.email]),
     'aadhaar': FormControl<String>(),
     'panNumber': FormControl<String>(
@@ -149,12 +219,8 @@ class AppForms {
     'state': FormControl<String>(validators: []),
     'cityDistrict': FormControl<String>(validators: []),
     'pincode': FormControl<String>(validators: []),
-    'loanLiabilityCount': FormControl<String>(
-      validators: [],
-    ),
-    'loanLiabilityAmount': FormControl<String>(
-      validators: [],
-    ),
+    'loanLiabilityCount': FormControl<String>(validators: []),
+    'loanLiabilityAmount': FormControl<String>(validators: []),
     'depositCount': FormControl<String>(validators: []),
     'depositAmount': FormControl<String>(validators: []),
   });

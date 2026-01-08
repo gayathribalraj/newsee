@@ -11,6 +11,7 @@ import 'package:newsee/feature/leadInbox/domain/modal/get_lead_response.dart';
 import 'package:newsee/feature/leadsubmit/presentation/bloc/lead_submit_bloc.dart';
 import 'package:newsee/feature/loanproductdetails/presentation/bloc/loanproduct_bloc.dart';
 import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
+import 'package:newsee/feature/scheme/productscheme_entry.dart';
 import 'package:newsee/pages/address.dart';
 import 'package:newsee/pages/lead_submit_page.dart';
 import 'package:newsee/pages/loan.dart';
@@ -80,6 +81,7 @@ class NewLeadPage extends StatelessWidget {
                   ),
           lazy: false,
         ),
+
         BlocProvider(
           create:
               (context) =>
@@ -335,25 +337,28 @@ class NewLeadPage extends StatelessWidget {
                     ? [
                       Loan(title: 'loan'),
                       DedupeView(title: 'dedupe'),
-                      Personal(title: 'personal'),
+                      Personal(title: ''),
                       Address(title: 'address'),
                       CoApplicantPage(title: 'Co Applicant Details'),
                       LeadSubmitPage(title: 'Lead Details'),
+                      PersonalEntryPage(),
                     ]
                     : tabType == 'draft'
                     ? [
                       Loan(title: 'loan'),
                       DedupeView(title: 'dedupe'),
-                      Personal(title: 'personal'),
+                      Personal(title: ''),
                       Address(title: 'address'),
                       CoApplicantPage(title: 'Co Applicant Details'),
                       LeadSubmitPage(title: 'Lead Details'),
+                      PersonalEntryPage(),
                     ]
                     : [
                       Loan(title: 'loan'),
-                      Personal(title: 'personal'),
+                      Personal(title: ''),
                       Address(title: 'address'),
                       CoApplicantPage(title: 'Co Applicant Details'),
+                      PersonalEntryPage(),
                     ],
           ),
         ),
